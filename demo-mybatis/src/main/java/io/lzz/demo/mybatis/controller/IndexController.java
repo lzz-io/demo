@@ -14,15 +14,23 @@
  * limitations under the License.
  */
 
-package io.lzz.demo;
+package io.lzz.demo.mybatis.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author q1219331697
  *
  */
-public class Demo {
+@RestController
+@RequestMapping("/")
+public class IndexController {
 
-	public static void main(String[] args) {
-		System.out.println("hello world");
+	@GetMapping(value = { "" })
+	public String index() {
+		return "hello world";
 	}
+
 }

@@ -1,0 +1,14 @@
+server:
+  port: 80
+
+mybatis:
+  type-aliases-package: io.lzz.demo.mybatis.entity
+
+###############
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://node1:33306/mybatis?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 123456
+    
