@@ -8,7 +8,7 @@ mybatis:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://node1:33306/mybatis?useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://node1:33306/mybatis?useUnicode=true&characterEncoding=utf-8&useSSL=true
     username: root
     password: 123456
     
