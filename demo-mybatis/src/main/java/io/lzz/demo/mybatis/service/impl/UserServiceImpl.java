@@ -21,8 +21,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import io.lzz.demo.mybatis.entity.User;
-import io.lzz.demo.mybatis.mapper.UserMapper;
+import io.lzz.demo.mybatis.entity.User1;
+import io.lzz.demo.mybatis.mapper.UserMapper1;
 import io.lzz.demo.mybatis.service.UserService;
 
 /**
@@ -33,26 +33,26 @@ import io.lzz.demo.mybatis.service.UserService;
 public class UserServiceImpl implements UserService {
 
 	@Autowired
-	private UserMapper userMapper;
+	private UserMapper1 userMapper;
 
 	@Override
-	public List<User> findAll() {
+	public List<User1> findAll() {
 		return userMapper.findAll();
 	}
 
 	@Override
-	public User findById(Long id) {
+	public User1 findById(Long id) {
 		return userMapper.findById(id);
 	}
 
 	@Override
-	public User insert(User user) {
+	public User1 insert(User1 user) {
 		userMapper.insert(user);
 		return user;
 	}
 
 	@Override
-	public User update(User user) {
+	public User1 update(User1 user) {
 		userMapper.update(user);
 		return user;
 	}

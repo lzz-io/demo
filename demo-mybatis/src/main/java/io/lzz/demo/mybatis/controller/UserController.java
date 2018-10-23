@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.lzz.demo.mybatis.entity.User;
+import io.lzz.demo.mybatis.entity.User1;
 import io.lzz.demo.mybatis.service.UserService;
 
 /**
@@ -43,14 +43,14 @@ public class UserController {
 	private UserService userService;
 
 	@GetMapping("")
-	public List<User> index() {
-		List<User> users = userService.findAll();
+	public List<User1> index() {
+		List<User1> users = userService.findAll();
 		log.info(users.toString());
 		return users;
 	}
 
 	@PostMapping(value = "")
-	public User editNew(User user) {
+	public User1 editNew(User1 user) {
 		userService.insert(user);
 		log.info(user.toString());
 		return user;

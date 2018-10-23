@@ -14,26 +14,12 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.mybatis.service;
-
-import java.util.List;
-
-import io.lzz.demo.mybatis.entity.User1;
+package io.lzz.demo.mybatis.core;
 
 /**
  * @author q1219331697
  *
  */
-public interface UserService {
-
-	public List<User1> findAll();
-
-	public User1 findById(Long id);
-
-	public User1 insert(User1 user);
-
-	public User1 update(User1 user);
-
-	public Integer delete(Long id);
+public interface BaseMapper {
 
 }

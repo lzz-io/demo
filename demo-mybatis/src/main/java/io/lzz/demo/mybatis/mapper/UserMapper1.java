@@ -14,9 +14,15 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.mybatis.service;
+package io.lzz.demo.mybatis.mapper;
 
 import java.util.List;
+
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import io.lzz.demo.mybatis.entity.User1;
 
@@ -24,16 +30,22 @@ import io.lzz.demo.mybatis.entity.User1;
  * @author q1219331697
  *
  */
-public interface UserService {
+@Mapper
+public interface UserMapper1 {
 
+	@Select("select * from user")
 	public List<User1> findAll();
 
+	@Select("select * from user where userId = #{id}")
 	public User1 findById(Long id);
 
-	public User1 insert(User1 user);
+	@Insert("insert into user(username, password) values(#{username}, #{password})")
+	public void insert(User1 user);
 
-	public User1 update(User1 user);
+	@Update("update user set username = #{username}, password = #{password} where userId = #{userId}")
+	public void update(User1 user);
 
-	public Integer delete(Long id);
+	@Delete("delete from user where userId = #{id}")
+	public void delete(Long id);
 
 }

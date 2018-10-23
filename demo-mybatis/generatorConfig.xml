@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<context id="context1">
+
+		<commentGenerator>
+			<!-- <property name="suppressDate" value="true" /> -->
+			<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+
+		<jdbcConnection
+			connectionURL="jdbc:mysql://node1:33306/mybatis"
+			driverClass="com.mysql.jdbc.Driver" password="123456" userId="root" />
+		<!-- <javaModelGenerator targetPackage="???" targetProject="???" /> -->
+		<!-- <sqlMapGenerator targetPackage="???" targetProject="???" /> -->
+		<!-- <javaClientGenerator targetPackage="???" targetProject="???" type="XMLMAPPER" 
+			/> -->
+		<!-- <table schema="???" tableName="???"> <columnOverride column="???" 
+			property="???" /> </table> -->
+
+		<!-- 生成model模型，对应的包路径，以及文件存放路径(targetProject)，targetProject可以指定具体的路径,如./src/main/java， 
+			也可以使用“MAVEN”来自动生成，这样生成的代码会在target/generatord-source目录下 -->
+		<javaModelGenerator
+			targetPackage="io.lzz.demo.mybatis.entity"
+			targetProject="demo-mybatis">
+			<!-- 是否在当前路径下新加一层schema,eg：fase路径com.oop.eksp.user.model， true:com.oop.eksp.user.model.[schemaName] -->
+			<!-- <property name="enableSubPackages" value="false" /> -->
+			<!-- 从数据库返回的值被清理前后的空格 -->
+			<!-- <property name="trimStrings" value="true" /> -->
+		</javaModelGenerator>
+
+
+		<!--对应的mapper.xml文件 -->
+		<sqlMapGenerator
+			targetPackage="io.lzz.demo.mybatis.mapper"
+			targetProject="demo-mybatis">
+			<!-- <property name="enableSubPackages" value="false" /> -->
+		</sqlMapGenerator>
+
+		<!-- 对应的Mapper接口类文件 -->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="io.lzz.demo.mybatis.mapper"
+			targetProject="demo-mybatis">
+			<!-- <property name="enableSubPackages" value="false" /> -->
+		</javaClientGenerator>
+
+		<!-- 列出要生成代码的所有表，这里配置的是不生成Example文件 -->
+		<!-- schema即为数据库名 tableName为对应的数据库表 domainObjectName是要生成的实体类 enable*ByExample 
+			是否生成 example类 -->
+		<table tableName="user" domainObjectName="User" schema="mybatis"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+			<!-- 忽略列，不生成bean 字段 <ignoreColumn column="FRED" /> -->
+			<!-- 指定列的java数据类型 <columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" 
+				/> -->
+			<!-- 用于指定生成实体类时是否使用实际的列名作为实体类的属性名。false是 Camel Case风格 -->
+			<property name="useActualColumnNames" value="true" />
+		</table>
+
+	</context>
+</generatorConfiguration>
