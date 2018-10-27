@@ -9,6 +9,8 @@
 	<modules>
 		<module>demo-java</module>
 		<module>demo-mybatis</module>
+		<module>demo-jvm</module>
+		<module>demo-jms</module>
 	</modules>
 
 	<properties>
