@@ -16,22 +16,28 @@
 
 package io.lzz.demo.jms.consumer;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jms.annotation.JmsListener;
-import org.springframework.stereotype.Service;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * @author q1219331697
  *
  */
-@Service
-public class JmsConsumer {
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = QueueConsumer.class)
+@EnableAutoConfiguration
+public class QueueConsumerTest {
 
-	private static final Logger log = LoggerFactory.getLogger(JmsConsumer.class);
+	private static final Logger log = LoggerFactory.getLogger(QueueConsumerTest.class);
 
-	@JmsListener(destination = "jms.queue")
-	public void doRec(String msg) {
-		log.info(msg);
+	@Test
+	public void testDoRec() {
+		log.info("success!");
 	}
+
 }

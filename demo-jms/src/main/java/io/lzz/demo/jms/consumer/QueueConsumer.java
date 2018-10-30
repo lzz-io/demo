@@ -14,22 +14,27 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.jms;
+package io.lzz.demo.jms.consumer;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.jms.annotation.EnableJms;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.jms.annotation.JmsListener;
+import org.springframework.stereotype.Service;
+
+import io.lzz.demo.jms.config.Constants;
 
 /**
  * @author q1219331697
  *
  */
-@SpringBootApplication
-@EnableJms
-public class JmsApplication {
+@Service
+public class QueueConsumer {
 
-	public static void main(String[] args) throws Exception {
-		SpringApplication.run(JmsApplication.class, args);
+	private static final Logger log = LoggerFactory.getLogger(QueueConsumer.class);
+
+	@JmsListener(destination = Constants.QUEUE_TEST)
+	public void doRec(String msg) {
+		log.info("<<< {}",msg);
+		log.info(Thread.currentThread().getName() + " -- " + Thread.currentThread().getId());
 	}
-
 }

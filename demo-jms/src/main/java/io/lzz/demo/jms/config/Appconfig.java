@@ -16,12 +16,7 @@
 
 package io.lzz.demo.jms.config;
 
-import javax.jms.ConnectionFactory;
-import javax.jms.DeliveryMode;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jms.core.JmsTemplate;
 
 /**
  * @author q1219331697
@@ -29,15 +24,25 @@ import org.springframework.jms.core.JmsTemplate;
  */
 @Configuration
 public class Appconfig {
-	
-	@Autowired
-	private ConnectionFactory connectionFactory;
 
-	public JmsTemplate jmsTemplate() {
-		JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
-		jmsTemplate.setDeliveryMode(DeliveryMode.PERSISTENT);
-		return jmsTemplate;
+	// @Autowired
+	// private ConnectionFactory connectionFactory;
 
-	}
+	// @Bean
+	// public Connection connection(ActiveMQConnectionFactory connectionFactory)
+	// throws JMSException {
+	// return connectionFactory.createConnection();
+	// }
+
+	// @Bean
+	// public JmsTemplate jmsTemplate(ActiveMQConnectionFactory connectionFactory) {
+	// connectionFactory.setRedeliveryPolicy(null);
+	// JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
+	// jmsTemplate.setExplicitQosEnabled(true);
+	// // jmsTemplate.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+	// jmsTemplate.setDeliveryMode(DeliveryMode.PERSISTENT);
+	// jmsTemplate.setSessionAcknowledgeMode(Session.CLIENT_ACKNOWLEDGE);
+	// return jmsTemplate;
+	// }
 
 }

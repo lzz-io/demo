@@ -18,9 +18,8 @@ package io.lzz.demo.jms.queue;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -29,17 +28,21 @@ import org.springframework.test.context.junit4.SpringRunner;
  *
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest
-public class QueueSenderTest {
-
-	private static final Logger log = LoggerFactory.getLogger(QueueSenderTest.class);
+@SpringBootTest(classes = QueueProducer.class)
+// @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT) 指定随机端口
+// @WebMvcTest 与 @SpringBootTest 注解冲突，
+// 如果需要使用 MockMvc，使用 @AutoConfigureMockMvc 注解
+// @AutoConfigureMockMvc
+@EnableAutoConfiguration
+public class QueueProducerTest {
 
 	@Autowired
-	private QueueSender queueSender;
+	private QueueProducer queueSender;
 
 	@Test
-	public void testDoSend() {
+	public void testDoSend() throws InterruptedException {
 		queueSender.doSend();
+		Thread.sleep(10000);
 	}
 
 }

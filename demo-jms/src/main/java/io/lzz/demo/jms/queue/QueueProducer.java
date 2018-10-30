@@ -23,37 +23,33 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import io.lzz.demo.jms.config.Constants;
 
 /**
  * @author q1219331697
  *
  */
 @Service
-public class QueueSender {
+@EnableScheduling
+public class QueueProducer {
 
-	private static final Logger log = LoggerFactory.getLogger(QueueSender.class);
+	private static final Logger log = LoggerFactory.getLogger(QueueProducer.class);
 
 	@Autowired
 	private JmsTemplate jmsTemplate;
 
+	@Scheduled(cron = "*/1 * * * * *")
 	public void doSend() {
-		Destination destination = new ActiveMQQueue("jms.queue");
+		Destination destination = new ActiveMQQueue(Constants.QUEUE_TEST);
 
-		for (int i = 0; i < 10; i++) {
-			new Thread(new Runnable() {
+		String message = Thread.currentThread().getName() + ":" + Thread.currentThread().getId();
+		jmsTemplate.convertAndSend(destination, message);
 
-				@Override
-				public void run() {
-					jmsTemplate.convertAndSend(destination, Thread.currentThread().getName());
-				}
-			}, String.valueOf(i)).start();
-		}
-
-		int sessionAcknowledgeMode = jmsTemplate.getSessionAcknowledgeMode();
-		
-		log.info("send to {}--{}--{}", jmsTemplate.getSessionAcknowledgeMode(), Thread.currentThread().getName(),
-				Thread.currentThread().getId());
+		log.info(">>> send {}", message);
 	}
 
 }

@@ -14,22 +14,19 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.jms;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.jms.annotation.EnableJms;
+package io.lzz.demo.jms.config;
 
 /**
+ * 常量定义
+ * 
  * @author q1219331697
  *
  */
-@SpringBootApplication
-@EnableJms
-public class JmsApplication {
+public class Constants {
 
-	public static void main(String[] args) throws Exception {
-		SpringApplication.run(JmsApplication.class, args);
-	}
+	/**
+	 * mq queue队列名称
+	 */
+	public static final String QUEUE_TEST = "queue.test";
 
 }
