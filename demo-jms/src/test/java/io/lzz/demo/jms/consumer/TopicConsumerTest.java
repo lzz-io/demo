@@ -16,25 +16,28 @@
 
 package io.lzz.demo.jms.consumer;
 
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jms.annotation.JmsListener;
-import org.springframework.stereotype.Service;
-
-import io.lzz.demo.jms.config.Constants;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * @author q1219331697
  *
  */
-@Service
-public class QueueConsumer {
+@SpringBootTest(classes = TopicConsumer.class)
+@RunWith(SpringRunner.class)
+@FixMethodOrder
+public class TopicConsumerTest {
 
-	private static final Logger log = LoggerFactory.getLogger(QueueConsumer.class);
+	private static final Logger log = LoggerFactory.getLogger(TopicConsumerTest.class);
 
-	@JmsListener(destination = Constants.QUEUE_TEST)
-	public void doRec(String msg) {
-		log.info(">>> get {}",msg);
-		log.info(Thread.currentThread().getName() + " -- " + Thread.currentThread().getId());
+	@Test
+	public void testDoRec() {
+		log.info("success!");
 	}
+
 }

@@ -17,8 +17,9 @@
 package io.lzz.demo.jms.queue;
 
 import javax.jms.Destination;
+import javax.jms.TextMessage;
 
-import org.apache.activemq.command.ActiveMQQueue;
+import org.apache.activemq.command.ActiveMQTopic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,20 +36,20 @@ import io.lzz.demo.jms.config.Constants;
  */
 @Service
 @EnableScheduling
-public class QueueProducer {
+public class TopicProducer {
 
-	private static final Logger log = LoggerFactory.getLogger(QueueProducer.class);
+	private static final Logger log = LoggerFactory.getLogger(TopicProducer.class);
 
 	@Autowired
 	private JmsTemplate jmsTemplate;
 
 	@Scheduled(cron = "*/1 * * * * *")
 	public void doSend() {
-		Destination destination = new ActiveMQQueue(Constants.QUEUE_TEST);
+		Destination destination = new ActiveMQTopic(Constants.TOPIC_TEST);
 
 		String message = Thread.currentThread().getName() + ":" + Thread.currentThread().getId();
-		jmsTemplate.convertAndSend(destination, message);
 
+		jmsTemplate.convertAndSend(destination, message);
 		log.info("<<< send {}", message);
 	}
 

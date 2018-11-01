@@ -27,6 +27,11 @@ public class Constants {
 	/**
 	 * mq queue队列名称
 	 */
-	public static final String QUEUE_TEST = "queue.test";
+	public static final String QUEUE_TEST = "demo.mq.queue.test";
+
+	/**
+	 * topic队列名称
+	 */
+	public static final String TOPIC_TEST = "demo.mq.topic.test";
 
 }

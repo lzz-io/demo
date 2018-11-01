@@ -28,13 +28,13 @@ import io.lzz.demo.jms.config.Constants;
  *
  */
 @Service
-public class QueueConsumer {
+public class TopicConsumer {
 
-	private static final Logger log = LoggerFactory.getLogger(QueueConsumer.class);
+	private static final Logger log = LoggerFactory.getLogger(TopicConsumer.class);
 
-	@JmsListener(destination = Constants.QUEUE_TEST)
+	@JmsListener(destination = Constants.TOPIC_TEST)
 	public void doRec(String msg) {
-		log.info(">>> get {}",msg);
-		log.info(Thread.currentThread().getName() + " -- " + Thread.currentThread().getId());
+		log.info(">>> get {}", msg);
 	}
+
 }
