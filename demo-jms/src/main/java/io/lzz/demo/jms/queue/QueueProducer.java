@@ -42,14 +42,14 @@ public class QueueProducer {
 	@Autowired
 	private JmsTemplate jmsTemplate;
 
-	@Scheduled(cron = "*/1 * * * * *")
+	@Scheduled(cron = "*/5 * * * * *")
 	public void doSend() {
 		Destination destination = new ActiveMQQueue(Constants.QUEUE_TEST);
 
 		String message = Thread.currentThread().getName() + ":" + Thread.currentThread().getId();
 		jmsTemplate.convertAndSend(destination, message);
 
-		log.info("<<< send {}", message);
+		log.info("<<< send queue {}", message);
 	}
 
 }

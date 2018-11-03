@@ -14,27 +14,32 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.jms.consumer;
+package io.lzz.demo.jms.topic;
 
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jms.annotation.JmsListener;
-import org.springframework.stereotype.Service;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import io.lzz.demo.jms.config.Constants;
+import io.lzz.demo.jms.topic.TopicConsumerByJmsListenerAnnotation;
 
 /**
  * @author q1219331697
  *
  */
-@Service
-public class TopicConsumer {
+@SpringBootTest(classes = TopicConsumerByJmsListenerAnnotation.class)
+@RunWith(SpringRunner.class)
+@FixMethodOrder
+public class TopicConsumerByJmsListenerAnnotationTest {
 
-	private static final Logger log = LoggerFactory.getLogger(TopicConsumer.class);
+	private static final Logger log = LoggerFactory.getLogger(TopicConsumerByJmsListenerAnnotationTest.class);
 
-	@JmsListener(destination = Constants.TOPIC_TEST)
-	public void doRec(String msg) {
-		log.info(">>> get {}", msg);
+	@Test
+	public void testDoRec() {
+		log.info("success!");
 	}
 
 }

@@ -16,17 +16,21 @@
 
 package io.lzz.demo.jms.config;
 
+import javax.jms.ConnectionFactory;
+
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jms.annotation.EnableJms;
+import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
+import org.springframework.jms.config.JmsListenerContainerFactory;
 
 /**
  * @author q1219331697
  *
  */
 @Configuration
+@EnableJms
 public class Appconfig {
-
-	// @Autowired
-	// private ConnectionFactory connectionFactory;
 
 	// @Bean
 	// public Connection connection(ActiveMQConnectionFactory connectionFactory)
@@ -34,14 +38,34 @@ public class Appconfig {
 	// return connectionFactory.createConnection();
 	// }
 
+	// public JmsListenerContainerFactory queueMessageListenerContainer() {
+	// return null;
+	// }
+
+	@Bean
+	public JmsListenerContainerFactory<?> topicJmsListenerContainerFactory(ConnectionFactory connectionFactory) {
+		DefaultJmsListenerContainerFactory bean = new DefaultJmsListenerContainerFactory();
+		bean.setPubSubDomain(true);
+		bean.setConnectionFactory(connectionFactory);
+		return bean;
+	}
+
+	@Bean
+	public JmsListenerContainerFactory<?> queueJmsListenerContainerFactory(ConnectionFactory connectionFactory) {
+		DefaultJmsListenerContainerFactory bean = new DefaultJmsListenerContainerFactory();
+		bean.setPubSubDomain(false);
+		bean.setConnectionFactory(connectionFactory);
+		return bean;
+	}
+
 	// @Bean
-	// public JmsTemplate jmsTemplate(ActiveMQConnectionFactory connectionFactory) {
-	// connectionFactory.setRedeliveryPolicy(null);
+	// public JmsTemplate jmsTemplate(ConnectionFactory connectionFactory) {
 	// JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
-	// jmsTemplate.setExplicitQosEnabled(true);
+	// jmsTemplate.setPubSubDomain(true);
+	// // jmsTemplate.setExplicitQosEnabled(true);
 	// // jmsTemplate.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-	// jmsTemplate.setDeliveryMode(DeliveryMode.PERSISTENT);
-	// jmsTemplate.setSessionAcknowledgeMode(Session.CLIENT_ACKNOWLEDGE);
+	// // jmsTemplate.setDeliveryMode(DeliveryMode.PERSISTENT);
+	// // jmsTemplate.setSessionAcknowledgeMode(Session.CLIENT_ACKNOWLEDGE);
 	// return jmsTemplate;
 	// }
 

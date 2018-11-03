@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.jms.queue;
+package io.lzz.demo.jms.topic;
 
 import javax.jms.Destination;
-import javax.jms.TextMessage;
 
 import org.apache.activemq.command.ActiveMQTopic;
 import org.slf4j.Logger;
@@ -43,14 +42,14 @@ public class TopicProducer {
 	@Autowired
 	private JmsTemplate jmsTemplate;
 
-	@Scheduled(cron = "*/1 * * * * *")
+	@Scheduled(cron = "*/5 * * * * *")
 	public void doSend() {
 		Destination destination = new ActiveMQTopic(Constants.TOPIC_TEST);
 
 		String message = Thread.currentThread().getName() + ":" + Thread.currentThread().getId();
 
 		jmsTemplate.convertAndSend(destination, message);
-		log.info("<<< send {}", message);
+		log.info("<<< send topic {}", message);
 	}
 
 }

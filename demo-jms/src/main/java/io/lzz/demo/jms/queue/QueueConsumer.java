@@ -14,30 +14,27 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.jms.consumer;
+package io.lzz.demo.jms.queue;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.jms.annotation.JmsListener;
+import org.springframework.stereotype.Service;
+
+import io.lzz.demo.jms.config.Constants;
 
 /**
  * @author q1219331697
  *
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = QueueConsumer.class)
-@EnableAutoConfiguration
-public class QueueConsumerTest {
+@Service
+public class QueueConsumer {
 
-	private static final Logger log = LoggerFactory.getLogger(QueueConsumerTest.class);
+	private static final Logger log = LoggerFactory.getLogger(QueueConsumer.class);
 
-	@Test
-	public void testDoRec() {
-		log.info("success!");
+	@JmsListener(destination = Constants.QUEUE_TEST)
+	public void doRec(String msg) {
+		log.info(">>> get queue {}", msg);
+		log.info(Thread.currentThread().getName() + " -- " + Thread.currentThread().getId());
 	}
-
 }
