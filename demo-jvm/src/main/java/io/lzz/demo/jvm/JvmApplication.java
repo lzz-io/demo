@@ -16,14 +16,13 @@
 
 package io.lzz.demo.jvm;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.HashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.lzz.demo.jvm.entity.User;
@@ -34,9 +33,13 @@ import io.lzz.demo.jvm.entity.User;
  */
 @RestController
 @SpringBootApplication
-public class JvmApplication implements Runnable {
+public class JvmApplication {
 
-	private List<User> users = new ArrayList<User>();
+	private static final Logger log = LoggerFactory.getLogger(JvmApplication.class);
+
+	private static HashMap<String, User> map = new HashMap<>();
+
+	int j = 0;
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(JvmApplication.class, args);
@@ -44,27 +47,18 @@ public class JvmApplication implements Runnable {
 
 	@GetMapping(value = "/")
 	public String index() {
-		run();
-		return "hello world";
-	}
+		for (int i = 0; i < 100; i++) {
+			new Thread(() -> {
+				HashMap<String, User> map2 = new HashMap<>();
+				map2.put(String.valueOf(j), new User(Thread.currentThread().getId(), Thread.currentThread().getName()));
+				j++;
 
-	@Override
-	public void run() {
-		int i = 0;
-		while (true) {
-			users.add(new User(i, UUID.randomUUID().toString()));
-
-			if (i % 10000 == 0) {
-				users.clear();
-			}
-
-			i++;
-			// if (i == Integer.MIN_VALUE) { // true at Integer.MAX_VALUE +1
-			// break;
-			// }
-
+				map = map2;
+				log.info("{}", map);
+			}, String.valueOf(i)).start();
 		}
 
+		return "hello world";
 	}
 
 }

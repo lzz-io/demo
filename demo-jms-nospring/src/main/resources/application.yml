@@ -1,0 +1,24 @@
+debug: false
+
+spring:
+
+  activemq:
+    broker-url: tcp://node3:61616 #?jms.prefetchPolicy.queuePrefetch=1000
+    user: admin
+    password: admin
+    in-memory: false
+    pool:
+      enabled: true
+      time-between-expiration-check: 10s
+      idle-timeout: 10s
+#  jms:
+#    listener:
+#      concurrency: 4
+#      max-concurrency: 8
+#      acknowledge-mode: client
+
+#logging:
+#  level:
+#    root: warn
+    
+    

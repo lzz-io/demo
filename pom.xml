@@ -11,6 +11,8 @@
 		<module>demo-mybatis</module>
 		<module>demo-jvm</module>
 		<module>demo-jms</module>
+		
+		<module>demo-jms-nospring</module>
 	</modules>
 
 	<properties>
