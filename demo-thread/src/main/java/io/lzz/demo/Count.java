@@ -16,6 +16,7 @@
 
 package io.lzz.demo;
 
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
@@ -43,6 +44,17 @@ public class Count implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		// 制造随机异常
+		if (new Random().nextBoolean()) {
+			try {
+				throw new Exception("随机异常！");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 		log.info(Thread.currentThread() + "-count-" + (--count));
 		log.info(Thread.currentThread() + "-countAtomicInteger-" + (countAtomicInteger.decrementAndGet()));
 		System.out.println(Thread.currentThread().getName() + ":" + Thread.currentThread().getId() + ":"

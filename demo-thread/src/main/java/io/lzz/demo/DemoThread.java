@@ -62,17 +62,17 @@ public class DemoThread implements CommandLineRunner {
 		executorService.shutdown();
 
 		// 遍历任务的结果
-//		for (Future<?> fs : resultList) {
-//			try {
-//				System.out.println(fs.get()); // 打印各个线程（任务）执行的结果
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			} catch (ExecutionException e) {
-//				executorService.shutdownNow();
-//				e.printStackTrace();
-//				return;
-//			}
-//		}
+		for (Future<?> fs : resultList) {
+			try {
+				System.out.println(fs.get()); // 打印各个线程（任务）执行的结果
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				executorService.shutdownNow();
+				e.printStackTrace();
+				return;
+			}
+		}
 	}
 
 }
