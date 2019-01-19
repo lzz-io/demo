@@ -11,7 +11,6 @@
 		<module>demo-mybatis</module>
 		<module>demo-jvm</module>
 		<module>demo-jms</module>
-		
 		<module>demo-jms-nospring</module>
 	</modules>
 
@@ -23,7 +22,7 @@
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 
 		<spring-cloud.version>Finchley.SR2</spring-cloud.version>
-		<spring-boot.version>2.0.6.RELEASE</spring-boot.version>
+		<spring-boot.version>2.0.8.RELEASE</spring-boot.version>
 
 		<mybatis-spring-boot.version>1.3.2</mybatis-spring-boot.version>
 	</properties>
