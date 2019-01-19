@@ -6,12 +6,14 @@
 	<artifactId>demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
+	
 	<modules>
+		<module>demo-es</module>
 		<module>demo-java</module>
-		<module>demo-mybatis</module>
-		<module>demo-jvm</module>
 		<module>demo-jms</module>
 		<module>demo-jms-nospring</module>
+		<module>demo-jvm</module>
+		<module>demo-mybatis</module>
 	</modules>
 
 	<properties>
