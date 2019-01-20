@@ -16,9 +16,6 @@
 
 package io.lzz.demo.jms.queue;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -45,8 +42,6 @@ import io.lzz.demo.jms.entity.User;
 public class QueueConsumer {
 
 	private static final Logger log = LoggerFactory.getLogger(QueueConsumer.class);
-
-	private static final Map<String, Object> map = new HashMap<>();
 
 	private Long count = 1L;
 
@@ -83,7 +78,7 @@ public class QueueConsumer {
 				log.info(Thread.currentThread().getName() + " -- " + Thread.currentThread().getId());
 			}
 		} catch (Exception e) {
-			log.error("{}", e);
+			log.error("", e);
 		} finally {
 			consumer.close();
 			session.close();

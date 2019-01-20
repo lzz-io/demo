@@ -32,7 +32,7 @@ public class EsApplication {
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(EsApplication.class, args);
-		log.info("application start");
+		log.info("application started");
 	}
 
 }
