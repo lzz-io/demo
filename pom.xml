@@ -14,6 +14,8 @@
 		<module>demo-jms-nospring</module>
 		<module>demo-jvm</module>
 		<module>demo-mybatis</module>
+		<module>demo-spring-batch</module>
+		<module>demo-thread</module>
 		<module>demo-xml</module>
 	</modules>
 
