@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<level1>
+		<level2 key1="中文" key2="value2" key3="value3"></level2>
+	</level1>
+	<level1>
+		<level2 key1="value1" key2="value2" key3="value3"></level2>
+	</level1>
+	<level1>
+		<level2 key1="value1" key2="value2" key3="value3"></level2>
+	</level1>
+</root>
