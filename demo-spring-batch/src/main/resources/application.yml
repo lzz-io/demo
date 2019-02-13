@@ -1,4 +1,9 @@
 logging:
   level:
     io.lzz: debug
-    
+
+spring:
+  batch:
+    initialize-schema: never
+    job:
+      enabled: false

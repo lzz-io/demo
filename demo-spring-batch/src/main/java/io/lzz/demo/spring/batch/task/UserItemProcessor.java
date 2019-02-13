@@ -14,25 +14,28 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.spring.batch;
+package io.lzz.demo.spring.batch.task;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.batch.item.ItemProcessor;
+
+import io.lzz.demo.spring.batch.entity.User;
 
 /**
  * @author q1219331697
  *
  */
-@SpringBootApplication
-public class SpringBatchApplication {
+public class UserItemProcessor implements ItemProcessor<User, User> {
 
-	private static final Logger log = LoggerFactory.getLogger(SpringBatchApplication.class);
+	private static final Logger log = LoggerFactory.getLogger(UserItemProcessor.class);
 
-	public static void main(String[] args) throws Exception {
-		SpringApplication.run(SpringBatchApplication.class, args);
-		log.info("application started");
+	@Override
+	public User process(User user) throws Exception {
+		User user2 = new User();
+		user2 = user;
+		log.info("{}", user2);
+		return user2;
 	}
 
 }
