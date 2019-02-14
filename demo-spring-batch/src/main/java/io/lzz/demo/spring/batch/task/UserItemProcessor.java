@@ -16,6 +16,9 @@
 
 package io.lzz.demo.spring.batch.task;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
@@ -34,7 +37,9 @@ public class UserItemProcessor implements ItemProcessor<User, User> {
 	public User process(User user) throws Exception {
 		User user2 = new User();
 		user2 = user;
-		log.info("{}", user2);
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		user2.setUsername(user.getUsername() + "[" + simpleDateFormat.format(new Date()) + "]");
+		log.info("user2:{}", user2);
 		return user2;
 	}
 

@@ -18,13 +18,10 @@ package io.lzz.demo.spring.batch.entity;
 
 import java.io.Serializable;
 
-import org.springframework.stereotype.Component;
-
 /**
  * @author q1219331697
  *
  */
-@Component
 public class User implements Serializable {
 
 	private static final long serialVersionUID = -6983732910407310230L;
