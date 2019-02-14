@@ -18,6 +18,7 @@ package io.lzz.demo.spring.batch;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -26,6 +27,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  */
 @SpringBootApplication
+@EnableBatchProcessing
 public class SpringBatchApplication {
 
 	private static final Logger log = LoggerFactory.getLogger(SpringBatchApplication.class);

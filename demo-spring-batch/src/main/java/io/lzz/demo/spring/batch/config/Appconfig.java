@@ -18,7 +18,6 @@ package io.lzz.demo.spring.batch.config;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.file.FlatFileItemReader;
@@ -41,7 +40,6 @@ import io.lzz.demo.spring.batch.task.UserItemProcessor;
  *
  */
 @Configuration
-@EnableBatchProcessing
 public class Appconfig {
 
 	@Bean
