@@ -70,7 +70,7 @@ public class Appconfig {
 		writer.setName("writer");
 
 		// Resource resource = new ClassPathResource("out.csv");
-		Resource resource = new FileSystemResource("out.csv");
+		Resource resource = new FileSystemResource("out/out.csv");
 		writer.setResource(resource);
 		// writer.setAppendAllowed(true);
 		writer.setEncoding("UTF-8");
