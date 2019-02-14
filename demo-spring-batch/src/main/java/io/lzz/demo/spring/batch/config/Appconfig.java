@@ -27,7 +27,6 @@ import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
-import org.springframework.batch.item.file.transform.FieldExtractor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -69,21 +68,21 @@ public class Appconfig {
 
 	@Bean
 	public FlatFileItemWriter<User> writer() throws Exception {
-		// 默认会清空文件重新编写，如需追加请指定append为true
-		// Resource resource = new ClassPathResource("out.csv");
-		Resource resource = new FileSystemResource("out.csv");
-		
 		FlatFileItemWriter<User> writer = new FlatFileItemWriter<>();
 		writer.setName("writer");
+
+		// Resource resource = new ClassPathResource("out.csv");
+		Resource resource = new FileSystemResource("out.csv");
 		writer.setResource(resource);
+		// writer.setAppendAllowed(true);
 		writer.setEncoding("UTF-8");
-		
-		DelimitedLineAggregator<User> lineAggregator = new DelimitedLineAggregator<>();
+
 		BeanWrapperFieldExtractor<User> fieldExtractor = new BeanWrapperFieldExtractor<>();
 		fieldExtractor.setNames(new String[] { "id", "username", "createTime" });
+		DelimitedLineAggregator<User> lineAggregator = new DelimitedLineAggregator<>();
 		lineAggregator.setFieldExtractor(fieldExtractor);
 		writer.setLineAggregator(lineAggregator);
-		
+
 		return writer;
 	}
 
