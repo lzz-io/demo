@@ -26,6 +26,7 @@ import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -65,9 +66,9 @@ public class Appconfig {
 	}
 
 	@Bean
-	public FlatFileItemWriter<User> writer() throws Exception {
+	public FlatFileItemWriter<User> csvWriter() throws Exception {
 		FlatFileItemWriter<User> writer = new FlatFileItemWriter<>();
-		writer.setName("writer");
+		writer.setName("csvWriter");
 
 		// Resource resource = new ClassPathResource("out.csv");
 		Resource resource = new FileSystemResource("out/out.csv");
@@ -85,11 +86,12 @@ public class Appconfig {
 	}
 
 	@Bean
-	public Step step1(StepBuilderFactory stepBuilderFactory, FlatFileItemWriter<User> writer) {
+	public Step step1(StepBuilderFactory stepBuilderFactory, @Qualifier("csvWriter") FlatFileItemWriter<User> writer) {
 		return stepBuilderFactory.get("step1")//
-				.<User, User>chunk(3)//
+				.<User, User>chunk(2)//
 				.reader(reader())//
 				.processor(processor())//
+				.writer(writer)//
 				.writer(writer)//
 				.build();
 	}

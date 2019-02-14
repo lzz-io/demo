@@ -22,6 +22,7 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
+import org.springframework.beans.BeanUtils;
 
 import io.lzz.demo.spring.batch.entity.User;
 
@@ -33,12 +34,17 @@ public class UserItemProcessor implements ItemProcessor<User, User> {
 
 	private static final Logger log = LoggerFactory.getLogger(UserItemProcessor.class);
 
+	private Integer count = 0;
+
 	@Override
 	public User process(User user) throws Exception {
+		count++;
 		User user2 = new User();
-		user2 = user;
+		BeanUtils.copyProperties(user, user2);
+		user2.setId(count);
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 		user2.setUsername(user.getUsername() + "[" + simpleDateFormat.format(new Date()) + "]");
+		log.info("user:{}", user);
 		log.info("user2:{}", user2);
 		return user2;
 	}
