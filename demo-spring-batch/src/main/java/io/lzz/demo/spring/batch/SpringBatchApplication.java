@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.jms.annotation.EnableJms;
 
 /**
  * @author q1219331697
@@ -28,6 +29,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 @EnableBatchProcessing
+@EnableJms
 public class SpringBatchApplication {
 
 	private static final Logger log = LoggerFactory.getLogger(SpringBatchApplication.class);

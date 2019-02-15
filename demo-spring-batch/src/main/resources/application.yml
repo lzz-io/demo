@@ -1,5 +1,6 @@
 logging:
   level:
+    root: info
     io.lzz: debug
 
 spring:
@@ -7,3 +8,7 @@ spring:
     initialize-schema: never
     job:
       enabled: false
+      
+  activemq:
+    in-memory: false
+    broker-url: tcp://localhost:61616

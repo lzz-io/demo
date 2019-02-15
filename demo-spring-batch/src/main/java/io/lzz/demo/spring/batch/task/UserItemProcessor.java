@@ -43,7 +43,7 @@ public class UserItemProcessor implements ItemProcessor<User, User> {
 		BeanUtils.copyProperties(user, user2);
 		user2.setId(count);
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-		user2.setUsername(user.getUsername() + "[" + simpleDateFormat.format(new Date()) + "]");
+		user2.setCreateTime(simpleDateFormat.format(new Date()));
 		log.info("user:{}", user);
 		log.info("user2:{}", user2);
 		return user2;

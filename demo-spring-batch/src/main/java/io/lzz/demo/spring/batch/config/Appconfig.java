@@ -16,22 +16,31 @@
 
 package io.lzz.demo.spring.batch.config;
 
+import javax.jms.Destination;
+
+import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.item.ItemProcessor;
+import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
+import org.springframework.batch.item.jms.JmsItemWriter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
+import org.springframework.jms.support.converter.MessageConverter;
 
 import io.lzz.demo.spring.batch.entity.User;
 import io.lzz.demo.spring.batch.task.UserItemProcessor;
@@ -61,12 +70,12 @@ public class Appconfig {
 	}
 
 	@Bean
-	public UserItemProcessor processor() {
+	public ItemProcessor<User, User> processor() {
 		return new UserItemProcessor();
 	}
 
 	@Bean
-	public FlatFileItemWriter<User> csvWriter() throws Exception {
+	public ItemWriter<User> csvWriter() throws Exception {
 		FlatFileItemWriter<User> writer = new FlatFileItemWriter<>();
 		writer.setName("csvWriter");
 
@@ -85,13 +94,24 @@ public class Appconfig {
 		return writer;
 	}
 
+	@Bean("jmsWriter")
+	public ItemWriter<User> jmsWriter(JmsTemplate jmsTemplate) {
+		JmsItemWriter<User> writer = new JmsItemWriter<>();
+		Destination destination = new ActiveMQQueue(Constants.BANTCH_QUEUE_TEST);
+		jmsTemplate.setDefaultDestination(destination);
+		// pojo转换
+		MessageConverter messageConverter = new MappingJackson2MessageConverter();
+		jmsTemplate.setMessageConverter(messageConverter);
+		writer.setJmsTemplate(jmsTemplate);
+		return writer;
+	}
+
 	@Bean
-	public Step step1(StepBuilderFactory stepBuilderFactory, @Qualifier("csvWriter") FlatFileItemWriter<User> writer) {
+	public Step step1(StepBuilderFactory stepBuilderFactory, @Qualifier("jmsWriter") ItemWriter<User> writer) {
 		return stepBuilderFactory.get("step1")//
-				.<User, User>chunk(2)//
+				.<User, User>chunk(20)//
 				.reader(reader())//
 				.processor(processor())//
-				.writer(writer)//
 				.writer(writer)//
 				.build();
 	}

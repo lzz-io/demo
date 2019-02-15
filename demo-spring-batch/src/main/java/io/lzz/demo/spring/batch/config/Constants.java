@@ -28,4 +28,9 @@ public class Constants {
 		throw new IllegalStateException("Utility class");
 	}
 
+	/**
+	 * batch queue队列名称
+	 */
+	public static final String BANTCH_QUEUE_TEST = "demo.batch.queue.test";
+
 }
