@@ -39,14 +39,14 @@ public class MyItemReadListener implements ItemReadListener<User> {
 
 	@Override
 	public void afterRead(User item) {
-		log.debug("{}", item);
+		log.debug("item=[{}]", item);
 	}
 
 	@Override
 	public void onReadError(Exception ex) {
 		// 记录原始输入信息
 		if (ex instanceof FlatFileParseException) {
-			log.error(((FlatFileParseException) ex).getInput());
+			log.error("input=[{}]", ((FlatFileParseException) ex).getInput());
 		}
 
 		log.error("", ex);
