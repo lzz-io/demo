@@ -16,6 +16,8 @@
 
 package io.lzz.demo.spring.batch.config;
 
+import java.io.FileNotFoundException;
+
 import javax.jms.Destination;
 
 import org.apache.activemq.command.ActiveMQQueue;
@@ -128,6 +130,10 @@ public class Appconfig {
 				.reader(reader())//
 				.processor(processor())//
 				.writer(writer)//
+				.faultTolerant()// 失败处理
+				.retryLimit(3)// 重试次数
+				.skip(Exception.class)// 跳过异常，通常用自定义异常
+				.noSkip(FileNotFoundException.class)// 哪些异常不跳过
 				.listener(myItemReadListener)//
 				.listener(myItemProcessListener)//
 				.listener(myItemWriteListener)//
