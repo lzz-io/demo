@@ -1,15 +1,13 @@
 logging:
   level:
-    root: info
-    web: debug
-    io.lzz: debug
+    root: warn
+    io.lzz: info
     
 spring:      
   activemq:
     in-memory: false
     broker-url: tcp://localhost:61616
 
-      
   batch:
     initialize-schema: always
     job:

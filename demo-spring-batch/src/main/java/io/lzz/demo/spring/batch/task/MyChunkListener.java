@@ -43,7 +43,7 @@ public class MyChunkListener implements ChunkListener {
 
 	@Override
 	public void afterChunkError(ChunkContext context) {
-		log.debug("{}", context);
+		log.error("{}", context);
 	}
 
 }

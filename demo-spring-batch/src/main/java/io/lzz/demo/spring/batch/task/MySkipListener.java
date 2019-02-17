@@ -18,8 +18,7 @@ package io.lzz.demo.spring.batch.task;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.ItemReadListener;
-import org.springframework.batch.item.file.FlatFileParseException;
+import org.springframework.batch.core.SkipListener;
 import org.springframework.stereotype.Component;
 
 import io.lzz.demo.spring.batch.entity.User;
@@ -29,27 +28,22 @@ import io.lzz.demo.spring.batch.entity.User;
  *
  */
 @Component
-public class MyItemReadListener implements ItemReadListener<User> {
+public class MySkipListener implements SkipListener<User, String> {
 
-	private static final Logger log = LoggerFactory.getLogger(MyItemReadListener.class);
+	private static final Logger log = LoggerFactory.getLogger(MySkipListener.class);
 
 	@Override
-	public void beforeRead() {
+	public void onSkipInRead(Throwable t) {
+		log.error("", t);
 	}
 
 	@Override
-	public void afterRead(User item) {
-		log.debug("{}", item);
+	public void onSkipInWrite(String item, Throwable t) {
+		log.error("{}", item, t);
 	}
 
 	@Override
-	public void onReadError(Exception ex) {
-		// 记录原始输入信息
-		if (ex instanceof FlatFileParseException) {
-			log.error(((FlatFileParseException) ex).getInput());
-		}
-
-		log.error("", ex);
+	public void onSkipInProcess(User item, Throwable t) {
+		log.error("{}", item, t);
 	}
-
 }

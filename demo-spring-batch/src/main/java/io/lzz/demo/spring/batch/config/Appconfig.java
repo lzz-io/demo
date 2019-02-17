@@ -46,9 +46,11 @@ import org.springframework.jms.core.JmsTemplate;
 import io.lzz.demo.spring.batch.entity.User;
 import io.lzz.demo.spring.batch.task.MyChunkListener;
 import io.lzz.demo.spring.batch.task.MyItemProcessListener;
+import io.lzz.demo.spring.batch.task.MyItemProcessor;
 import io.lzz.demo.spring.batch.task.MyItemReadListener;
 import io.lzz.demo.spring.batch.task.MyItemWriteListener;
-import io.lzz.demo.spring.batch.task.UserItemProcessor;
+import io.lzz.demo.spring.batch.task.MySkipListener;
+import io.lzz.demo.spring.batch.task.MyStepExecutionListener;
 
 /**
  * @author q1219331697
@@ -76,7 +78,7 @@ public class Appconfig {
 
 	@Bean
 	public ItemProcessor<User, String> processor() {
-		return new UserItemProcessor();
+		return new MyItemProcessor();
 	}
 
 	@Bean
@@ -115,6 +117,9 @@ public class Appconfig {
 	private MyChunkListener myChunkListener;
 
 	@Autowired
+	private MyStepExecutionListener myStepExecutionListener;
+
+	@Autowired
 	private MyItemReadListener myItemReadListener;
 
 	@Autowired
@@ -122,6 +127,9 @@ public class Appconfig {
 
 	@Autowired
 	private MyItemWriteListener myItemWriteListener;
+
+	@Autowired
+	private MySkipListener mySkipListener;
 
 	@Bean
 	public Step step1(StepBuilderFactory stepBuilderFactory, @Qualifier("jmsWriter") ItemWriter<String> writer) {
@@ -132,12 +140,16 @@ public class Appconfig {
 				.writer(writer)//
 				.faultTolerant()// 失败处理
 				.retryLimit(3)// 重试次数
+				.retry(Exception.class)// 重试异常必须配置
+				.skipLimit(Integer.MAX_VALUE)//
 				.skip(Exception.class)// 跳过异常，通常用自定义异常
 				.noSkip(FileNotFoundException.class)// 哪些异常不跳过
 				.listener(myItemReadListener)//
 				.listener(myItemProcessListener)//
 				.listener(myItemWriteListener)//
 				.listener(myChunkListener)//
+				.listener(myStepExecutionListener)//
+				.listener(mySkipListener)//
 				.build();
 	}
 

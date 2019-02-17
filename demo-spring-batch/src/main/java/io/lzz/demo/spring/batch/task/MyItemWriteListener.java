@@ -44,7 +44,7 @@ public class MyItemWriteListener implements ItemWriteListener<String> {
 
 	@Override
 	public void onWriteError(Exception exception, List<? extends String> items) {
-		log.debug("{}", items);
+		log.error("{}", items);
 	}
 
 }

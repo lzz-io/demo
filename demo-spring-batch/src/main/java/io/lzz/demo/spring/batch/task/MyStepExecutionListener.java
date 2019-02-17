@@ -18,38 +18,29 @@ package io.lzz.demo.spring.batch.task;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.ItemReadListener;
-import org.springframework.batch.item.file.FlatFileParseException;
+import org.springframework.batch.core.ExitStatus;
+import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.stereotype.Component;
-
-import io.lzz.demo.spring.batch.entity.User;
 
 /**
  * @author q1219331697
  *
  */
 @Component
-public class MyItemReadListener implements ItemReadListener<User> {
+public class MyStepExecutionListener implements StepExecutionListener {
 
-	private static final Logger log = LoggerFactory.getLogger(MyItemReadListener.class);
+	private static final Logger log = LoggerFactory.getLogger(MyStepExecutionListener.class);
 
 	@Override
-	public void beforeRead() {
+	public void beforeStep(StepExecution stepExecution) {
+		log.debug("{}", stepExecution);
 	}
 
 	@Override
-	public void afterRead(User item) {
-		log.debug("{}", item);
-	}
-
-	@Override
-	public void onReadError(Exception ex) {
-		// 记录原始输入信息
-		if (ex instanceof FlatFileParseException) {
-			log.error(((FlatFileParseException) ex).getInput());
-		}
-
-		log.error("", ex);
+	public ExitStatus afterStep(StepExecution stepExecution) {
+		log.info("{}", stepExecution);
+		return stepExecution.getExitStatus();
 	}
 
 }

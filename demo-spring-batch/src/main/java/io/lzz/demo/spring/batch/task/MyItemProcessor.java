@@ -32,9 +32,9 @@ import io.lzz.demo.spring.batch.entity.User;
  * @author q1219331697
  *
  */
-public class UserItemProcessor implements ItemProcessor<User, String> {
+public class MyItemProcessor implements ItemProcessor<User, String> {
 
-	private static final Logger log = LoggerFactory.getLogger(UserItemProcessor.class);
+	private static final Logger log = LoggerFactory.getLogger(MyItemProcessor.class);
 
 	private Integer count = 0;
 
