@@ -32,6 +32,7 @@ import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.batch.item.jms.JmsItemWriter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,10 +40,12 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
-import org.springframework.jms.support.converter.MessageConverter;
 
 import io.lzz.demo.spring.batch.entity.User;
+import io.lzz.demo.spring.batch.task.MyChunkListener;
+import io.lzz.demo.spring.batch.task.MyItemProcessListener;
+import io.lzz.demo.spring.batch.task.MyItemReadListener;
+import io.lzz.demo.spring.batch.task.MyItemWriteListener;
 import io.lzz.demo.spring.batch.task.UserItemProcessor;
 
 /**
@@ -70,7 +73,7 @@ public class Appconfig {
 	}
 
 	@Bean
-	public ItemProcessor<User, User> processor() {
+	public ItemProcessor<User, String> processor() {
 		return new UserItemProcessor();
 	}
 
@@ -95,24 +98,40 @@ public class Appconfig {
 	}
 
 	@Bean("jmsWriter")
-	public ItemWriter<User> jmsWriter(JmsTemplate jmsTemplate) {
-		JmsItemWriter<User> writer = new JmsItemWriter<>();
+	public ItemWriter<String> jmsWriter(JmsTemplate jmsTemplate) {
+		JmsItemWriter<String> writer = new JmsItemWriter<>();
 		Destination destination = new ActiveMQQueue(Constants.BANTCH_QUEUE_TEST);
 		jmsTemplate.setDefaultDestination(destination);
 		// pojo转换
-		MessageConverter messageConverter = new MappingJackson2MessageConverter();
-		jmsTemplate.setMessageConverter(messageConverter);
+		// MessageConverter messageConverter = new MappingJackson2MessageConverter();
+		// jmsTemplate.setMessageConverter(messageConverter);
 		writer.setJmsTemplate(jmsTemplate);
 		return writer;
 	}
 
+	@Autowired
+	private MyChunkListener myChunkListener;
+
+	@Autowired
+	private MyItemReadListener myItemReadListener;
+
+	@Autowired
+	private MyItemProcessListener myItemProcessListener;
+
+	@Autowired
+	private MyItemWriteListener myItemWriteListener;
+
 	@Bean
-	public Step step1(StepBuilderFactory stepBuilderFactory, @Qualifier("jmsWriter") ItemWriter<User> writer) {
+	public Step step1(StepBuilderFactory stepBuilderFactory, @Qualifier("jmsWriter") ItemWriter<String> writer) {
 		return stepBuilderFactory.get("step1")//
-				.<User, User>chunk(20)//
+				.<User, String>chunk(1)//
 				.reader(reader())//
 				.processor(processor())//
 				.writer(writer)//
+				.listener(myItemReadListener)//
+				.listener(myItemProcessListener)//
+				.listener(myItemWriteListener)//
+				.listener(myChunkListener)//
 				.build();
 	}
 
