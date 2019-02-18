@@ -41,6 +41,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.jms.core.JmsTemplate;
 
 import io.lzz.demo.spring.batch.entity.User;
@@ -132,7 +134,13 @@ public class Appconfig {
 	private MySkipListener mySkipListener;
 
 	@Bean
-	public Step step1(StepBuilderFactory stepBuilderFactory, @Qualifier("jmsWriter") ItemWriter<String> writer) {
+	public TaskExecutor taskExecutor() {
+		return new SimpleAsyncTaskExecutor("spring_batch");
+	}
+
+	@Bean
+	public Step step1(StepBuilderFactory stepBuilderFactory, @Qualifier("jmsWriter") ItemWriter<String> writer,
+			TaskExecutor taskExecutor) {
 		return stepBuilderFactory.get("step1")//
 				.<User, String>chunk(1)//
 				.reader(reader())//
@@ -150,6 +158,8 @@ public class Appconfig {
 				.listener(myChunkListener)//
 				.listener(myStepExecutionListener)//
 				.listener(mySkipListener)//
+				.taskExecutor(taskExecutor)// 多线程步骤
+				.throttleLimit(4)
 				.build();
 	}
 

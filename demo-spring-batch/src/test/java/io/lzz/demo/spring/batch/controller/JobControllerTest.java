@@ -23,6 +23,8 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,12 +41,18 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 public class JobControllerTest {
 
+	private static final Logger log = LoggerFactory.getLogger(JobControllerTest.class);
+
 	@Autowired
 	private MockMvc mockMvc;
 
 	@Test
 	public void testStart() throws Exception {
-		mockMvc.perform(get("/job/start")).andExpect(status().isOk());
+		String contentAsString = mockMvc.perform(get("/job/start"))//
+				.andExpect(status().isOk())//
+				.andReturn()//
+				.getResponse().getContentAsString();
+		log.info(contentAsString);
 	}
 
 }

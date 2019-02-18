@@ -1,7 +1,7 @@
 logging:
   level:
     root: warn
-    io.lzz: info
+    io.lzz: debug
     
 spring:      
   activemq:

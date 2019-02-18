@@ -51,6 +51,7 @@ public class JobController {
 
 	@GetMapping(value = "/start")
 	public String start() {
+		long beginTime = System.currentTimeMillis();
 		JobParameters jobParameters = new JobParametersBuilder()//
 				// 定义作业参数，区分不同作业，可实现作业重复执行
 				// .addString("key", new Date().toString())//
@@ -62,7 +63,7 @@ public class JobController {
 				| JobParametersInvalidException e) {
 			log.error("job已执行", e);
 		}
-		return "job start! " + System.currentTimeMillis();
+		return "job start! " + (System.currentTimeMillis() - beginTime);
 	}
 
 }
