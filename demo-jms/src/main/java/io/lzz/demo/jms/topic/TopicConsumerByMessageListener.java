@@ -26,8 +26,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.jms.listener.DefaultMessageListenerContainer;
 import org.springframework.jms.listener.MessageListenerContainer;
+import org.springframework.jms.listener.SimpleMessageListenerContainer;
 import org.springframework.stereotype.Component;
 
 import io.lzz.demo.jms.config.Constants;
@@ -50,6 +50,7 @@ public class TopicConsumerByMessageListener implements MessageListener {
 			TextMessage textMessage = (TextMessage) message;
 			String text = textMessage.getText();
 			log.info(">>> get topic {}:{}", text, getClass());
+			log.info("{}", Thread.currentThread());
 		} catch (JMSException e) {
 			log.error("{}", e);
 		}
@@ -65,7 +66,7 @@ public class TopicConsumerByMessageListener implements MessageListener {
 
 		@Bean
 		public MessageListenerContainer messageListenerContainer() {
-			DefaultMessageListenerContainer container = new DefaultMessageListenerContainer();
+			SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 			container.setConnectionFactory(connectionFactory);
 			container.setPubSubDomain(true);
 			container.setDestinationName(Constants.TOPIC_TEST);

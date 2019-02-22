@@ -14,42 +14,37 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.jms.topic;
+package io.lzz.demo.jms;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import io.lzz.demo.jms.topic.TopicProducer;
 
 /**
  * @author q1219331697
  *
  */
-@SpringBootTest(classes = TopicProducer.class)
+@SpringBootTest
 @RunWith(SpringRunner.class)
-@EnableAutoConfiguration
-public class TopicProducerTest {
+public class JmsApplicationTest {
+
+	private static final Logger log = LoggerFactory.getLogger(JmsApplicationTest.class);
 
 	@Autowired
-	private TopicProducer topicProducer;
+	private ApplicationContext context;
 
 	@Test
-	public void testDoSend() throws InterruptedException {
-		topicProducer.doSend();
-		
-		for (int i = 0; i < 100; i++) {
-			new Thread(new Runnable() {
-				public void run() {
-					topicProducer.doSend();
-				}
-			}).run();
+	public void testMain() {
+		String[] beanDefinitionNames = context.getBeanDefinitionNames();
+		for (String string : beanDefinitionNames) {
+			log.info(string);
 		}
-
-		Thread.sleep(10000);
+		log.info("{}", beanDefinitionNames.length);
 	}
 
 }

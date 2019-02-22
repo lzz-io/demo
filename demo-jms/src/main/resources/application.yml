@@ -1,24 +1,24 @@
 debug: false
+logging:
+  level:
+    root: warn
+    io.lzz: debug
 
 spring:
-
   activemq:
-    broker-url: tcp://node3:61616 #?jms.prefetchPolicy.queuePrefetch=1000
+    broker-url: tcp://localhost:61616 #?jms.prefetchPolicy.queuePrefetch=1000
     user: admin
     password: admin
     in-memory: false
+    packages:
+      trust-all: true
     pool:
       enabled: true
+      max-connections: 4
       time-between-expiration-check: 10s
-      idle-timeout: 10s
-#  jms:
-#    listener:
-#      concurrency: 4
-#      max-concurrency: 8
+      idle-timeout: 15s
+  jms:
+    listener:
+      concurrency: 4
+      max-concurrency: 8
 #      acknowledge-mode: client
-
-#logging:
-#  level:
-#    root: warn
-    
-    

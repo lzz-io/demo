@@ -21,8 +21,8 @@ import javax.jms.ConnectionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
-import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
+import org.springframework.jms.config.SimpleJmsListenerContainerFactory;
 
 /**
  * @author q1219331697
@@ -30,7 +30,7 @@ import org.springframework.jms.config.JmsListenerContainerFactory;
  */
 @Configuration
 @EnableJms
-public class Appconfig {
+public class AppConfig {
 
 	// @Bean
 	// public Connection connection(ActiveMQConnectionFactory connectionFactory)
@@ -44,7 +44,7 @@ public class Appconfig {
 
 	@Bean
 	public JmsListenerContainerFactory<?> topicJmsListenerContainerFactory(ConnectionFactory connectionFactory) {
-		DefaultJmsListenerContainerFactory bean = new DefaultJmsListenerContainerFactory();
+		SimpleJmsListenerContainerFactory bean = new SimpleJmsListenerContainerFactory();
 		bean.setPubSubDomain(true);
 		bean.setConnectionFactory(connectionFactory);
 		return bean;
@@ -52,7 +52,7 @@ public class Appconfig {
 
 	@Bean
 	public JmsListenerContainerFactory<?> queueJmsListenerContainerFactory(ConnectionFactory connectionFactory) {
-		DefaultJmsListenerContainerFactory bean = new DefaultJmsListenerContainerFactory();
+		SimpleJmsListenerContainerFactory bean = new SimpleJmsListenerContainerFactory();
 		bean.setPubSubDomain(false);
 		bean.setConnectionFactory(connectionFactory);
 		return bean;

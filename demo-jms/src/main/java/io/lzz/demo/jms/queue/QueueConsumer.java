@@ -32,9 +32,9 @@ public class QueueConsumer {
 
 	private static final Logger log = LoggerFactory.getLogger(QueueConsumer.class);
 
-	@JmsListener(destination = Constants.QUEUE_TEST)
+//	@JmsListener(destination = Constants.QUEUE_TEST)
 	public void doRec(String msg) {
 		log.info(">>> get queue {}", msg);
-		log.info(Thread.currentThread().getName() + " -- " + Thread.currentThread().getId());
+		log.info("{}", Thread.currentThread());
 	}
 }

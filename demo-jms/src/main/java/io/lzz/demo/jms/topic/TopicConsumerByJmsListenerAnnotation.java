@@ -35,6 +35,7 @@ public class TopicConsumerByJmsListenerAnnotation {
 	@JmsListener(destination = Constants.TOPIC_TEST, containerFactory = "topicJmsListenerContainerFactory")
 	public void doRec(String msg) {
 		log.info(">>> get topic {}:{}", msg, getClass());
+		log.info("{}", Thread.currentThread());
 	}
 
 }
