@@ -52,11 +52,17 @@ public class Step1Config {
 	@Autowired
 	private Step1ItemWriteListener step1ItemWriteListener;
 
+	@Autowired
+	private Step1ExecutionListener step1ExecutionListener;
+
+	@Autowired
+	private TaskExecutor taskExecutor;
+
 	// ItemReader
 	@Bean
 	public ItemReader<User> step1ItemReader() {
 		List<User> list = new ArrayList<>();
-		for (int i = 1; i <= 10; i++) {
+		for (int i = 1; i <= 100; i++) {
 			User user = new User();
 			user.setUsername("username" + i);
 			user.setCreateTime(new Date());
@@ -80,8 +86,7 @@ public class Step1Config {
 	}
 
 	@Bean
-	public Step step1(StepBuilderFactory stepBuilderFactory, @Qualifier("step1ItemWriter") ItemWriter<User> writer,
-			TaskExecutor taskExecutor) {
+	public Step step1(StepBuilderFactory stepBuilderFactory, @Qualifier("step1ItemWriter") ItemWriter<User> writer) {
 		return stepBuilderFactory.get("step1")//
 				.<User, User>chunk(3)//
 				.reader(step1ItemReader())//
@@ -93,14 +98,14 @@ public class Step1Config {
 				.skipLimit(Integer.MAX_VALUE)//
 				.skip(Exception.class)// 跳过异常，通常用自定义异常
 				.noSkip(FileNotFoundException.class)// 哪些异常不跳过
-				// .listener(myItemReadListener)//
-				// .listener(myItemProcessListener)//
+				// .listener(step1ItemReadListener)//
+				// .listener(step1ItemProcessListener)//
 				.listener(step1ItemWriteListener)//
-				// .listener(myChunkListener)//
-				// .listener(myStepExecutionListener)//
-				// .listener(mySkipListener)//
+				// .listener(step1ChunkListener)//
+				.listener(step1ExecutionListener)//
+				// .listener(step1SkipListener)//
 				.taskExecutor(taskExecutor)// 多线程步骤
-				.throttleLimit(4)// 最大使用线程池数目
+				.throttleLimit(8)// 最大使用线程池数目
 				.build();
 	}
 

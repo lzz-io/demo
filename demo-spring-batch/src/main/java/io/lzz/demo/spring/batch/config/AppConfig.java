@@ -22,28 +22,21 @@ import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
-import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
-import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.batch.item.jms.JmsItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.jms.core.JmsTemplate;
 
 import io.lzz.demo.spring.batch.entity.User;
-import io.lzz.demo.spring.batch.task.MyItemProcessor;
 
 /**
  * @author q1219331697
@@ -54,6 +47,16 @@ public class AppConfig {
 
 	@Autowired
 	private JobBuilderFactory jobBuilderFactory;
+
+	@Autowired
+	@Qualifier("step0")
+	private Step step0;
+	@Autowired
+	@Qualifier("step1")
+	private Step step1;
+	@Autowired
+	@Qualifier("step2")
+	private Step step2;
 
 	@Bean
 	public FlatFileItemReader<User> reader() {
@@ -70,31 +73,6 @@ public class AppConfig {
 				.linesToSkip(1)//
 				.fieldSetMapper(mapper) //
 				.build();
-	}
-
-	@Bean
-	public ItemProcessor<User, String> processor() {
-		return new MyItemProcessor();
-	}
-
-	@Bean
-	public ItemWriter<User> csvWriter() throws Exception {
-		FlatFileItemWriter<User> writer = new FlatFileItemWriter<>();
-		writer.setName("csvWriter");
-
-		// Resource resource = new ClassPathResource("out.csv");
-		Resource resource = new FileSystemResource("out/out.csv");
-		writer.setResource(resource);
-		// writer.setAppendAllowed(true);
-		writer.setEncoding("UTF-8");
-
-		BeanWrapperFieldExtractor<User> fieldExtractor = new BeanWrapperFieldExtractor<>();
-		fieldExtractor.setNames(new String[] { "id", "username", "createTime" });
-		DelimitedLineAggregator<User> lineAggregator = new DelimitedLineAggregator<>();
-		lineAggregator.setFieldExtractor(fieldExtractor);
-		writer.setLineAggregator(lineAggregator);
-
-		return writer;
 	}
 
 	@Bean("jmsWriter")
@@ -115,11 +93,12 @@ public class AppConfig {
 	}
 
 	@Bean
-	public Job job(@Qualifier("step0") Step step0, @Qualifier("step1") Step step1) {
+	public Job job() {
 		return jobBuilderFactory.get("job")//
 				// .preventRestart()//失败作业不能重启，默认true
 				.start(step0)//
 				.next(step1)//
+				.next(step2)//
 				.build();
 	}
 }

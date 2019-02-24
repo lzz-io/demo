@@ -16,8 +16,6 @@
 
 package io.lzz.demo.spring.batch.step0;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +28,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class Step0Config {
-
-	private static final Logger log = LoggerFactory.getLogger(Step0Config.class);
 
 	@Autowired
 	private StepBuilderFactory stepBuilderFactory;

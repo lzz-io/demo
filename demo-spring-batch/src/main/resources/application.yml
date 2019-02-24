@@ -14,7 +14,7 @@ spring:
       enabled: false
 
   datasource:
-    url: jdbc:h2:./out/batch.db;AUTO_SERVER=TRUE
+    url: jdbc:h2:./tmp/batch.db;AUTO_SERVER=TRUE
     username: sa
 
   h2:

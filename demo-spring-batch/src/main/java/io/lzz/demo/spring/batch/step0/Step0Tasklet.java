@@ -46,7 +46,7 @@ public class Step0Tasklet implements Tasklet {
 
 	@Override
 	public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-		log.info("Step1Tasklet execute");
+		log.info("Step0Tasklet execute");
 		log.info("contribution:{}", contribution);
 		log.info("chunkContext:{}", chunkContext);
 		Resource resource = new FileSystemResource("data/schema.sql");

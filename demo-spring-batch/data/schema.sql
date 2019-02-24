@@ -1,4 +1,4 @@
---/* 建表文件 */
+-- 建表文件
 
 drop table if exists TB_USER;
 
