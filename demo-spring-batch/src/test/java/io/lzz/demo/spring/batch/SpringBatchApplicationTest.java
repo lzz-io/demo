@@ -43,11 +43,12 @@ public class SpringBatchApplicationTest {
 
 	@Test
 	public void contextLoads() {
-		log.debug("contextLoads");
+		log.info("contextLoads");
 		String[] beanDefinitionNames = context.getBeanDefinitionNames();
 		for (String name : beanDefinitionNames) {
-			log.debug(name);
+			log.info("bean [name={}, class={}]", name, context.getBean(name).getClass());
 		}
+		log.info("bean size:{}", beanDefinitionNames.length);
 	}
 
 }

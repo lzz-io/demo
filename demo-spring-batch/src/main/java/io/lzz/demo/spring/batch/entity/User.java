@@ -17,6 +17,9 @@
 package io.lzz.demo.spring.batch.entity;
 
 import java.io.Serializable;
+import java.util.Date;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @author q1219331697
@@ -28,11 +31,18 @@ public class User implements Serializable {
 
 	private Integer id;
 
+	@NotNull
 	private String username;
 
-	private String createTime;
+	private Date createTime;
 
 	public User() {
+	}
+
+	public User(Integer id, String username, Date createTime) {
+		this.id = id;
+		this.username = username;
+		this.createTime = createTime;
 	}
 
 	public Integer getId() {
@@ -51,11 +61,11 @@ public class User implements Serializable {
 		this.username = username;
 	}
 
-	public String getCreateTime() {
+	public Date getCreateTime() {
 		return createTime;
 	}
 
-	public void setCreateTime(String createTime) {
+	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
 

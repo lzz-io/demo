@@ -44,8 +44,10 @@ public class MyItemProcessor implements ItemProcessor<User, String> {
 		User user2 = new User();
 		BeanUtils.copyProperties(user, user2);
 		user2.setId(count);
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-		user2.setCreateTime(simpleDateFormat.format(new Date()));
+		// SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd
+		// HH:mm:ss.SSS");
+		// user2.setCreateTime(simpleDateFormat.format(new Date()));
+		user2.setCreateTime(new Date());
 		log.debug("user:{}", user);
 		log.debug("user2:{}", user2);
 

@@ -47,12 +47,17 @@ public class JobControllerTest {
 	private MockMvc mockMvc;
 
 	@Test
-	public void testStart() throws Exception {
+	public void test01Start() throws Exception {
 		String contentAsString = mockMvc.perform(get("/job/start"))//
 				.andExpect(status().isOk())//
 				.andReturn()//
 				.getResponse().getContentAsString();
 		log.info(contentAsString);
+	}
+
+	@Test
+	public void test02() {
+
 	}
 
 }
