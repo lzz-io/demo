@@ -41,6 +41,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import io.lzz.demo.spring.batch.entity.User;
 
@@ -50,6 +51,9 @@ import io.lzz.demo.spring.batch.entity.User;
  */
 @Configuration
 public class Step2Config {
+
+	@Autowired
+	private PlatformTransactionManager transactionManager;
 
 	@Autowired
 	private DataSource dataSource;
@@ -128,6 +132,7 @@ public class Step2Config {
 	@Bean
 	public Step step2(StepBuilderFactory stepBuilderFactory, TaskExecutor taskExecutor) {
 		return stepBuilderFactory.get("step2")//
+				.transactionManager(transactionManager)//
 				.<User, User>chunk(3)//
 				.reader(step2ItemReader())//
 				.processor(step2ItemProcessor())//
