@@ -16,6 +16,8 @@
 
 package io.lzz.demo.spring.batch.step2;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
 
 import io.lzz.demo.spring.batch.entity.User;
@@ -26,8 +28,11 @@ import io.lzz.demo.spring.batch.entity.User;
  */
 public class Step2ItemProcessor implements ItemProcessor<User, User> {
 
+	private static final Logger log = LoggerFactory.getLogger(Step2ItemProcessor.class);
+
 	@Override
 	public User process(User user) throws Exception {
+		log.debug("{}", user);
 		return user;
 	}
 

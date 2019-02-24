@@ -17,6 +17,8 @@
 package io.lzz.demo.spring.batch.step2;
 
 import java.io.FileNotFoundException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -25,7 +27,10 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.database.JdbcCursorItemReader;
+import org.springframework.batch.item.database.JdbcPagingItemReader;
+import org.springframework.batch.item.database.Order;
+import org.springframework.batch.item.database.PagingQueryProvider;
+import org.springframework.batch.item.database.support.SqlPagingQueryProviderFactoryBean;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
@@ -36,7 +41,6 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.RowMapper;
 
 import io.lzz.demo.spring.batch.entity.User;
 
@@ -57,16 +61,43 @@ public class Step2Config {
 	@Autowired
 	private Step2ItemWriteListener step2ItemWriteListener;
 
+	@Autowired
+	private PagingQueryProvider queryProvider;
+
 	// ItemReader
 	@Bean
 	public ItemReader<User> step2ItemReader() {
-		JdbcCursorItemReader<User> reader = new JdbcCursorItemReader<>();
+		// JdbcCursorItemReader非线程安全
+		// JdbcCursorItemReader<User> reader = new JdbcCursorItemReader<>();
+		// reader.setName("step2ItemReader");
+		// reader.setDataSource(dataSource);
+		// String sql = "SELECT t.* FROM TB_USER t ORDER BY ID ASC";
+		// reader.setSql(sql);
+		// RowMapper<User> rowMapper = new BeanPropertyRowMapper<>(User.class);
+		// reader.setRowMapper(rowMapper);
+		//
+		// JdbcPagingItemReader线程安全
+		JdbcPagingItemReader<User> reader = new JdbcPagingItemReader<>();
+		reader.setName("step2ItemReader");
 		reader.setDataSource(dataSource);
-		String sql = "SELECT t.* FROM TB_USER t ORDER BY ID ASC";
-		reader.setSql(sql);
-		RowMapper<User> rowMapper = new BeanPropertyRowMapper<>(User.class);
-		reader.setRowMapper(rowMapper);
+		reader.setQueryProvider(queryProvider);
+		reader.setRowMapper(new BeanPropertyRowMapper<>(User.class));
+		reader.setPageSize(5);
 		return reader;
+	}
+
+	@Bean
+	public SqlPagingQueryProviderFactoryBean queryProvider() {
+		SqlPagingQueryProviderFactoryBean provider = new SqlPagingQueryProviderFactoryBean();
+
+		provider.setDataSource(dataSource);
+		provider.setSelectClause("select id, username, createTime");
+		provider.setFromClause("from tb_user");
+		Map<String, Order> sortKeys = new LinkedHashMap<>();
+		sortKeys.put("id", Order.ASCENDING);
+		provider.setSortKeys(sortKeys);
+
+		return provider;
 	}
 
 	// Processor
@@ -94,10 +125,6 @@ public class Step2Config {
 		return writer;
 	}
 
-	// @Autowired
-	// @Qualifier("step2ItemWriter")
-	// private ItemWriter<User> writer;
-
 	@Bean
 	public Step step2(StepBuilderFactory stepBuilderFactory, TaskExecutor taskExecutor) {
 		return stepBuilderFactory.get("step2")//
@@ -117,8 +144,8 @@ public class Step2Config {
 				// .listener(step2ChunkListener)//
 				.listener(step2ExecutionListener)//
 				// .listener(step2SkipListener)//
-				// .taskExecutor(taskExecutor)// 多线程步骤
-				// .throttleLimit(4)// 最大使用线程池数目
+				.taskExecutor(taskExecutor)// 多线程步骤
+				.throttleLimit(8)// 最大使用线程池数目
 				.build();
 	}
 
