@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.spring.batch.config;
+package io.lzz.demo.spring.batch.step1;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -39,7 +39,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
 
 import io.lzz.demo.spring.batch.entity.User;
-import io.lzz.demo.spring.batch.step1.Step1ItemWriteListener;
 
 /**
  * @author q1219331697
@@ -57,7 +56,7 @@ public class Step1Config {
 	@Bean
 	public ItemReader<User> step1ItemReader() {
 		List<User> list = new ArrayList<>();
-		for (int i = 1; i <= 1000; i++) {
+		for (int i = 1; i <= 10; i++) {
 			User user = new User();
 			user.setUsername("username" + i);
 			user.setCreateTime(new Date());

@@ -46,7 +46,7 @@ public class Step1ItemWriteListener implements ItemWriteListener<User> {
 
 	@Override
 	public void onWriteError(Exception exception, List<? extends User> items) {
-		log.error("{}", items);
+		log.error("{}", items, exception);
 	}
 
 }

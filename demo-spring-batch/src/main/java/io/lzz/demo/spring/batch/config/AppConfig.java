@@ -31,6 +31,7 @@ import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.batch.item.jms.JmsItemWriter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,6 +51,9 @@ import io.lzz.demo.spring.batch.task.MyItemProcessor;
  */
 @Configuration
 public class AppConfig {
+
+	@Autowired
+	private JobBuilderFactory jobBuilderFactory;
 
 	@Bean
 	public FlatFileItemReader<User> reader() {
@@ -111,10 +115,11 @@ public class AppConfig {
 	}
 
 	@Bean
-	public Job job(JobBuilderFactory jobBuilderFactory, @Qualifier("step1") Step step1) {
+	public Job job(@Qualifier("step0") Step step0, @Qualifier("step1") Step step1) {
 		return jobBuilderFactory.get("job")//
 				// .preventRestart()//失败作业不能重启，默认true
-				.flow(step1).end()//
+				.start(step0)//
+				.next(step1)//
 				.build();
 	}
 }

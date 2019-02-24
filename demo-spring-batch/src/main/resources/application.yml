@@ -15,6 +15,7 @@ spring:
 
   datasource:
     url: jdbc:h2:./out/batch.db;AUTO_SERVER=TRUE
+    username: sa
 
   h2:
     console:
