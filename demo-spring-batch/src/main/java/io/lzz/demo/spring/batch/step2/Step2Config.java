@@ -53,9 +53,6 @@ import io.lzz.demo.spring.batch.entity.User;
 public class Step2Config {
 
 	@Autowired
-	private PlatformTransactionManager transactionManager;
-
-	@Autowired
 	private DataSource dataSource;
 
 	@Autowired
@@ -130,10 +127,11 @@ public class Step2Config {
 	}
 
 	@Bean
-	public Step step2(StepBuilderFactory stepBuilderFactory, TaskExecutor taskExecutor) {
+	public Step step2(StepBuilderFactory stepBuilderFactory, PlatformTransactionManager transactionManager,
+			TaskExecutor taskExecutor) {
 		return stepBuilderFactory.get("step2")//
-				.transactionManager(transactionManager)//
-				.<User, User>chunk(3)//
+				// .transactionManager(transactionManager)//
+				.<User, User>chunk(1)//
 				.reader(step2ItemReader())//
 				.processor(step2ItemProcessor())//
 				.writer(step2ItemWriter())//

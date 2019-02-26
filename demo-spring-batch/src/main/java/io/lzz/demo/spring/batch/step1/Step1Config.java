@@ -37,6 +37,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import io.lzz.demo.spring.batch.entity.User;
 
@@ -69,6 +70,8 @@ public class Step1Config {
 			list.add(user);
 			log.debug("{}", user);
 		}
+		log.info("list.size={}", list.size());
+		// ListItemReader非线程安全，勿在多线程下使用
 		return new ListItemReader<>(list);
 	}
 
@@ -86,8 +89,10 @@ public class Step1Config {
 	}
 
 	@Bean
-	public Step step1(StepBuilderFactory stepBuilderFactory, @Qualifier("step1ItemWriter") ItemWriter<User> writer) {
+	public Step step1(StepBuilderFactory stepBuilderFactory, PlatformTransactionManager transactionManager,
+			@Qualifier("step1ItemWriter") ItemWriter<User> writer) {
 		return stepBuilderFactory.get("step1")//
+				// .transactionManager(transactionManager)//
 				.<User, User>chunk(3)//
 				.reader(step1ItemReader())//
 				// .processor(processor())//
@@ -105,7 +110,7 @@ public class Step1Config {
 				.listener(step1ExecutionListener)//
 				// .listener(step1SkipListener)//
 				.taskExecutor(taskExecutor)// 多线程步骤
-				.throttleLimit(8)// 最大使用线程池数目
+				.throttleLimit(1)// 最大使用线程池数目
 				.build();
 	}
 

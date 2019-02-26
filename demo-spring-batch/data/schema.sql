@@ -12,5 +12,11 @@ create table TB_USER
 );
 
 create unique index TB_USER_ID_UINDEX
-  on TB_USER (ID);
+	on TB_USER (ID);
+
+create index TB_USER_USERNAME_INDEX
+	on TB_USER (USERNAME);
+
+create index TB_USER_CREATETIME_INDEX
+	on TB_USER (CREATETIME desc);
 

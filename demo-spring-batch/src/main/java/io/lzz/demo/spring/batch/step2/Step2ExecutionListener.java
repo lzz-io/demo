@@ -34,12 +34,12 @@ public class Step2ExecutionListener implements StepExecutionListener {
 
 	@Override
 	public void beforeStep(StepExecution stepExecution) {
-		log.debug("{}", stepExecution);
+		log.info("step2Execution:[{}]", stepExecution);
 	}
 
 	@Override
 	public ExitStatus afterStep(StepExecution stepExecution) {
-		log.info("{}", stepExecution);
+		log.info("step2Execution:[{}]", stepExecution);
 		return stepExecution.getExitStatus();
 	}
 

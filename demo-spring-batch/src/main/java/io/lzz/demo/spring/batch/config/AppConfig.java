@@ -89,7 +89,11 @@ public class AppConfig {
 
 	@Bean
 	public TaskExecutor taskExecutor() {
-		return new SimpleAsyncTaskExecutor("spring_batch");
+		// ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+		// taskExecutor.setThreadNamePrefix("spring_batch_");
+		// taskExecutor.setCorePoolSize(50);
+		// return taskExecutor;
+		return new SimpleAsyncTaskExecutor("spring_batch_");
 	}
 
 	@Bean

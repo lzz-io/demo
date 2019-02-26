@@ -34,10 +34,14 @@ public class Step0Config {
 	@Autowired
 	private Step0Tasklet step0Tasklet;
 
+	@Autowired
+	private Step0ExecutionListener step0ExecutionListener;
+
 	@Bean
 	public Step step0() {
 		return stepBuilderFactory.get("step0")//
 				.tasklet(step0Tasklet)//
+				.listener(step0ExecutionListener)//
 				// .taskExecutor(taskExecutor)// 多线程步骤
 				// .throttleLimit(4)// 最大使用线程池数目
 				.build();

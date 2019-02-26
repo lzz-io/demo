@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.spring.batch.step1;
+package io.lzz.demo.spring.batch.step0;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,18 +28,18 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
-public class Step1ExecutionListener implements StepExecutionListener {
+public class Step0ExecutionListener implements StepExecutionListener {
 
-	private static final Logger log = LoggerFactory.getLogger(Step1ExecutionListener.class);
+	private static final Logger log = LoggerFactory.getLogger(Step0ExecutionListener.class);
 
 	@Override
 	public void beforeStep(StepExecution stepExecution) {
-		log.info("step1Execution:[{}]", stepExecution);
+		log.info("step0Execution:[{}]", stepExecution);
 	}
 
 	@Override
 	public ExitStatus afterStep(StepExecution stepExecution) {
-		log.info("step1Execution:[{}]", stepExecution);
+		log.info("step0Execution:[{}]", stepExecution);
 		return stepExecution.getExitStatus();
 	}
 
