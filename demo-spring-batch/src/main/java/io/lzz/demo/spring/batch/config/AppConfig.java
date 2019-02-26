@@ -22,6 +22,9 @@ import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.job.builder.FlowBuilder;
+import org.springframework.batch.core.job.flow.Flow;
+import org.springframework.batch.core.job.flow.support.SimpleFlow;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
@@ -99,14 +102,35 @@ public class AppConfig {
 		return new SimpleAsyncTaskExecutor("spring_batch_");
 	}
 
+	// @Bean
+	public Flow splitFlow() {
+		return new FlowBuilder<SimpleFlow>("splitFlow")//
+				.split(taskExecutor())//
+				.add(flow2(), flow3())//
+				.build();
+	}
+
+	// @Bean
+	public Flow flow2() {
+		return new FlowBuilder<SimpleFlow>("flow2")//
+				.start(step2)//
+				.build();
+	}
+
+	// @Bean
+	public Flow flow3() {
+		return new FlowBuilder<SimpleFlow>("flow3")//
+				.start(step3)//
+				.build();
+	}
+
 	@Bean
 	public Job job() {
 		return jobBuilderFactory.get("job")//
-				// .preventRestart()//失败作业不能重启，默认true
-				.start(step0)//
+				.flow(step0)//
 				.next(step1)//
-				.next(step2)//
-				.next(step3)//
-				.build();
+				.next(splitFlow())//
+				.end()//
+				.build(); // builds Job instance
 	}
 }
