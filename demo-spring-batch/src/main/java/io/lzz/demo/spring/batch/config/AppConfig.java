@@ -57,6 +57,9 @@ public class AppConfig {
 	@Autowired
 	@Qualifier("step2")
 	private Step step2;
+	@Autowired
+	@Qualifier("step3")
+	private Step step3;
 
 	@Bean
 	public FlatFileItemReader<User> reader() {
@@ -103,6 +106,7 @@ public class AppConfig {
 				.start(step0)//
 				.next(step1)//
 				.next(step2)//
+				.next(step3)//
 				.build();
 	}
 }

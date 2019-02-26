@@ -16,7 +16,6 @@
 
 package io.lzz.demo.spring.batch.task;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.slf4j.Logger;

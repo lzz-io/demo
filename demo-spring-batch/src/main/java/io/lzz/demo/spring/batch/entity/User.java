@@ -19,7 +19,7 @@ package io.lzz.demo.spring.batch.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 /**
  * @author q1219331697
@@ -31,7 +31,7 @@ public class User implements Serializable {
 
 	private Integer id;
 
-	@NotNull
+	@NotBlank
 	private String username;
 
 	private Date createTime;

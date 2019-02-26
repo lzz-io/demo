@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.spring.batch.step2;
+package io.lzz.demo.spring.batch.step3;
 
 import java.io.FileNotFoundException;
 import java.util.LinkedHashMap;
@@ -51,24 +51,36 @@ import io.lzz.demo.spring.batch.entity.User;
  *
  */
 @Configuration
-public class Step2Config {
+public class Step3Config {
 
 	@Autowired
 	private DataSource dataSource;
 
 	@Autowired
-	private Step2ExecutionListener step2ExecutionListener;
+	private Step3ExecutionListener step3ExecutionListener;
 	@Autowired
-	private Step2ItemReadListener step2ItemReadListener;
+	private Step3ItemReadListener step3ItemReadListener;
 	@Autowired
-	private Step2ItemWriteListener step2ItemWriteListener;
+	private Step3ItemWriteListener step3ItemWriteListener;
 
 	@Autowired
-	@Qualifier("queryProvider")
-	private PagingQueryProvider queryProvider;
+	@Qualifier("step3QueryProvider")
+	private PagingQueryProvider step3QueryProvider;
+
+	// ItemReader
+	@Bean
+	public ItemReader<User> step3ItemReader() {
+		JdbcPagingItemReader<User> reader = new JdbcPagingItemReader<>();
+		reader.setName("step3ItemReader");
+		reader.setDataSource(dataSource);
+		reader.setQueryProvider(step3QueryProvider);
+		reader.setRowMapper(new BeanPropertyRowMapper<>(User.class));
+		reader.setPageSize(5);
+		return reader;
+	}
 
 	@Bean
-	public SqlPagingQueryProviderFactoryBean queryProvider() {
+	public SqlPagingQueryProviderFactoryBean step3QueryProvider() {
 		SqlPagingQueryProviderFactoryBean provider = new SqlPagingQueryProviderFactoryBean();
 
 		provider.setDataSource(dataSource);
@@ -81,31 +93,19 @@ public class Step2Config {
 		return provider;
 	}
 
-	// ItemReader
-	@Bean
-	public ItemReader<User> step2ItemReader() {
-		JdbcPagingItemReader<User> reader = new JdbcPagingItemReader<>();
-		reader.setName("step2ItemReader");
-		reader.setDataSource(dataSource);
-		reader.setQueryProvider(queryProvider);
-		reader.setRowMapper(new BeanPropertyRowMapper<>(User.class));
-		reader.setPageSize(5);
-		return reader;
-	}
-
 	// Processor
 	@Bean
-	public ItemProcessor<User, User> step2ItemProcessor() {
-		return new Step2ItemProcessor();
+	public ItemProcessor<User, User> step3ItemProcessor() {
+		return new Step3ItemProcessor();
 	}
 
 	// ItemWriter
 	@Bean
-	public ItemWriter<User> step2ItemWriter() {
+	public ItemWriter<User> step3ItemWriter() {
 		FlatFileItemWriter<User> writer = new FlatFileItemWriter<>();
-		writer.setName("step2ItemWriter");
+		writer.setName("step3ItemWriter");
 
-		Resource resource = new FileSystemResource("tmp/step2.csv");
+		Resource resource = new FileSystemResource("tmp/step3.txt");
 		writer.setResource(resource);
 		// writer.setAppendAllowed(true);
 		writer.setEncoding("UTF-8");
@@ -119,26 +119,26 @@ public class Step2Config {
 	}
 
 	@Bean
-	public Step step2(StepBuilderFactory stepBuilderFactory, PlatformTransactionManager transactionManager,
+	public Step step3(StepBuilderFactory stepBuilderFactory, PlatformTransactionManager transactionManager,
 			TaskExecutor taskExecutor) {
-		return stepBuilderFactory.get("step2")//
+		return stepBuilderFactory.get("step3")//
 				// .transactionManager(transactionManager)//
 				.<User, User>chunk(3)//
-				.reader(step2ItemReader())//
-				.processor(step2ItemProcessor())//
-				.writer(step2ItemWriter())//
+				.reader(step3ItemReader())//
+				.processor(step3ItemProcessor())//
+				.writer(step3ItemWriter())//
 				.faultTolerant()// 失败处理
 				.retryLimit(3)// 重试次数
 				.retry(Exception.class)// 重试异常必须配置
 				.skipLimit(Integer.MAX_VALUE)//
 				.skip(Exception.class)// 跳过异常，通常用自定义异常
 				.noSkip(FileNotFoundException.class)// 哪些异常不跳过
-				.listener(step2ItemReadListener)//
-				// .listener(step2ItemProcessListener)//
-				.listener(step2ItemWriteListener)//
-				// .listener(step2ChunkListener)//
-				.listener(step2ExecutionListener)//
-				// .listener(step2SkipListener)//
+				.listener(step3ItemReadListener)//
+				// .listener(step3ItemProcessListener)//
+				.listener(step3ItemWriteListener)//
+				// .listener(step3ChunkListener)//
+				.listener(step3ExecutionListener)//
+				// .listener(step3SkipListener)//
 				.taskExecutor(taskExecutor)// 多线程步骤
 				.throttleLimit(8)// 最大使用线程池数目
 				.build();
