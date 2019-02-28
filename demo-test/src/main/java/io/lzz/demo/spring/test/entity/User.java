@@ -19,9 +19,7 @@ package io.lzz.demo.spring.test.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -35,9 +33,11 @@ public class User implements Serializable {
 	private static final long serialVersionUID = -9191829853799565155L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
 	@NotNull
+	@Column(length = 32)
 	private String username;
 
 	private Date createTime;
