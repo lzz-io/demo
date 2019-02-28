@@ -1,0 +1,21 @@
+logging:
+  pattern:
+    console: '%d{HH:mm:ss.SSS} -%5p ${PID:- } --- [%15.15t,%T] %-40.40c{1.}(%L,%M) : %m%n%xwEx'
+    
+  level:
+    root: info
+    io.lzz: debug
+    
+spring:
+  datasource:
+    url: jdbc:h2:./tmp/test.db;AUTO_SERVER=TRUE
+    username: sa
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+      
+    generate-ddl: true
+    show-sql: true
+    
+    
