@@ -33,7 +33,6 @@ import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourc
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.support.ListItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
@@ -51,19 +50,26 @@ public class Step1Config {
 	private static final Logger log = LoggerFactory.getLogger(Step1Config.class);
 
 	@Autowired
+	private DataSource dataSource;
+
+	@Autowired
+	private StepBuilderFactory stepBuilderFactory;
+
+	@Autowired
 	private Step1ItemWriteListener step1ItemWriteListener;
 
 	@Autowired
 	private Step1ExecutionListener step1ExecutionListener;
 
+	@SuppressWarnings("unused")
 	@Autowired
 	private TaskExecutor taskExecutor;
 
 	// ItemReader
-	@Bean
+	// @Bean
 	public ItemReader<User> step1ItemReader() {
 		List<User> list = new ArrayList<>();
-		for (int i = 1; i <= 100; i++) {
+		for (int i = 1; i <= 3; i++) {
 			User user = new User();
 			user.setUsername("username" + i);
 			user.setCreateTime(new Date());
@@ -79,7 +85,7 @@ public class Step1Config {
 
 	// ItemWriter
 	@Bean
-	public ItemWriter<User> step1ItemWriter(DataSource dataSource) {
+	public ItemWriter<User> step1ItemWriter() {
 		JdbcBatchItemWriter<User> writer = new JdbcBatchItemWriter<>();
 		writer.setDataSource(dataSource);
 		writer.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<User>());
@@ -89,14 +95,13 @@ public class Step1Config {
 	}
 
 	@Bean
-	public Step step1(StepBuilderFactory stepBuilderFactory, PlatformTransactionManager transactionManager,
-			@Qualifier("step1ItemWriter") ItemWriter<User> writer) {
+	public Step step1(PlatformTransactionManager transactionManager) {
 		return stepBuilderFactory.get("step1")//
 				// .transactionManager(transactionManager)//
 				.<User, User>chunk(3)//
 				.reader(step1ItemReader())//
 				// .processor(processor())//
-				.writer(writer)//
+				.writer(step1ItemWriter())//
 				.faultTolerant()// 失败处理
 				.retryLimit(3)// 重试次数
 				.retry(Exception.class)// 重试异常必须配置
@@ -109,8 +114,9 @@ public class Step1Config {
 				// .listener(step1ChunkListener)//
 				.listener(step1ExecutionListener)//
 				// .listener(step1SkipListener)//
-				.taskExecutor(taskExecutor)// 多线程步骤
-				.throttleLimit(1)// 最大使用线程池数目
+				// .taskExecutor(taskExecutor)// 多线程步骤
+				// .throttleLimit(1)// 最大使用线程池数目
+				// .allowStartIfComplete(true)//
 				.build();
 	}
 

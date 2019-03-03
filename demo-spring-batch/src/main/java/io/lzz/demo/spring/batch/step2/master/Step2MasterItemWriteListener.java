@@ -14,26 +14,37 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.spring.batch.step2;
+package io.lzz.demo.spring.batch.step2.master;
+
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.item.ItemProcessor;
-
-import io.lzz.demo.spring.batch.entity.User;
+import org.springframework.batch.core.ItemWriteListener;
+import org.springframework.stereotype.Component;
 
 /**
  * @author q1219331697
  *
  */
-public class Step2ItemProcessor implements ItemProcessor<User, User> {
+@Component
+public class Step2MasterItemWriteListener implements ItemWriteListener<String> {
 
-	private static final Logger log = LoggerFactory.getLogger(Step2ItemProcessor.class);
+	private static final Logger log = LoggerFactory.getLogger(Step2MasterItemWriteListener.class);
 
 	@Override
-	public User process(User user) throws Exception {
-		log.debug("{}", user);
-		return user;
+	public void beforeWrite(List<? extends String> items) {
+		log.debug("{}", items);
+	}
+
+	@Override
+	public void afterWrite(List<? extends String> items) {
+		log.debug("{}", items);
+	}
+
+	@Override
+	public void onWriteError(Exception exception, List<? extends String> items) {
+		log.error("{}", items, exception);
 	}
 
 }

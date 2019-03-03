@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.spring.batch.step2;
-
-import java.util.List;
+package io.lzz.demo.spring.batch.step2.master;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.ItemWriteListener;
+import org.springframework.batch.core.ItemProcessListener;
 import org.springframework.stereotype.Component;
 
 import io.lzz.demo.spring.batch.entity.User;
@@ -30,23 +28,23 @@ import io.lzz.demo.spring.batch.entity.User;
  *
  */
 @Component
-public class Step2ItemWriteListener implements ItemWriteListener<User> {
+public class Step2MasterItemProcessListener implements ItemProcessListener<User, String> {
 
-	private static final Logger log = LoggerFactory.getLogger(Step2ItemWriteListener.class);
+	private static final Logger log = LoggerFactory.getLogger(Step2MasterItemProcessListener.class);
 
 	@Override
-	public void beforeWrite(List<? extends User> items) {
-		log.debug("{}", items);
+	public void beforeProcess(User item) {
+		log.debug("{}", item);
 	}
 
 	@Override
-	public void afterWrite(List<? extends User> items) {
-		log.debug("{}", items);
+	public void afterProcess(User item, String result) {
+		log.debug("item:{},result:{}", item, result);
 	}
 
 	@Override
-	public void onWriteError(Exception exception, List<? extends User> items) {
-		log.error("{}", items, exception);
+	public void onProcessError(User item, Exception e) {
+		log.error("{}", item, e);
 	}
 
 }

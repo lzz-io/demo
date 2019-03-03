@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.spring.batch.step2;
+package io.lzz.demo.spring.batch.step2.master;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.ExitStatus;
-import org.springframework.batch.core.StepExecution;
-import org.springframework.batch.core.StepExecutionListener;
+import org.springframework.batch.core.SkipListener;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,19 +26,23 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
-public class Step2ExecutionListener implements StepExecutionListener {
+public class Step2MasterSkipListener implements SkipListener<String, String> {
 
-	private static final Logger log = LoggerFactory.getLogger(Step2ExecutionListener.class);
+	private static final Logger log = LoggerFactory.getLogger(Step2MasterSkipListener.class);
 
 	@Override
-	public void beforeStep(StepExecution stepExecution) {
-		log.info("step2Execution:[{}]", stepExecution);
+	public void onSkipInRead(Throwable t) {
+		log.error("", t);
 	}
 
 	@Override
-	public ExitStatus afterStep(StepExecution stepExecution) {
-		log.info("step2Execution:[{}]", stepExecution);
-		return stepExecution.getExitStatus();
+	public void onSkipInWrite(String item, Throwable t) {
+		log.error("{}", item, t);
+	}
+
+	@Override
+	public void onSkipInProcess(String item, Throwable t) {
+		log.error("{}", item, t);
 	}
 
 }

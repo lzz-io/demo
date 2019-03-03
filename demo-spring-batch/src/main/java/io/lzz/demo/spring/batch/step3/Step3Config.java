@@ -139,8 +139,9 @@ public class Step3Config {
 				// .listener(step3ChunkListener)//
 				.listener(step3ExecutionListener)//
 				// .listener(step3SkipListener)//
-				.taskExecutor(taskExecutor)// 多线程步骤
-				.throttleLimit(8)// 最大使用线程池数目
+				// .taskExecutor(taskExecutor)// 多线程步骤
+				// .throttleLimit(8)// 最大使用线程池数目
+				// .allowStartIfComplete(true)//
 				.build();
 	}
 

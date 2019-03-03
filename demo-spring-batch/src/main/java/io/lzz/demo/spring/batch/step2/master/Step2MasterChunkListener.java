@@ -14,41 +14,40 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.spring.batch.step2;
+package io.lzz.demo.spring.batch.step2.master;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.ItemReadListener;
+import org.springframework.batch.core.ChunkListener;
+import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.stereotype.Component;
-
-import io.lzz.demo.spring.batch.entity.User;
 
 /**
  * @author q1219331697
  *
  */
 @Component
-public class Step2ItemReadListener implements ItemReadListener<User> {
+public class Step2MasterChunkListener implements ChunkListener {
 
-	private static final Logger log = LoggerFactory.getLogger(Step2ItemReadListener.class);
+	private static final Logger log = LoggerFactory.getLogger(Step2MasterChunkListener.class);
 
 	@Override
-	public void beforeRead() {
+	public void beforeChunk(ChunkContext context) {
+		log.debug("{}", context);
 	}
 
 	@Override
-	public void afterRead(User item) {
-		log.debug("item=[{}]", item);
+	public void afterChunk(ChunkContext context) {
+		log.debug("{}", context);
 	}
 
 	@Override
-	public void onReadError(Exception ex) {
-		// 记录原始输入信息
-		// if (ex instanceof FlatFileParseException) {
-		// log.error("input=[{}]", ((FlatFileParseException) ex).getInput());
-		// }
-
-		log.error("", ex);
+	public void afterChunkError(ChunkContext context) {
+		log.error("{}", context);
+		String[] attributeNames = context.attributeNames();
+		for (String string : attributeNames) {
+			log.error("{}:{}", string, context.getAttribute(string));
+		}
 	}
 
 }

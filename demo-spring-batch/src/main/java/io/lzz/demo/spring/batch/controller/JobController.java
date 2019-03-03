@@ -21,6 +21,7 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.JobParametersInvalidException;
@@ -57,13 +58,16 @@ public class JobController {
 				// .addString("key", new Date().toString())//
 				.addDate("key", new Date())//
 				.toJobParameters();
+		JobExecution jobExecution = new JobExecution(1L);
 		try {
-			jobLauncher.run(job, jobParameters);
+			log.info("job start ...");
+			jobExecution = jobLauncher.run(job, jobParameters);
 		} catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException
 				| JobParametersInvalidException e) {
 			log.error("job已执行", e);
 		}
-		return "job start! " + (System.currentTimeMillis() - beginTime);
+		log.info("job started ...");
+		return "job start! " + jobExecution.getJobInstance() + " " + (System.currentTimeMillis() - beginTime);
 	}
 
 }
