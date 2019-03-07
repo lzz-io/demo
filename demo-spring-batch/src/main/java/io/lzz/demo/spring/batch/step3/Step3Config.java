@@ -16,14 +16,11 @@
 
 package io.lzz.demo.spring.batch.step3;
 
-import java.io.FileNotFoundException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
@@ -40,9 +37,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.transaction.PlatformTransactionManager;
 
 import io.lzz.demo.spring.batch.entity.User;
 
@@ -116,33 +111,6 @@ public class Step3Config {
 		lineAggregator.setFieldExtractor(fieldExtractor);
 		writer.setLineAggregator(lineAggregator);
 		return writer;
-	}
-
-	@Bean
-	public Step step3(StepBuilderFactory stepBuilderFactory, PlatformTransactionManager transactionManager,
-			TaskExecutor taskExecutor) {
-		return stepBuilderFactory.get("step3")//
-				// .transactionManager(transactionManager)//
-				.<User, User>chunk(3)//
-				.reader(step3ItemReader())//
-				.processor(step3ItemProcessor())//
-				.writer(step3ItemWriter())//
-				.faultTolerant()// 失败处理
-				.retryLimit(3)// 重试次数
-				.retry(Exception.class)// 重试异常必须配置
-				.skipLimit(Integer.MAX_VALUE)//
-				.skip(Exception.class)// 跳过异常，通常用自定义异常
-				.noSkip(FileNotFoundException.class)// 哪些异常不跳过
-				.listener(step3ItemReadListener)//
-				// .listener(step3ItemProcessListener)//
-				.listener(step3ItemWriteListener)//
-				// .listener(step3ChunkListener)//
-				.listener(step3ExecutionListener)//
-				// .listener(step3SkipListener)//
-				// .taskExecutor(taskExecutor)// 多线程步骤
-				// .throttleLimit(8)// 最大使用线程池数目
-				// .allowStartIfComplete(true)//
-				.build();
 	}
 
 }

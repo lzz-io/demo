@@ -57,8 +57,8 @@ public class BatchConfig {
 	private TaskletStep step2MasterStep;
 
 	@Autowired
-	@Qualifier("step3")
-	private Step step3;
+	@Qualifier("step3MasterStep")
+	private Step step3MasterStep;
 
 	@Bean
 	public FlatFileItemReader<User> reader() {
@@ -105,7 +105,7 @@ public class BatchConfig {
 	// @Bean
 	public Flow flow3() {
 		return new FlowBuilder<SimpleFlow>("flow3")//
-				.start(step3)//
+				.start(step3MasterStep)//
 				.build();
 	}
 
@@ -117,8 +117,8 @@ public class BatchConfig {
 				.flow(step0)//
 				.next(step1)//
 				// .next(step2MasterStep)//
-				// .next(step3)
-				.next(splitFlow())//
+				 .next(step3MasterStep)
+//				.next(splitFlow())//
 				.end()//
 				.build(); // builds Job instance
 	}

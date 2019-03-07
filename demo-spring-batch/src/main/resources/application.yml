@@ -10,7 +10,7 @@ spring:
       trust-all: true # 为false时bean转换会报类找不到异常
 
   batch:
-    initialize-schema: always
+    initialize-schema: never
     job:
       enabled: false
 
@@ -24,7 +24,6 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
-      
+      ddl-auto: update
     show-sql: true
     

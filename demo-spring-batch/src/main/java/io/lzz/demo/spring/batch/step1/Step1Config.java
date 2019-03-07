@@ -114,7 +114,7 @@ public class Step1Config {
 				// .listener(step1ChunkListener)//
 				.listener(step1ExecutionListener)//
 				// .listener(step1SkipListener)//
-				// .taskExecutor(taskExecutor)// 多线程步骤
+				// .taskExecutor(taskExecutor)// 多线程
 				// .throttleLimit(1)// 最大使用线程池数目
 				// .allowStartIfComplete(true)//
 				.build();

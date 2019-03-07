@@ -42,7 +42,7 @@ public class Step0Config {
 		return stepBuilderFactory.get("step0")//
 				.tasklet(step0Tasklet)//
 				.listener(step0ExecutionListener)//
-				// .taskExecutor(taskExecutor)// 多线程步骤
+				// .taskExecutor(taskExecutor)// 多线程
 				// .throttleLimit(4)// 最大使用线程池数目
 				.build();
 	}

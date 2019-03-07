@@ -167,7 +167,7 @@ public class Step2MasterConfig {
 				.listener(step2MasterItemWriteListener)//
 				.listener(step2MasterExecutionListener)//
 				.listener(step2MasterSkipListener)//
-				// .taskExecutor(taskExecutor)// 多线程步骤
+				// .taskExecutor(taskExecutor)// 多线程
 				// .throttleLimit(8)// 最大使用线程池数目
 				// .allowStartIfComplete(true)// 重新启动已完成 Step
 				.build();
