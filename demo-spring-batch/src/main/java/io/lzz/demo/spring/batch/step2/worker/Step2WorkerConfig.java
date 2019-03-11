@@ -21,8 +21,10 @@ import javax.jms.ConnectionFactory;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.integration.chunk.RemoteChunkingWorkerBuilder;
 import org.springframework.batch.integration.config.annotation.EnableBatchIntegration;
+import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,7 +101,8 @@ public class Step2WorkerConfig {
 	// ItemWriter
 	@Bean
 	public ItemWriter<User> step2WorkerItemWriter() {
-		Step2WorkerWriter<User> writer = new Step2WorkerWriter<>();
+		// Step2WorkerWriter<User> writer = new Step2WorkerWriter<>();
+		FlatFileItemWriter<User> writer = new FlatFileItemWriter<>();
 		writer.setName("step2WorkerItemWriter");
 
 		Resource resource = new FileSystemResource("tmp/step2.csv");
@@ -112,6 +115,10 @@ public class Step2WorkerConfig {
 		DelimitedLineAggregator<User> lineAggregator = new DelimitedLineAggregator<>();
 		lineAggregator.setFieldExtractor(fieldExtractor);
 		writer.setLineAggregator(lineAggregator);
+		
+		// TODO 待验证
+		ExecutionContext executionContext = new ExecutionContext();
+		writer.open(executionContext);
 		return writer;
 	}
 
