@@ -38,7 +38,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.channel.QueueChannel;
-import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.jms.dsl.Jms;
@@ -57,7 +56,6 @@ import io.lzz.demo.spring.batch.entity.User;
 @EnableBatchIntegration
 @EnableBatchProcessing
 @Configuration
-@EnableIntegration
 public class Step2MasterConfig {
 
 	@Autowired
@@ -84,14 +82,14 @@ public class Step2MasterConfig {
 	 * Configure outbound flow (requests going to workers)
 	 */
 	@Bean
-	public MessageChannel masterOutputChannel() {
+	public MessageChannel step2MasterOutputChannel() {
 		return new DirectChannel();
 		// return new ExecutorChannel(taskExecutor);
 	}
 
 	@Bean
 	public IntegrationFlow masterOutboundFlow(ConnectionFactory connectionFactory) {
-		return IntegrationFlows.from(masterOutputChannel())//
+		return IntegrationFlows.from(step2MasterOutputChannel())//
 				.handle(Jms.outboundAdapter(connectionFactory)//
 						.destination("batch.step2.master2worker"))
 				.get();
@@ -101,7 +99,7 @@ public class Step2MasterConfig {
 	 * Configure inbound flow (replies coming from workers)
 	 */
 	@Bean
-	public PollableChannel masterInputChannel() {
+	public PollableChannel step2MasterInputChannel() {
 		return new QueueChannel();
 	}
 
@@ -110,7 +108,7 @@ public class Step2MasterConfig {
 		return IntegrationFlows//
 				.from(Jms.messageDrivenChannelAdapter(connectionFactory)//
 						.destination("batch.step2.worker2master"))
-				.channel(masterInputChannel())//
+				.channel(step2MasterInputChannel())//
 				.get();
 	}
 
@@ -151,8 +149,8 @@ public class Step2MasterConfig {
 		return masterStepBuilderFactory.<User, User>get("step2MasterStep")//
 				.chunk(1)//
 				.reader(step2MasterItemReader())//
-				.outputChannel(masterOutputChannel())//
-				.inputChannel(masterInputChannel())//
+				.outputChannel(step2MasterOutputChannel())//
+				.inputChannel(step2MasterInputChannel())//
 				.maxWaitTimeouts(30000)//
 				// .messagingTemplate(messagingTemplate)//
 				// .faultTolerant()// 失败处理

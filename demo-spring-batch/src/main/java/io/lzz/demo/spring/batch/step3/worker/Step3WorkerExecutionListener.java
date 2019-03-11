@@ -14,39 +14,33 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.spring.batch.step3;
-
-import java.util.List;
+package io.lzz.demo.spring.batch.step3.worker;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.ItemWriteListener;
+import org.springframework.batch.core.ExitStatus;
+import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.stereotype.Component;
-
-import io.lzz.demo.spring.batch.entity.User;
 
 /**
  * @author q1219331697
  *
  */
 @Component
-public class Step3ItemWriteListener implements ItemWriteListener<User> {
+public class Step3WorkerExecutionListener implements StepExecutionListener {
 
-	private static final Logger log = LoggerFactory.getLogger(Step3ItemWriteListener.class);
+	private static final Logger log = LoggerFactory.getLogger(Step3WorkerExecutionListener.class);
 
 	@Override
-	public void beforeWrite(List<? extends User> items) {
-		log.debug("{}", items);
+	public void beforeStep(StepExecution stepExecution) {
+		log.info("step3WorkerExecution:[{}]", stepExecution);
 	}
 
 	@Override
-	public void afterWrite(List<? extends User> items) {
-		log.debug("{}", items);
-	}
-
-	@Override
-	public void onWriteError(Exception exception, List<? extends User> items) {
-		log.error("{}", items, exception);
+	public ExitStatus afterStep(StepExecution stepExecution) {
+		log.info("step3WorkerExecution:[{}]", stepExecution);
+		return stepExecution.getExitStatus();
 	}
 
 }

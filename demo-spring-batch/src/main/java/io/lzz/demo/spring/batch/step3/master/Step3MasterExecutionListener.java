@@ -14,41 +14,33 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.spring.batch.step3;
+package io.lzz.demo.spring.batch.step3.master;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.ItemReadListener;
+import org.springframework.batch.core.ExitStatus;
+import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.stereotype.Component;
-
-import io.lzz.demo.spring.batch.entity.User;
 
 /**
  * @author q1219331697
  *
  */
 @Component
-public class Step3ItemReadListener implements ItemReadListener<User> {
+public class Step3MasterExecutionListener implements StepExecutionListener {
 
-	private static final Logger log = LoggerFactory.getLogger(Step3ItemReadListener.class);
+	private static final Logger log = LoggerFactory.getLogger(Step3MasterExecutionListener.class);
 
 	@Override
-	public void beforeRead() {
+	public void beforeStep(StepExecution stepExecution) {
+		log.info("step3MasterExecution:[{}]", stepExecution);
 	}
 
 	@Override
-	public void afterRead(User item) {
-		log.debug("item=[{}]", item);
-	}
-
-	@Override
-	public void onReadError(Exception ex) {
-		// 记录原始输入信息
-		// if (ex instanceof FlatFileParseException) {
-		// log.error("input=[{}]", ((FlatFileParseException) ex).getInput());
-		// }
-
-		log.error("", ex);
+	public ExitStatus afterStep(StepExecution stepExecution) {
+		log.info("step3MasterExecution:[{}]", stepExecution);
+		return stepExecution.getExitStatus();
 	}
 
 }

@@ -14,34 +14,30 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.spring.batch.step2.worker;
+package io.lzz.demo.spring.batch.step3.master;
 
-import java.util.List;
+import java.util.Map;
 
+import org.springframework.batch.core.partition.support.SimplePartitioner;
 import org.springframework.batch.item.ExecutionContext;
-import org.springframework.batch.item.file.FlatFileItemWriter;
-import org.springframework.util.ClassUtils;
 
 /**
- * 实现有问题，不能用于生产
- * 
  * @author q1219331697
  *
  */
-public class Step2Writer<T> extends FlatFileItemWriter<T> {
+public class BasicPartitioner extends SimplePartitioner {
 
-	private ExecutionContext executionContext;
-
-	public Step2Writer() {
-		this.setExecutionContextName(ClassUtils.getShortName(Step2Writer.class));
-		// setName(name);
-		this.executionContext = new ExecutionContext();
-	}
+	private static final String PARTITION_KEY = "partition";
 
 	@Override
-	public void write(List<? extends T> items) throws Exception {
-		super.open(executionContext);
-		super.write(items);
+	public Map<String, ExecutionContext> partition(int gridSize) {
+		Map<String, ExecutionContext> partitions = super.partition(gridSize);
+		int i = 0;
+		for (ExecutionContext context : partitions.values()) {
+			context.put(PARTITION_KEY, PARTITION_KEY + i);
+			i++;
+		}
+		return partitions;
 	}
 
 }

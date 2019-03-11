@@ -1,6 +1,7 @@
 logging:
   level:
     root: info
+    org.springframework.batch: trace
     io.lzz: debug
     
 spring:      
@@ -10,7 +11,7 @@ spring:
       trust-all: true # 为false时bean转换会报类找不到异常
 
   batch:
-    initialize-schema: never
+    initialize-schema: always
     job:
       enabled: false
 

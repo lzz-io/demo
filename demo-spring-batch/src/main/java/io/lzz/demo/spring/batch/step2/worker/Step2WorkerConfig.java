@@ -32,7 +32,6 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.integration.channel.DirectChannel;
-import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.jms.dsl.Jms;
@@ -49,7 +48,6 @@ import io.lzz.demo.spring.batch.entity.User;
 @EnableBatchProcessing
 @EnableBatchIntegration
 @Configuration
-@EnableIntegration
 public class Step2WorkerConfig {
 
 	@SuppressWarnings("unused")
@@ -60,7 +58,7 @@ public class Step2WorkerConfig {
 	 * Configure inbound flow (requests coming from the master)
 	 */
 	@Bean
-	public MessageChannel workerInputChannel() {
+	public MessageChannel step2WorkerInputChannel() {
 		return new DirectChannel();
 		// return new ExecutorChannel(taskExecutor);
 	}
@@ -70,7 +68,7 @@ public class Step2WorkerConfig {
 		return IntegrationFlows//
 				.from(Jms.messageDrivenChannelAdapter(connectionFactory)//
 						.destination("batch.step2.master2worker"))//
-				.channel(workerInputChannel())//
+				.channel(step2WorkerInputChannel())//
 				.get();
 	}
 
@@ -78,7 +76,7 @@ public class Step2WorkerConfig {
 	 * Configure outbound flow (replies going to the master)
 	 */
 	@Bean
-	public MessageChannel workerOutputChannel() {
+	public MessageChannel step2WorkerOutputChannel() {
 		return new DirectChannel();
 		// return new ExecutorChannel(taskExecutor);
 	}
@@ -86,7 +84,7 @@ public class Step2WorkerConfig {
 	@Bean
 	public IntegrationFlow workerOutboundFlow(ConnectionFactory connectionFactory) {
 		return IntegrationFlows//
-				.from(workerOutputChannel())//
+				.from(step2WorkerOutputChannel())//
 				.handle(Jms.outboundAdapter(connectionFactory)//
 						.destination("batch.step2.worker2master"))
 				.get();
@@ -101,7 +99,7 @@ public class Step2WorkerConfig {
 	// ItemWriter
 	@Bean
 	public ItemWriter<User> step2WorkerItemWriter() {
-		Step2Writer<User> writer = new Step2Writer<>();
+		Step2WorkerWriter<User> writer = new Step2WorkerWriter<>();
 		writer.setName("step2WorkerItemWriter");
 
 		Resource resource = new FileSystemResource("tmp/step2.csv");
@@ -117,27 +115,13 @@ public class Step2WorkerConfig {
 		return writer;
 	}
 
-	// @Bean
-	// @ServiceActivator(inputChannel = "workerInputChannel", outputChannel =
-	// "workerOutputChannel")
-	// public ChunkProcessorChunkHandler<User> chunkProcessorChunkHandler() throws
-	// Exception {
-	// ChunkProcessor<User> chunkProcessor = new
-	// SimpleChunkProcessor<>(step2WorkerItemProcessor(),
-	// step2WorkerItemWriter());
-	// ChunkProcessorChunkHandler<User> chunkProcessorChunkHandler = new
-	// ChunkProcessorChunkHandler<>();
-	// chunkProcessorChunkHandler.setChunkProcessor(chunkProcessor);
-	// return chunkProcessorChunkHandler;
-	// }
-
 	@Bean
 	public IntegrationFlow workerFlow(RemoteChunkingWorkerBuilder<User, User> workerBuilder) {
 		return workerBuilder//
 				.itemProcessor(step2WorkerItemProcessor())//
 				.itemWriter(step2WorkerItemWriter())//
-				.inputChannel(workerInputChannel()) // requests received from the master
-				.outputChannel(workerOutputChannel()) // replies sent to the master
+				.inputChannel(step2WorkerInputChannel()) // requests received from the master
+				.outputChannel(step2WorkerOutputChannel()) // replies sent to the master
 				.build();
 	}
 

@@ -20,9 +20,9 @@ import javax.jms.ConnectionFactory;
 
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
-import org.springframework.batch.core.partition.support.SimplePartitioner;
 import org.springframework.batch.integration.config.annotation.EnableBatchIntegration;
 import org.springframework.batch.integration.partition.RemotePartitioningMasterStepBuilderFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
@@ -43,6 +43,9 @@ import org.springframework.messaging.MessageChannel;
 @EnableBatchIntegration
 public class Step3MasterConfig {
 
+	@Autowired
+	private Step3MasterExecutionListener step3MasterExecutionListener;
+
 	@Bean
 	public MessageChannel step3MasterOutboundRequest() {
 		return new DirectChannel();
@@ -53,7 +56,7 @@ public class Step3MasterConfig {
 		JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
 		jmsTemplate.setMessageConverter(new MappingJackson2MessageConverter());
 		return IntegrationFlows.from(step3MasterOutboundRequest())//
-				.handle(Jms.outboundAdapter(jmsTemplate)//
+				.handle(Jms.outboundAdapter(connectionFactory)//
 						.destination("batch.step3.master2worker"))//
 				.get();
 	}
@@ -63,9 +66,12 @@ public class Step3MasterConfig {
 			TaskExecutor taskExecutor) {
 		return masterStepBuilderFactory.get("step3MasterStep")//
 				// .transactionManager(transactionManager)//
-				.partitioner("step3WorkerStep", new SimplePartitioner())// 远程分区配置（带有作业存储库轮询）
-				.gridSize(1)//
+				.partitioner("step3WorkerStep", new BasicPartitioner())//
+				.gridSize(3)//
 				.outputChannel(step3MasterOutboundRequest())//
+				// 1、不设置inputChannel则为作业存储库轮询方式
+				// .inputChannel(inputChannel)
+				.listener(step3MasterExecutionListener)//
 				// .taskExecutor(taskExecutor)//
 				// .throttleLimit(8)// 最大使用线程池数目
 				// .allowStartIfComplete(true)//

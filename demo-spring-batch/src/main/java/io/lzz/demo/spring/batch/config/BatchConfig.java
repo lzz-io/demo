@@ -112,13 +112,13 @@ public class BatchConfig {
 	@Bean
 	public Job job(JobBuilderFactory jobBuilderFactory) {
 		return jobBuilderFactory.get("job")//
-				.incrementer(new RunIdIncrementer())// 使每个job的运行id都唯一,开发环境使用
+				.incrementer(new RunIdIncrementer())// 使每个job的运行id都唯一,开发环境使用,貌似没卵用-_-
 				// .preventRestart()//
 				.flow(step0)//
 				.next(step1)//
 				// .next(step2MasterStep)//
-				 .next(step3MasterStep)
-//				.next(splitFlow())//
+				// .next(step3MasterStep)
+				.next(splitFlow())//
 				.end()//
 				.build(); // builds Job instance
 	}

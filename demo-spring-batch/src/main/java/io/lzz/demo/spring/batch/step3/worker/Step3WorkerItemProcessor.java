@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.spring.batch.step3;
+package io.lzz.demo.spring.batch.step3.worker;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,9 +26,9 @@ import io.lzz.demo.spring.batch.entity.User;
  * @author q1219331697
  *
  */
-public class Step3ItemProcessor implements ItemProcessor<User, User> {
+public class Step3WorkerItemProcessor implements ItemProcessor<User, User> {
 
-	private static final Logger log = LoggerFactory.getLogger(Step3ItemProcessor.class);
+	private static final Logger log = LoggerFactory.getLogger(Step3WorkerItemProcessor.class);
 
 	@Override
 	public User process(User user) throws Exception {
