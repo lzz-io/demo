@@ -115,7 +115,7 @@ public class Step2WorkerConfig {
 		DelimitedLineAggregator<User> lineAggregator = new DelimitedLineAggregator<>();
 		lineAggregator.setFieldExtractor(fieldExtractor);
 		writer.setLineAggregator(lineAggregator);
-		
+
 		// TODO 待验证
 		ExecutionContext executionContext = new ExecutionContext();
 		writer.open(executionContext);
