@@ -41,6 +41,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 public class IndexControllerTest {
 
+	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(IndexControllerTest.class);
 
 	@Autowired

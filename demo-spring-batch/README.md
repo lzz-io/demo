@@ -18,3 +18,4 @@
 
 ![remote-partitioning-aggregation-config](doc\remote-partitioning-aggregation-config.png)
 远程分区配置（带有回复聚合）
+

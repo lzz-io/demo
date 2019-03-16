@@ -90,6 +90,23 @@ public class Step3WorkerConfig {
 				.get();
 	}
 
+	/*
+	 * Configure outbound flow (replies going to the master)
+	 */
+	@Bean
+	public MessageChannel step3WorkOutputChannel() {
+		return new DirectChannel();
+	}
+
+	@Bean
+	public IntegrationFlow outboundFlow(ConnectionFactory connectionFactory) {
+		return IntegrationFlows//
+				.from(step3WorkOutputChannel())//
+				.handle(Jms.outboundAdapter(connectionFactory)//
+						.destination("batch.step3.worker2master"))//
+				.get();
+	}
+
 	// ItemReader
 	@Bean
 	public ItemReader<User> step3WorkerItemReader() {
@@ -153,7 +170,7 @@ public class Step3WorkerConfig {
 	public Step step3WorkerStep(RemotePartitioningWorkerStepBuilderFactory workerStepBuilderFactory) {
 		return workerStepBuilderFactory.get("step3WorkerStep")//
 				.inputChannel(step3WorkInputChannel())//
-				// .outputChannel(outputChannel())//
+				.outputChannel(step3WorkOutputChannel())//
 				.<User, User>chunk(5)//
 				.reader(step3WorkerItemReader())//
 				.processor(step3WorkerItemProcessor())//

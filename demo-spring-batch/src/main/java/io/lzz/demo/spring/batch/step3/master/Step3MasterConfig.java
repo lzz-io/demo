@@ -47,7 +47,7 @@ public class Step3MasterConfig {
 	private Step3MasterExecutionListener step3MasterExecutionListener;
 
 	@Bean
-	public MessageChannel step3MasterOutboundRequest() {
+	public MessageChannel step3MasterOutputChannel() {
 		return new DirectChannel();
 	}
 
@@ -55,9 +55,26 @@ public class Step3MasterConfig {
 	public IntegrationFlow step3MasterOutboundFlow(ConnectionFactory connectionFactory) {
 		JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
 		jmsTemplate.setMessageConverter(new MappingJackson2MessageConverter());
-		return IntegrationFlows.from(step3MasterOutboundRequest())//
+		return IntegrationFlows.from(step3MasterOutputChannel())//
 				.handle(Jms.outboundAdapter(connectionFactory)//
 						.destination("batch.step3.master2worker"))//
+				.get();
+	}
+
+	/*
+	 * Configure inbound flow (replies coming from workers)
+	 */
+	@Bean
+	public MessageChannel step3MasterInputChannel() {
+		return new DirectChannel();
+	}
+
+	@Bean
+	public IntegrationFlow inboundFlow(ConnectionFactory connectionFactory) {
+		return IntegrationFlows//
+				.from(Jms.messageDrivenChannelAdapter(connectionFactory)//
+						.destination("batch.step3.worker2master"))//
+				.channel(step3MasterInputChannel())//
 				.get();
 	}
 
@@ -68,10 +85,10 @@ public class Step3MasterConfig {
 				// .transactionManager(transactionManager)//
 				.partitioner("step3WorkerStep", new BasicPartitioner())//
 				.gridSize(3)//
-				.outputChannel(step3MasterOutboundRequest())//
+				.outputChannel(step3MasterOutputChannel())//
 				// 1、不设置inputChannel则为作业存储库轮询方式
-				// .inputChannel(inputChannel)
-				.listener(step3MasterExecutionListener)//
+				// 2、设置inputChannel则为回复聚合方式
+				.inputChannel(step3MasterInputChannel()).listener(step3MasterExecutionListener)//
 				// .taskExecutor(taskExecutor)//
 				// .throttleLimit(8)// 最大使用线程池数目
 				// .allowStartIfComplete(true)//

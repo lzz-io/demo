@@ -84,7 +84,7 @@ public class UserServiceImplTest {
 		user.setUsername("username1");
 		user.setCreateTime(new Date());
 		User save = userService.save(user);
-		log.info(user.toString());
+		log.info(save.toString());
 		// Assert.assertNotNull(save.getId());
 	}
 
