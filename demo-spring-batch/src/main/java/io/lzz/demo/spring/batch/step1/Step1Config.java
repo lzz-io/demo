@@ -33,6 +33,7 @@ import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourc
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.support.ListItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
@@ -63,6 +64,7 @@ public class Step1Config {
 
 	@SuppressWarnings("unused")
 	@Autowired
+	@Qualifier("taskExecutor")
 	private TaskExecutor taskExecutor;
 
 	// ItemReader

@@ -145,7 +145,7 @@ public class Step2MasterConfig {
 	// 配合@EnableBatchIntegration
 	@Bean
 	public TaskletStep step2MasterStep(RemoteChunkingMasterStepBuilderFactory masterStepBuilderFactory,
-			TaskExecutor taskExecutor) {
+			@Qualifier("taskExecutor") TaskExecutor taskExecutor) {
 		return masterStepBuilderFactory.<User, User>get("step2MasterStep")//
 				.chunk(1)//
 				.reader(step2MasterItemReader())//

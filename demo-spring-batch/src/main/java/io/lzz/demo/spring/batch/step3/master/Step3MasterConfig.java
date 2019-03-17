@@ -1,12 +1,12 @@
 /*
  * Copyright qq:1219331697
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,13 +16,12 @@
 
 package io.lzz.demo.spring.batch.step3.master;
 
-import javax.jms.ConnectionFactory;
-
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.integration.config.annotation.EnableBatchIntegration;
 import org.springframework.batch.integration.partition.RemotePartitioningMasterStepBuilderFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
@@ -34,9 +33,10 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.MessageChannel;
 
+import javax.jms.ConnectionFactory;
+
 /**
  * @author q1219331697
- *
  */
 @Configuration
 @EnableBatchProcessing
@@ -79,8 +79,7 @@ public class Step3MasterConfig {
 	}
 
 	@Bean
-	public Step step3MasterStep(RemotePartitioningMasterStepBuilderFactory masterStepBuilderFactory,
-			TaskExecutor taskExecutor) {
+	public Step step3MasterStep(RemotePartitioningMasterStepBuilderFactory masterStepBuilderFactory, @Qualifier("taskExecutor") TaskExecutor taskExecutor) {
 		return masterStepBuilderFactory.get("step3MasterStep")//
 				// .transactionManager(transactionManager)//
 				.partitioner("step3WorkerStep", new BasicPartitioner())//
