@@ -69,7 +69,7 @@ public class Step1Config {
 	// @Bean
 	public ItemReader<User> step1ItemReader() {
 		List<User> list = new ArrayList<>();
-		for (int i = 1; i <= 50; i++) {
+		for (int i = 1; i <= 25; i++) {
 			User user = new User();
 			user.setUsername("username" + i);
 			user.setCreateTime(new Date());
