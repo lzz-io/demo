@@ -9,6 +9,7 @@
 	<modules>
 		<module>demo-encrypt</module>
 		<module>demo-es</module>
+		<module>demo-file</module>
 		<module>demo-java</module>
 		<module>demo-jms</module>
 		<module>demo-jms-nospring</module>
