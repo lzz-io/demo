@@ -19,7 +19,7 @@ package io.lzz.demo.spring.test.repository;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import io.lzz.demo.spring.test.entity.User;
@@ -29,7 +29,7 @@ import io.lzz.demo.spring.test.entity.User;
  *
  */
 @Repository
-public interface UserRepository extends CrudRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, Integer> {
 
 	List<User> findAll();
 
