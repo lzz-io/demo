@@ -53,11 +53,7 @@ public class JobControllerTest {
 				.andReturn()//
 				.getResponse().getContentAsString();
 		log.info(contentAsString);
-	}
-
-	@Test
-	public void test02() {
-
+		Thread.sleep(5000L);
 	}
 
 }

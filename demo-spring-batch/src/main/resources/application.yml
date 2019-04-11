@@ -1,3 +1,15 @@
+# 自定义配置，app.xxx...
+app:
+  datasource:
+    batch:
+      url: jdbc:h2:./tmp/batch.db;AUTO_SERVER=TRUE
+      jdbc-url: jdbc:h2:./tmp/batch.db;AUTO_SERVER=TRUE
+      username: sa
+    biz:
+      url: jdbc:h2:./tmp/biz.db;AUTO_SERVER=TRUE
+      jdbc-url: jdbc:h2:./tmp/biz.db;AUTO_SERVER=TRUE
+      username: sa
+
 logging:
   level:
     root: info
@@ -6,7 +18,8 @@ logging:
     
 spring:      
   activemq:
-    broker-url: tcp://localhost:61616
+    in-memory: true
+#    broker-url: tcp://localhost:61616
     packages:
       trust-all: true # 为false时bean转换会报类找不到异常
 
@@ -14,10 +27,6 @@ spring:
     initialize-schema: always
     job:
       enabled: false
-
-  datasource:
-    url: jdbc:h2:./tmp/batch.db;AUTO_SERVER=TRUE
-    username: sa
 
   h2:
     console:

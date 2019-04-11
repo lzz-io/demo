@@ -18,30 +18,26 @@ package io.lzz.demo.spring.batch.config;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.job.builder.FlowBuilder;
 import org.springframework.batch.core.job.flow.Flow;
 import org.springframework.batch.core.job.flow.support.SimpleFlow;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.step.tasklet.TaskletStep;
-import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
-import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
-
-import io.lzz.demo.spring.batch.entity.User;
 
 /**
  * @author q1219331697
  *
  */
 @Configuration
+@EnableBatchProcessing
 public class BatchConfig {
 
 	@Autowired
@@ -59,23 +55,6 @@ public class BatchConfig {
 	@Autowired
 	@Qualifier("step3MasterStep")
 	private Step step3MasterStep;
-
-	@Bean
-	public FlatFileItemReader<User> reader() {
-		BeanWrapperFieldSetMapper<User> mapper = new BeanWrapperFieldSetMapper<>();
-		mapper.setTargetType(User.class);
-		return new FlatFileItemReaderBuilder<User>() //
-				.name("reader") //
-				.encoding("UTF-8") //
-				.resource(new ClassPathResource("data.csv")) //
-				.delimited() //
-				// .quoteCharacter(',')//
-				.delimiter(",")//
-				.names(new String[] { "id", "username", "createTime" }) //
-				.linesToSkip(1)//
-				.fieldSetMapper(mapper) //
-				.build();
-	}
 
 	@Bean
 	public TaskExecutor taskExecutor() {

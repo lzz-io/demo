@@ -59,6 +59,7 @@ import io.lzz.demo.spring.batch.entity.User;
 public class Step2MasterConfig {
 
 	@Autowired
+	@Qualifier("dataSource")
 	private DataSource dataSource;
 
 	@Autowired

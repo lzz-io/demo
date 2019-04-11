@@ -51,6 +51,7 @@ public class Step1Config {
 	private static final Logger log = LoggerFactory.getLogger(Step1Config.class);
 
 	@Autowired
+	@Qualifier("bizDataSource")
 	private DataSource dataSource;
 
 	@Autowired
