@@ -1,0 +1,27 @@
+# 自定义配置，app.xxx...
+app:
+  datasource:
+    order:
+      url: jdbc:h2:./tmp/order.db;AUTO_SERVER=TRUE
+      jdbc-url: jdbc:h2:./tmp/order.db;AUTO_SERVER=TRUE
+      username: sa
+    user:
+      url: jdbc:h2:./tmp/user.db;AUTO_SERVER=TRUE
+      jdbc-url: jdbc:h2:./tmp/user.db;AUTO_SERVER=TRUE
+      username: sa
+
+logging:
+  level:
+    root: info
+    io.lzz: debug
+    
+spring:      
+  h2:
+    console:
+      enabled: true
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    

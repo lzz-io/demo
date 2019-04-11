@@ -7,6 +7,7 @@
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>demo-db</module>
 		<module>demo-encrypt</module>
 		<module>demo-es</module>
 		<module>demo-file</module>
@@ -87,6 +88,10 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
 		</dependency>
 	</dependencies>
 
