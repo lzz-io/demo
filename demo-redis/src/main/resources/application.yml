@@ -1,0 +1,10 @@
+logging:
+  level:
+    root: info
+    io.lzz: debug
+    
+spring:
+  redis:
+    host: node1
+    port: 56379
+    password: 12345
