@@ -41,4 +41,5 @@ target/
 tmp/
 .factorypath
 .apt_generated
-/release.properties
+release.properties
+pom.xml.releaseBackup
