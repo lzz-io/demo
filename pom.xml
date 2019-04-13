@@ -36,6 +36,8 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<!-- 跳过单元测试 -->
+		<maven.test.skip>true</maven.test.skip>
 
 		<spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
 		<spring-boot.version>2.1.4.RELEASE</spring-boot.version>
