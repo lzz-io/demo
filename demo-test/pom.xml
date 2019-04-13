@@ -9,7 +9,7 @@
 	<artifactId>demo-test</artifactId>
 
 	<properties>
-		<maven.test.skip>false</maven.test.skip>
+		<jacoco.skip>true</jacoco.skip>
 	</properties>
 
 	<dependencies>
