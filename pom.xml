@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.lzz.demo</groupId>
 	<artifactId>demo</artifactId>
@@ -27,8 +28,8 @@
 		<url>https://github.com/lzz-io/demo</url>
 		<connection>scm:git:git@github.com:lzz-io/demo.git</connection>
 		<developerConnection>scm:git:git@github.com:lzz-io/demo.git</developerConnection>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -118,6 +119,9 @@
 					<tagNameFormat>@{project.version}</tagNameFormat>
 					<!-- 每个模块都具有与父POM相同的版本 -->
 					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<!-- scmCommentPrefix, 默认值[maven-release-plugin] ，所有SCM修改的消息前缀 -->
+					<scmCommentPrefix></scmCommentPrefix>
+					<commitByProject>true</commitByProject>
 				</configuration>
 			</plugin>
 		</plugins>
