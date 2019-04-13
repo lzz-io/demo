@@ -27,30 +27,6 @@ mvn scm:update
 mvn scm:checkin -Dmessage="描述说明"
 
 
-
-## mvn versions 
-
-```sh
-# 更改版本
-mvn versions:set -DnewVersion=0.1.0-SNAPSHOT
-
-# 下一个快照版
-mvn versions:set -DnextSnapshot
-
-# 移除snapshot，使之成为release
-mvn versions:set -DremoveSnapshot=true
-
-# 提交
-mvn versions:commit
-
-# 回退
-mvn versions:revert
-
-# revert和commit 都会删除backup文件
-```
-
-
-
 ##### SCM插件具有以下目标：
 
 ```
@@ -72,6 +48,29 @@ scm：unedit - 停止编辑工作副本的命令
 scm：update - 用于使用最新更改更新工作副本的命令
 scm：update-subprojects - 用于更新多项目构建中的所有项目的命令
 scm：validate - 验证pom中的scm信息
+```
+
+
+
+## mvn versions 
+
+```sh
+# 更改版本
+mvn versions:set -DnewVersion=0.1.0-SNAPSHOT
+
+# 下一个快照版
+mvn versions:set -DnextSnapshot
+
+# 移除snapshot，使之成为release
+mvn versions:set -DremoveSnapshot=true
+
+# 提交
+mvn versions:commit
+
+# 回退
+mvn versions:revert
+
+# revert和commit 都会删除backup文件
 ```
 
 
