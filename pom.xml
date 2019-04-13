@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.lzz.demo</groupId>
 	<artifactId>demo</artifactId>
-	<version>0.0.3</version>
+	<version>0.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -27,7 +27,7 @@
 		<url>https://github.com/lzz-io/demo</url>
 		<connection>scm:git:git@github.com:lzz-io/demo.git</connection>
 		<developerConnection>scm:git:git@github.com:lzz-io/demo.git</developerConnection>
-		<tag>v0.0.3</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<properties>
