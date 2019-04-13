@@ -1,3 +1,5 @@
+.gitignore file
+
 # Compiled class file
 *.class
 
@@ -43,3 +45,4 @@ tmp/
 .apt_generated
 release.properties
 pom.xml.releaseBackup
+bin
