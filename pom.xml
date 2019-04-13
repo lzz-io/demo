@@ -120,7 +120,7 @@
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 					<!-- scmCommentPrefix, 默认值[maven-release-plugin] ，所有SCM修改的消息前缀 -->
 					<scmCommentPrefix />
-					<commitByProject>true</commitByProject>
+					<dryRun>true</dryRun>
 				</configuration>
 			</plugin>
 		</plugins>
