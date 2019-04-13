@@ -4,3 +4,7 @@
 
 mvn dependency:purge-local-repository
 
+## maven-release-plugin
+
+添加 maven-release-plugin 插件
+

@@ -24,6 +24,12 @@
 		<module>demo-xml</module>
 	</modules>
 
+	<scm>
+		<url>https://github.com/lzz-io/demo</url>
+		<connection>scm:git:git@github.com:lzz-io/demo.git</connection>
+		<developerConnection>scm:git:git@github.com:lzz-io/demo.git</developerConnection>
+	</scm>
+
 	<properties>
 		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -101,6 +107,10 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>

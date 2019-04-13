@@ -40,3 +40,5 @@ target/
 
 tmp/
 .factorypath
+.apt_generated
+/release.properties
