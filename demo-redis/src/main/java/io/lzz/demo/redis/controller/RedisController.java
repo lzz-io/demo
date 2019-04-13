@@ -63,7 +63,7 @@ public class RedisController implements BaseController {
 		String key = new Random().toString();
 		opsForValue.set(key, key, 10, TimeUnit.SECONDS);
 		
-		redisTemplate.
+		// redisTemplate.
 		return "" + System.currentTimeMillis();
 	}
 
