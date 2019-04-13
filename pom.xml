@@ -118,9 +118,6 @@
 					<tagNameFormat>v@{project.version}</tagNameFormat>
 					<!-- 每个模块都具有与父POM相同的版本 -->
 					<autoVersionSubmodules>true</autoVersionSubmodules>
-					<!-- scmCommentPrefix, 默认值[maven-release-plugin] ，所有SCM修改的消息前缀 -->
-					<scmCommentPrefix />
-					<dryRun>true</dryRun>
 				</configuration>
 			</plugin>
 		</plugins>
