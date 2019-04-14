@@ -16,15 +16,24 @@
 
 package io.lzz.demo.db.multi.ds.config;
 
-import org.springframework.context.annotation.Configuration;
-
 /**
- * 主配置文件
- * 
  * @author q1219331697
  *
  */
-@Configuration
-public class AppConfig {
+public class DynamicDataSourceHolder {
+
+	private static final ThreadLocal<String> dataSources = new ThreadLocal<>();
+
+	public static void setDataSourceKey(String dataSourceKey) {
+		dataSources.set(dataSourceKey);
+	}
+
+	public static String getDataSourceKey() {
+		return dataSources.get();
+	}
+
+	public static void removeDataSourceKey() {
+		dataSources.remove();
+	}
 
 }

@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.db.multi.ds.config;
+package io.lzz.demo.db.multi.ds.secondary.repository;
 
-import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import io.lzz.demo.db.multi.ds.secondary.entity.OrderInfo;
 
 /**
- * 主配置文件
- * 
  * @author q1219331697
  *
  */
-@Configuration
-public class AppConfig {
+@Repository
+public interface OrderInfoRepository extends JpaRepository<OrderInfo, Long> {
 
 }

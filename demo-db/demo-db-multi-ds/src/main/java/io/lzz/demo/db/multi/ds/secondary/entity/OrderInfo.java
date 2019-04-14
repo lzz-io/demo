@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.db.multi.ds.order.entity;
+package io.lzz.demo.db.multi.ds.secondary.entity;
 
 import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -28,31 +29,55 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "tb_order")
-public class OrderEntity implements Serializable {
+@Table(name = "tb_order_info")
+public class OrderInfo implements Serializable {
 
-	private static final long serialVersionUID = 3858642238969567042L;
+	private static final long serialVersionUID = 6531666444943821665L;
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private Long userId;
+	private Long orderId;
 
-	private String remark;
+	private String info;
 
-	public OrderEntity() {
+	public OrderInfo() {
 	}
 
-	public OrderEntity(Long id, Long userId, String remark) {
+	public OrderInfo(Long id, Long orderId, String info) {
 		this.id = id;
-		this.userId = userId;
-		this.remark = remark;
+		this.orderId = orderId;
+		this.info = info;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
+	}
+
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
 	}
 
 	@Override
 	public String toString() {
-		return "Order [id=" + id + ", userId=" + userId + ", remark=" + remark + "]";
+		return "OrderInfo [id=" + id + ", orderId=" + orderId + ", info=" + info + "]";
 	}
 
 }

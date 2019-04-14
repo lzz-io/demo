@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.db.multi.ds.user.entity;
+package io.lzz.demo.db.multi.ds.primary.entity;
 
 import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -29,22 +30,22 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "tb_user")
-public class UserEntity implements Serializable {
+public class User implements Serializable {
 
 	private static final long serialVersionUID = 467050326774326785L;
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String username;
 
 	private String password;
 
-	public UserEntity() {
+	public User() {
 	}
 
-	public UserEntity(Long id, String username, String password) {
+	public User(Long id, String username, String password) {
 		this.id = id;
 		this.username = username;
 		this.password = password;

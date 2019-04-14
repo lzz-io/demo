@@ -14,17 +14,35 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.db.multi.ds.config;
+package io.lzz.demo.db.multi.ds.service.impl;
 
-import org.springframework.context.annotation.Configuration;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import io.lzz.demo.db.multi.ds.primary.entity.User;
+import io.lzz.demo.db.multi.ds.primary.repository.UserRepository;
+import io.lzz.demo.db.multi.ds.service.UserService;
 
 /**
- * 主配置文件
- * 
  * @author q1219331697
  *
  */
-@Configuration
-public class AppConfig {
+@Service
+public class UserServiceImpl implements UserService {
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Override
+	public List<User> findAll() {
+		return userRepository.findAll();
+	}
+
+	@Override
+	public User save(User user) {
+		return userRepository.save(user);
+	}
 
 }

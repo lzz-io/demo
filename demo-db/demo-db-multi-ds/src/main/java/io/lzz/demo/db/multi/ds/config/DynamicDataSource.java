@@ -16,15 +16,17 @@
 
 package io.lzz.demo.db.multi.ds.config;
 
-import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
 /**
- * 主配置文件
- * 
  * @author q1219331697
  *
  */
-@Configuration
-public class AppConfig {
+public class DynamicDataSource extends AbstractRoutingDataSource {
+
+	@Override
+	protected Object determineCurrentLookupKey() {
+		return DynamicDataSourceHolder.getDataSourceKey();
+	}
 
 }

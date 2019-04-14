@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.db.multi.ds.config;
+package io.lzz.demo.db.multi.ds.service;
 
-import org.springframework.context.annotation.Configuration;
+import java.util.List;
+
+import io.lzz.demo.db.multi.ds.secondary.entity.Order;
 
 /**
- * 主配置文件
- * 
  * @author q1219331697
  *
  */
-@Configuration
-public class AppConfig {
+public interface OrderService {
 
+	List<Order> findAll();
+
+	Order save(Order order);
 }
