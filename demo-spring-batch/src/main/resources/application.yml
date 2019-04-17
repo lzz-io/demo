@@ -13,6 +13,7 @@ app:
 logging:
   level:
     root: info
+    sql: trace
     org.springframework.batch: trace
     io.lzz: debug
     
