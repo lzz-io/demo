@@ -1,0 +1,24 @@
+logging:
+  level:
+    root: info
+    sql: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+    org.hibernate.type.descriptor.sql.BasicExtractor: trace
+    io.lzz: debug
+    
+spring:
+  datasource:
+    url: jdbc:h2:./tmp/jdbc.db;AUTO_SERVER=TRUE
+    username: sa
+    
+  h2:
+    console:
+      enabled: true
+
+  jpa:
+    properties:
+      hibernate.format_sql: true
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    

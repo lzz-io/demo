@@ -9,6 +9,7 @@
   <packaging>pom</packaging>
   
   <modules>
+  	<module>demo-db-jdbc</module>
   	<module>demo-db-multi-ds</module>
   </modules>
   
