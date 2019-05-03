@@ -46,3 +46,6 @@ tmp/
 release.properties
 pom.xml.releaseBackup
 bin
+SpringBoot.xml
+.apt_generated_tests/
+transaction-logs/

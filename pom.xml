@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.lzz.demo</groupId>
 	<artifactId>demo</artifactId>
@@ -11,6 +12,7 @@
 		<module>demo-es</module>
 		<module>demo-file</module>
 		<module>demo-java</module>
+		<module>demo-jbpm</module>
 		<module>demo-jms</module>
 		<module>demo-jms-nospring</module>
 		<module>demo-jvm</module>
@@ -43,6 +45,8 @@
 		<spring-boot.version>2.1.4.RELEASE</spring-boot.version>
 
 		<mybatis-spring-boot.version>2.0.1</mybatis-spring-boot.version>
+		<cxf.version>3.2.6</cxf.version>
+		<kie-spring-boot.version>7.20.0.Final</kie-spring-boot.version>
 	</properties>
 
 	<dependencyManagement>
