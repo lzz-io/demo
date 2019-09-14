@@ -42,11 +42,11 @@
 		<maven.test.skip>true</maven.test.skip>
 
 		<spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
-		<spring-boot.version>2.1.4.RELEASE</spring-boot.version>
+		<spring-boot.version>2.1.8.RELEASE</spring-boot.version>
 
 		<mybatis-spring-boot.version>2.0.1</mybatis-spring-boot.version>
 		<cxf.version>3.2.6</cxf.version>
-		<kie-spring-boot.version>7.20.0.Final</kie-spring-boot.version>
+		<kie-spring-boot.version>7.22.0.Final</kie-spring-boot.version>
 	</properties>
 
 	<dependencyManagement>

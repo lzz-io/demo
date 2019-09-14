@@ -3,12 +3,18 @@ server:
 
 mybatis:
   type-aliases-package: io.lzz.demo.mybatis.entity
+  mapper-locations: classpath:com/example/test/mapper/*Mapper.xml
+  configuration:
+    map-underscore-to-camel-case: true
 
 ###############
+#spring:
+#  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://node1:33306/mybatis?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+#    username: root
+#    password: 123456
 spring:
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://node1:33306/mybatis?useUnicode=true&characterEncoding=utf-8&useSSL=true
-    username: root
-    password: 123456
-    
+    url: jdbc:h2:./tmp/jdbc.db;AUTO_SERVER=TRUE
+    username: sa
