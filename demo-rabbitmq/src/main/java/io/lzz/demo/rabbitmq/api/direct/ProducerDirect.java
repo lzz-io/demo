@@ -14,35 +14,40 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.rabbitmq.api.fanout;
+package io.lzz.demo.rabbitmq.api.direct;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.util.Date;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.Consumer;
-import com.rabbitmq.client.DefaultConsumer;
-import com.rabbitmq.client.Envelope;
 
 /**
+ * direct: 直连，点对点
+ * 
+ * 
+ * 1.任何发送到Direct Exchange的消息都会被转发到指定RouteKey中指定的队列Queue；
+ * 
+ * 2.生产者生产消息的时候需要执行Routing Key路由键；
+ * 
+ * 3.队列绑定交换机的时候需要指定Binding Key,只有路由键与绑定键相同的话，
+ * 才能将消息发送到绑定这个队列的消费者；
+ * 
+ * 4.如果vhost中不存在RouteKey中指定的队列名，则该消息会被丢弃；
+ * 
+ * 
  * @author q1219331697
  *
  */
-public class ConsumerFanout2 {
+public class ProducerDirect {
 
-	private static final Logger log = LoggerFactory.getLogger(ConsumerFanout2.class);
+	private static final String exchange = "demo.exchange.direct";
+	// direct: 直连
+	private static final String type = "direct";
+	private static final String routingKey = "demo.exchange.direct.routingKey";
 
-	private static final String exchange = "demo.exchange.fanout";
+	public void send() throws Exception {
 
-	private static final String queue = "demo.exchange.fanout.queue2";
-
-	public void receive() throws Exception {
 		ConnectionFactory connectionFactory = new ConnectionFactory();
 		String host = "localhost";
 		String username = "guest";
@@ -56,27 +61,20 @@ public class ConsumerFanout2 {
 
 		Channel channel = connection.createChannel();
 
-		channel.queueDeclare(queue, true, false, false, null);
+		// 定义交换机
+		channel.exchangeDeclare(exchange, type, true, false, null);
 
-		channel.queueBind(queue, exchange, "");
+		// 发送消息
+		String msg = "direct msg! " + new Date();
+		channel.basicPublish(exchange, routingKey, null, msg.getBytes());
 
-		Consumer consumer = new DefaultConsumer(channel) {
-			@Override
-			public void handleDelivery(String consumerTag, Envelope envelope, BasicProperties properties, byte[] body)
-					throws IOException {
-				String msg = new String(body, StandardCharsets.UTF_8);
-				log.info("msg:{}", msg);
-
-				long deliveryTag = envelope.getDeliveryTag();
-				channel.basicAck(deliveryTag, false);
-			}
-		};
-
-		channel.basicConsume(queue, false, consumer);
+		// 非必须
+		channel.close();
+		connection.close();
 	}
 
 	public static void main(String[] args) throws Exception {
-		ConsumerFanout2 consumerFanout = new ConsumerFanout2();
-		consumerFanout.receive();
+		ProducerDirect producer = new ProducerDirect();
+		producer.send();
 	}
 }

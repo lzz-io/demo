@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.rabbitmq.api.fanout;
+package io.lzz.demo.rabbitmq.api.direct;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -34,13 +34,13 @@ import com.rabbitmq.client.Envelope;
  * @author q1219331697
  *
  */
-public class ConsumerFanout2 {
+public class ConsumerDirect2 {
 
-	private static final Logger log = LoggerFactory.getLogger(ConsumerFanout2.class);
+	private static final Logger log = LoggerFactory.getLogger(ConsumerDirect2.class);
 
-	private static final String exchange = "demo.exchange.fanout";
-
-	private static final String queue = "demo.exchange.fanout.queue2";
+	private static final String exchange = "demo.exchange.direct";
+	private static final String routingKey = "demo.exchange.direct.routingKey";
+	private static final String queue = "demo.exchange.direct.queue2";
 
 	public void receive() throws Exception {
 		ConnectionFactory connectionFactory = new ConnectionFactory();
@@ -58,7 +58,7 @@ public class ConsumerFanout2 {
 
 		channel.queueDeclare(queue, true, false, false, null);
 
-		channel.queueBind(queue, exchange, "");
+		channel.queueBind(queue, exchange, routingKey);
 
 		Consumer consumer = new DefaultConsumer(channel) {
 			@Override
@@ -76,7 +76,7 @@ public class ConsumerFanout2 {
 	}
 
 	public static void main(String[] args) throws Exception {
-		ConsumerFanout2 consumerFanout = new ConsumerFanout2();
+		ConsumerDirect2 consumerFanout = new ConsumerDirect2();
 		consumerFanout.receive();
 	}
 }

@@ -42,7 +42,7 @@ public class ConsumerFanout {
 
 	private static final String queue = "demo.exchange.fanout.queue";
 
-	public void receiver() throws Exception {
+	public void receive() throws Exception {
 		ConnectionFactory connectionFactory = new ConnectionFactory();
 		String host = "localhost";
 		String username = "guest";
@@ -77,6 +77,6 @@ public class ConsumerFanout {
 
 	public static void main(String[] args) throws Exception {
 		ConsumerFanout consumerFanout = new ConsumerFanout();
-		consumerFanout.receiver();
+		consumerFanout.receive();
 	}
 }
