@@ -23,7 +23,7 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 /**
- * direct: 直连，点对点
+ * direct: 直连
  * 
  * 
  * 1.任何发送到Direct Exchange的消息都会被转发到指定RouteKey中指定的队列Queue；
@@ -41,10 +41,10 @@ import com.rabbitmq.client.ConnectionFactory;
  */
 public class ProducerDirect {
 
-	private static final String exchange = "demo.exchange.direct";
+	private static final String exchange = "demo.direct";
 	// direct: 直连
 	private static final String type = "direct";
-	private static final String routingKey = "demo.exchange.direct.routingKey";
+	private static final String routingKey = "demo.direct.routingKey";
 
 	public void send() throws Exception {
 

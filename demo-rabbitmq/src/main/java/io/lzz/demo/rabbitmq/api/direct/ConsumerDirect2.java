@@ -38,9 +38,9 @@ public class ConsumerDirect2 {
 
 	private static final Logger log = LoggerFactory.getLogger(ConsumerDirect2.class);
 
-	private static final String exchange = "demo.exchange.direct";
-	private static final String routingKey = "demo.exchange.direct.routingKey";
-	private static final String queue = "demo.exchange.direct.queue2";
+	private static final String exchange = "demo.direct";
+	private static final String routingKey = "demo.direct.routingKey";
+	private static final String queue = "demo.direct.queue2";
 
 	public void receive() throws Exception {
 		ConnectionFactory connectionFactory = new ConnectionFactory();

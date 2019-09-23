@@ -38,9 +38,9 @@ public class ConsumerFanout2 {
 
 	private static final Logger log = LoggerFactory.getLogger(ConsumerFanout2.class);
 
-	private static final String exchange = "demo.exchange.fanout";
+	private static final String exchange = "demo.fanout";
 
-	private static final String queue = "demo.exchange.fanout.queue2";
+	private static final String queue = "demo.fanout.queue2";
 
 	public void receive() throws Exception {
 		ConnectionFactory connectionFactory = new ConnectionFactory();

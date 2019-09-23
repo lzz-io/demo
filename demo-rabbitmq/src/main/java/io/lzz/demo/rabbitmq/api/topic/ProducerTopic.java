@@ -46,10 +46,10 @@ import com.rabbitmq.client.ConnectionFactory;
  */
 public class ProducerTopic {
 
-	private static final String exchange = "demo.exchange.topic";
+	private static final String exchange = "demo.topic";
 	// topic: 通配符
 	private static final String type = "topic";
-	private static final String routingKey = "demo.exchange.topic.routingKey.user.#";
+	private static final String routingKey = "demo.topic.routingKey.user.#";
 
 	public void send() throws Exception {
 

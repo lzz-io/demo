@@ -35,7 +35,7 @@ import com.rabbitmq.client.ConnectionFactory;
  */
 public class ProducerFanout {
 
-	private static final String exchange = "demo.exchange.fanout";
+	private static final String exchange = "demo.fanout";
 	// fanout: 广播
 	private static final String type = "fanout";
 

@@ -42,9 +42,9 @@ public class ConsumerTopicDirect {
 
 	private static final Logger log = LoggerFactory.getLogger(ConsumerTopicDirect.class);
 
-	private static final String exchange = "demo.exchange.topic";
-	private static final String routingKey = "demo.exchange.topic.routingKey.user.add";
-	private static final String queue = "demo.exchange.topic.direct";
+	private static final String exchange = "demo.topic";
+	private static final String routingKey = "demo.topic.routingKey.user.add";
+	private static final String queue = "demo.topic.direct";
 
 	public void receive() throws Exception {
 		ConnectionFactory connectionFactory = new ConnectionFactory();

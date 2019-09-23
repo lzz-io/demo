@@ -42,9 +42,9 @@ public class ConsumerTopicFanout {
 
 	private static final Logger log = LoggerFactory.getLogger(ConsumerTopicFanout.class);
 
-	private static final String exchange = "demo.exchange.topic";
-	private static final String routingKey = "demo.exchange.topic.routingKey.user.#";
-	private static final String queue = "demo.exchange.topic.fanout";
+	private static final String exchange = "demo.topic";
+	private static final String routingKey = "demo.topic.routingKey.user.#";
+	private static final String queue = "demo.topic.fanout";
 
 	public void receive() throws Exception {
 		ConnectionFactory connectionFactory = new ConnectionFactory();
