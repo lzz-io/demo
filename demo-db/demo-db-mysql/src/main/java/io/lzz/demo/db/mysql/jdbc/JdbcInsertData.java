@@ -31,8 +31,8 @@ import org.springframework.util.DigestUtils;
  */
 public class JdbcInsertData {
 
-	private static final int TOTAL = 1000000;
-	private static final int BATCH = 10000;
+	private static final int TOTAL = 50000;
+	private static final int BATCH = 5000;
 	private AtomicInteger counter = new AtomicInteger(0);
 
 	long begin = 0;
@@ -41,8 +41,8 @@ public class JdbcInsertData {
 		begin = System.currentTimeMillis();
 		System.out.println("begin: " + begin);
 
-		ExecutorService threadPool = Executors.newFixedThreadPool(500);
-		for (int i = 0; i < 2000; i++) {
+		ExecutorService threadPool = Executors.newFixedThreadPool(50);
+		for (int i = 0; i < 100; i++) {
 			threadPool.submit(new InsertData());
 		}
 

@@ -18,6 +18,7 @@
 		<module>demo-jvm</module>
 		<module>demo-maven</module>
 		<module>demo-mybatis</module>
+		<module>demo-rabbitmq</module>
 		<module>demo-redis</module>
 		<module>demo-spring-batch</module>
 		<module>demo-test</module>

@@ -8,7 +8,7 @@ logging:
     
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/jdbc_test
+    url: jdbc:mysql://localhost:3306/jdbc_test?rewriteBatchedStatements=true
     username: root
     password: 123456
 
