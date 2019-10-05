@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="ItemDefinition_49" structureRef="java.lang.String" />
+  <itemDefinition id="ItemDefinition_64" structureRef="java.lang.Integer" />
+  <process processType="Private" isExecutable="true" id="process_02_var" name="Default Process" tns:packageName="defaultPackage" tns:version="1" >
+
+    <extensionElements>
+     <tns:import name="org.kie.api.runtime.process.CaseAssignment" />
+     <tns:import name="org.kie.api.runtime.process.CaseData" />
+    </extensionElements>
+    <!-- process variables -->
+    <property id="varString" itemSubjectRef="ItemDefinition_49"/>
+    <property id="varInt" itemSubjectRef="ItemDefinition_64"/>
+    <property id="varDate" itemSubjectRef="ItemDefinition_49"/>
+
+    <!-- nodes -->
+    <startEvent id="StartEvent_1" name="Start Event 1"  isInterrupting="true">
+    </startEvent>
+    <endEvent id="EndEvent_1" name="End Event 1" />
+    <scriptTask id="b14ca9ae-06a5-43c2-9efb-fb9fdaef0a10" name="init" scriptFormat="http://www.java.com/java" >
+      <script>System.out.println("init begin ...");
+kcontext.setVariable("varString", "init varString");  
+kcontext.setVariable("varInt", 10);  
+kcontext.setVariable("varDate", new java.util.Date());  
+System.out.println("init end ...");</script>
+    </scriptTask>
+
+    <!-- connections -->
+    <sequenceFlow id="b14ca9ae-06a5-43c2-9efb-fb9fdaef0a10-EndEvent_1" sourceRef="b14ca9ae-06a5-43c2-9efb-fb9fdaef0a10" targetRef="EndEvent_1" />
+    <sequenceFlow id="StartEvent_1-b14ca9ae-06a5-43c2-9efb-fb9fdaef0a10" sourceRef="StartEvent_1" targetRef="b14ca9ae-06a5-43c2-9efb-fb9fdaef0a10" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="process_02_var" >
+      <bpmndi:BPMNShape bpmnElement="StartEvent_1" >
+        <dc:Bounds x="16" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="EndEvent_1" >
+        <dc:Bounds x="208" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="b14ca9ae-06a5-43c2-9efb-fb9fdaef0a10" >
+        <dc:Bounds x="96" y="16" width="80" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="b14ca9ae-06a5-43c2-9efb-fb9fdaef0a10-EndEvent_1" >
+        <di:waypoint x="136" y="40" />
+        <di:waypoint x="232" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="StartEvent_1-b14ca9ae-06a5-43c2-9efb-fb9fdaef0a10" >
+        <di:waypoint x="40" y="40" />
+        <di:waypoint x="136" y="40" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

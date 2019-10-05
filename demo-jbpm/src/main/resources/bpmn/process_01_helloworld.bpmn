@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <process processType="Private" isExecutable="true" id="process_01_helloworld" name="Default Process" tns:packageName="defaultPackage" tns:version="1" >
+
+    <extensionElements>
+     <tns:import name="java.util.Date" />
+     <tns:import name="org.kie.api.runtime.process.CaseAssignment" />
+     <tns:import name="org.kie.api.runtime.process.CaseData" />
+    </extensionElements>
+    <!-- nodes -->
+    <startEvent id="StartEvent_1" name="Start Event 1"  isInterrupting="true">
+    </startEvent>
+    <scriptTask id="ScriptTask_1" name="hello world" scriptFormat="http://www.java.com/java" >
+      <script>System.out.println("hello world!");</script>
+    </scriptTask>
+    <endEvent id="EndEvent_2" name="End Event 2" />
+    <scriptTask id="ScriptTask_2" name="import java.util.Date" scriptFormat="http://www.java.com/java" >
+      <script>System.out.println(new Date());</script>
+    </scriptTask>
+
+    <!-- connections -->
+    <sequenceFlow id="StartEvent_1-ScriptTask_1" sourceRef="StartEvent_1" targetRef="ScriptTask_1" />
+    <sequenceFlow id="ScriptTask_2-EndEvent_2" sourceRef="ScriptTask_2" targetRef="EndEvent_2" />
+    <sequenceFlow id="ScriptTask_1-ScriptTask_2" sourceRef="ScriptTask_1" targetRef="ScriptTask_2" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="process_01_helloworld" >
+      <bpmndi:BPMNShape bpmnElement="StartEvent_1" >
+        <dc:Bounds x="16" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="ScriptTask_1" >
+        <dc:Bounds x="96" y="16" width="129" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="EndEvent_2" >
+        <dc:Bounds x="460" y="16" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="ScriptTask_2" >
+        <dc:Bounds x="257" y="16" width="171" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="StartEvent_1-ScriptTask_1" >
+        <di:waypoint x="40" y="40" />
+        <di:waypoint x="160" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="ScriptTask_2-EndEvent_2" >
+        <di:waypoint x="342" y="40" />
+        <di:waypoint x="484" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="ScriptTask_1-ScriptTask_2" >
+        <di:waypoint x="160" y="40" />
+        <di:waypoint x="342" y="40" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>
