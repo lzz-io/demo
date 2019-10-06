@@ -25,6 +25,12 @@ import org.kie.internal.io.ResourceFactory;
 import org.kie.internal.utils.KieHelper;
 
 /**
+ * 
+ * 1.process definition
+ * 2.knowledge base
+ * 3.stateful knowledge session
+ * 4.process instance
+ * 
  * @author q1219331697
  *
  */

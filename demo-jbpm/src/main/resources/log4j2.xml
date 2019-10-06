@@ -5,7 +5,14 @@
 			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%15.15t,%2.2T] %-5level %-30.30c{1.}[%L,%M] - %msg%n" />
 		</Console>
 	</Appenders>
+
 	<Loggers>
+		<!-- <logger name="org.hibernate.SQL" level="trace" />
+			<logger name="org.hibernate.engine.QueryParameters" level="DEBUG" />
+			<logger name="org.hibernate.engine.query.HQLQueryPlan" level="DEBUG" /> -->
+		<logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" />
+		<logger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="TRACE" />
+
 		<Root level="info">
 			<AppenderRef ref="Console" />
 		</Root>
