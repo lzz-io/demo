@@ -41,15 +41,19 @@ public class Process03Gateway {
 		KieBase kieBase = kieHelper.addResource(ResourceFactory.newClassPathResource("bpmn/process_03_gateway.bpmn"))
 				.build();
 		KieSession kieSession = kieBase.newKieSession();
+
+		String processId = "process_03_gateway";
+		
 		Map<String, Object> parameters = new HashMap<>();
+		
 		parameters.put("x", 0);
-		kieSession.startProcess("process_03_gateway", parameters);
+		kieSession.startProcess(processId, parameters);
 
 		parameters.put("x", 2);
-		kieSession.startProcess("process_03_gateway", parameters);
+		kieSession.startProcess(processId, parameters);
 
 		parameters.put("x", 4);
-		kieSession.startProcess("process_03_gateway", parameters);
+		kieSession.startProcess(processId, parameters);
 	}
 
 }

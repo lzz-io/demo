@@ -16,9 +16,15 @@
 
 package io.lzz.demo.jbpm;
 
+import java.io.File;
+
+import org.appformer.maven.integration.MavenRepository;
+import org.jbpm.runtime.manager.impl.jpa.EntityManagerFactoryManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kie.api.runtime.manager.RuntimeManager;
+import org.kie.api.KieServices;
+import org.kie.api.builder.ReleaseId;
+import org.kie.scanner.KieMavenRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +45,13 @@ public class JbpmApplicationTest {
 	@Autowired
 	private ApplicationContext applicationContext;
 
-//	@Autowired
-//	private RuntimeManager runtimeManager;
-
+	// @Autowired
+	// private RuntimeManager runtimeManager;
+	
+	static final String ARTIFACT_ID = "evaluation";
+    static final String GROUP_ID = "org.jbpm.test";
+    static final String VERSION = "1.0.0";
+    
 	@Test
 	public final void testMain() {
 		String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
@@ -51,8 +61,16 @@ public class JbpmApplicationTest {
 			log.info("beanName:{}", beanName);
 		}
 
-//		log.info(runtimeManager.toString());
+		// log.info(runtimeManager.toString());
 
+		KieServices ks = KieServices.Factory.get();
+		ReleaseId releaseId = ks.newReleaseId(GROUP_ID, ARTIFACT_ID, VERSION);
+		File kjar = new File("../kjars/evaluation/jbpm-module.jar");
+		File pom = new File("../kjars/evaluation/pom.xml");
+		MavenRepository repository = KieMavenRepository.getKieMavenRepository();
+		repository.installArtifact(releaseId, kjar, pom);
+		
+		EntityManagerFactoryManager.get().clear();
 	}
 
 }
