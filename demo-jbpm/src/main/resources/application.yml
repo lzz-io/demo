@@ -1,4 +1,4 @@
 logging:
   level:
     root: debug
-    org.kie: trace
+#    org.kie: trace

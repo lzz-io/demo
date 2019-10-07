@@ -67,10 +67,14 @@ public class Process04HumanTaskTest extends JbpmJUnitBaseTestCase {
 		};
 
 		// 配置数据源
-		setPersistenceProperty("javax.persistence.jdbc.driver", "com.mysql.cj.jdbc.Driver");
-		setPersistenceProperty("javax.persistence.jdbc.url", "jdbc:mysql://localhost:3306/jbpm");
-		setPersistenceProperty("javax.persistence.jdbc.user", "root");
-		setPersistenceProperty("javax.persistence.jdbc.password", "123456");
+		// 貌似没效果
+		// setPersistenceProperty("javax.persistence.jdbc.driver",
+		// "com.mysql.cj.jdbc.Driver");
+		// setPersistenceProperty("javax.persistence.jdbc.url",
+		// "jdbc:mysql://localhost:3306/jbpm");
+		// setPersistenceProperty("javax.persistence.jdbc.user", "root");
+		// setPersistenceProperty("javax.persistence.jdbc.password", "123456");
+
 		// setPersistenceProperty("javax.persistence.transactionType", "JTA");
 		// setPersistenceProperty("hibernate.connection.driver_class",
 		// "com.mysql.cj.jdbc.Driver");
@@ -78,17 +82,10 @@ public class Process04HumanTaskTest extends JbpmJUnitBaseTestCase {
 		// "jdbc:mysql://localhost:3306/jbpm");
 		// setPersistenceProperty("hibernate.connection.username", "root");
 		// setPersistenceProperty("hibernate.connection.password", "123456");
-		// hibernate实现
 		setPersistenceProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
 		setPersistenceProperty("hibernate.show_sql", "true");
 		// setPersistenceProperty("hibernate.format_sql", "true");
 		setPersistenceProperty("hibernate.hbm2ddl.auto", "update");
-
-		// setPersistenceProperty("hibernate.transaction.manager_lookup_class",
-		// "com.arjuna.ats.internal.jta.transaction.arjunacore.TransactionManagerImple");
-		// setPersistenceProperty("hibernate.current_session_context_class", "jta");
-
-		setPersistenceProperty("", "");
 	}
 
 	@After
