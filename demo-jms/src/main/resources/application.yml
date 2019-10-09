@@ -1,7 +1,7 @@
 debug: false
 logging:
   level:
-    root: warn
+    root: info
     io.lzz: debug
 
 spring:
@@ -12,13 +12,19 @@ spring:
     in-memory: false
     packages:
       trust-all: true
-    pool:
-      enabled: true
-      max-connections: 4
-      time-between-expiration-check: 10s
-      idle-timeout: 15s
+# spring boot 2.1.x dependency to org.messaginghub:pooled-jms
+#    pool:
+#      enabled: false
+#      max-connections: 4
+#      time-between-expiration-check: 10s
+#      idle-timeout: 15s
   jms:
     listener:
       concurrency: 4
       max-concurrency: 8
 #      acknowledge-mode: client
+
+# spring boot 2.1.x use
+    cache:
+      enabled: true
+      session-cache-size: 4
