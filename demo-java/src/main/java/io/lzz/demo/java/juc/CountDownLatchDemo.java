@@ -45,7 +45,6 @@ public class CountDownLatchDemo {
 	}
 
 	private static class SubThread implements Runnable {
-
 		@Override
 		public void run() {
 			try {
@@ -57,8 +56,7 @@ public class CountDownLatchDemo {
 				e.printStackTrace();
 				Thread.currentThread().interrupt();
 			}
-
 		}
-
 	}
+	
 }
