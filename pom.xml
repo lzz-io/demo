@@ -14,15 +14,14 @@
 		<module>demo-java</module>
 		<module>demo-jbpm</module>
 		<module>demo-jms</module>
-		<module>demo-jvm</module>
 		<module>demo-maven</module>
 		<module>demo-mybatis</module>
 		<module>demo-rabbitmq</module>
 		<module>demo-redis</module>
 		<module>demo-spring-batch</module>
 		<module>demo-test</module>
-		<module>demo-thread</module>
 		<module>demo-xml</module>
+		<module>demo-zookeeper</module>
 	</modules>
 
 	<scm>
@@ -41,10 +40,10 @@
 		<!-- 跳过单元测试 -->
 		<maven.test.skip>true</maven.test.skip>
 
-		<spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
-		<spring-boot.version>2.1.8.RELEASE</spring-boot.version>
+		<spring-cloud.version>Greenwich.SR3</spring-cloud.version>
+		<spring-boot.version>2.1.9.RELEASE</spring-boot.version>
 
-		<mybatis-spring-boot.version>2.0.1</mybatis-spring-boot.version>
+		<mybatis-spring-boot.version>2.1.0</mybatis-spring-boot.version>
 		<cxf.version>3.2.6</cxf.version>
 		<kie-spring-boot.version>7.22.0.Final</kie-spring-boot.version>
 	</properties>
