@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.zookeeper.api;
+package io.lzz.demo.zookeeper.curator;
 
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;

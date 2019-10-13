@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.zookeeper.api.curator.cache;
+package io.lzz.demo.zookeeper.curator.cache;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;

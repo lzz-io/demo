@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.zookeeper.api;
+package io.lzz.demo.zookeeper.zookeeper;
 
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.ZooDefs.Ids;
@@ -35,7 +35,7 @@ import org.apache.zookeeper.ZooKeeper;
  * @author q1219331697
  *
  */
-public class ZookeeperApiDemo {
+public class ZookeeperDemo {
 
 	public static void main(String[] args) throws Exception {
 		String connectString = "localhost:2181";

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.zookeeper.api.curator.leader;
+package io.lzz.demo.zookeeper.curator.leader;
 
 import java.io.Closeable;
 import java.io.IOException;
