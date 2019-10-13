@@ -38,6 +38,10 @@ public class CuratorHelloworld {
 		if (client.checkExists().forPath(demoPath) == null) {
 			// client.createContainers(path);
 			// CreateMode.EPHEMERAL 临时节点
+			// PERSISTENT：持久化
+			// PERSISTENT_SEQUENTIAL：持久化并且带序列号
+			// EPHEMERAL：临时
+			// EPHEMERAL_SEQUENTIAL：临时并且带序列号
 			client.create().withMode(CreateMode.EPHEMERAL).forPath(demoPath);
 			client.setData().forPath(demoPath, "curator-demo-data".getBytes());
 		}
@@ -46,7 +50,7 @@ public class CuratorHelloworld {
 		System.out.println(new String(bs));
 
 		client.delete().deletingChildrenIfNeeded().forPath(demoPath);
-		
+
 		client.close();
 	}
 
