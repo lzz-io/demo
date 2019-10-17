@@ -24,6 +24,10 @@ import org.apache.zookeeper.server.ZooKeeperServerMain;
 import org.apache.zookeeper.server.quorum.QuorumPeerConfig;
 
 /**
+ * 
+ * 嵌入式启动
+ * 
+ * 
  * @author q1219331697
  *
  */
