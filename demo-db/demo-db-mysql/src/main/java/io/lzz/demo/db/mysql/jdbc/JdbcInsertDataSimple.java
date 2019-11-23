@@ -41,15 +41,17 @@ public class JdbcInsertDataSimple {
 
 			String sql = "insert into tb_user (`username`, `password`, `update_time`) values(?, ?, ?)";
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
-			int i = 0;
-			while (i < 1000000) {
-				preparedStatement.setString(1, UUID.randomUUID().toString().replace("-", ""));
+			int i = 1;
+			// 500w
+			while (i <= 5000000) {
+				preparedStatement.setString(1, "username" + i);
 				preparedStatement.setString(2, UUID.randomUUID().toString().replace("-", ""));
 				preparedStatement.setDate(3, new Date(System.currentTimeMillis()));
 				preparedStatement.addBatch();
 
 				count++;
-				if (count % 100000 == 0) {
+				// 50w
+				if (count % 1000000 == 0) {
 					preparedStatement.executeBatch();
 					connection.commit();
 					System.out.println("count:" + count);

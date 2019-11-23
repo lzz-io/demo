@@ -14,7 +14,10 @@
   	<dependency>
   		<groupId>org.springframework.kafka</groupId>
   		<artifactId>spring-kafka-test</artifactId>
-  		<scope>test</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>log4j</groupId>
+  		<artifactId>log4j</artifactId>
   	</dependency>
   </dependencies>
 </project>
