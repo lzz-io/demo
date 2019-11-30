@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>login</title>
+</head>
+<body>
+	<h1>login.html</h1>
+	<a href="/index">首页</a>
+
+	<h4 th:text="${msg}"></h4>
+	<form action="login" method="post">
+		username:<input type="text" name="username" value="user1" />
+		<p>
+			username:<input type="text" name="password" value="pwd" />
+		</p>
+		<p>
+			<input type="submit" value="submit" />
+		</p>
+	</form>
+
+</body>
+</html>

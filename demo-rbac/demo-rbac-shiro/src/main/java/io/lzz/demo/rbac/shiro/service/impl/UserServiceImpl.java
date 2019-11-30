@@ -1,5 +1,5 @@
 /*
- * Copyright qq:1219331697
+ * Copyright (C) qq:1219331697
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,28 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.mybatis;
+package io.lzz.demo.rbac.shiro.service.impl;
 
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import io.lzz.demo.rbac.shiro.entity.User;
+import io.lzz.demo.rbac.shiro.mapper.UserMapper;
+import io.lzz.demo.rbac.shiro.service.UserService;
 
 /**
  * @author q1219331697
  *
  */
-@SpringBootApplication
-// mapper接口类的位置
-@MapperScan("io.lzz.demo.mybatis.mapper")
-public class DemoMybatisApplication {
-	
-	public static void main(String[] args) throws Exception {
-		SpringApplication.run(DemoMybatisApplication.class, args);
-	}
+@Service
+public class UserServiceImpl implements UserService {
 
+	@Autowired
+	private UserMapper userMapper;
+
+	@Override
+	public User findByUsername(String username) {
+		return userMapper.findByUsername(username);
+	}
 
 }

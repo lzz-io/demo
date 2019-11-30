@@ -14,24 +14,14 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.mybatis;
-
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+package io.lzz.demo.rbac.shiro.config;
 
 /**
+ * 常量定义
+ * 
  * @author q1219331697
  *
  */
-@SpringBootApplication
-// mapper接口类的位置
-@MapperScan("io.lzz.demo.mybatis.mapper")
-public class DemoMybatisApplication {
-	
-	public static void main(String[] args) throws Exception {
-		SpringApplication.run(DemoMybatisApplication.class, args);
-	}
-
+public class Constants {
 
 }

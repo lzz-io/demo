@@ -1,5 +1,5 @@
 /*
- * Copyright qq:1219331697
+ * Copyright (C) qq:1219331697
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,25 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.mybatis;
+package io.lzz.demo.rbac.shiro.controller;
 
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * @author q1219331697
  *
  */
-@SpringBootApplication
-// mapper接口类的位置
-@MapperScan("io.lzz.demo.mybatis.mapper")
-public class DemoMybatisApplication {
-	
-	public static void main(String[] args) throws Exception {
-		SpringApplication.run(DemoMybatisApplication.class, args);
-	}
+// @RestController
+@Controller
+// @RequestMapping("/")
+public class IndexController {
 
+	@GetMapping(value = { "", "/index" })
+	public String index(Model model) {
+		model.addAttribute("msg", "hello world");
+		return "index";
+	}
 
 }

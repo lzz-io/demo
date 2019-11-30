@@ -1,8 +1,14 @@
 server:
   port: 80
 
+# @MapperScan 作用于启动类或者配置类上， mapper接口类的位置
+# type-aliases-package，实体类位置
+# mapper-locations，mapper.xml位置
+# 以上3个都不能少
 mybatis:
+  # 实体类位置
   type-aliases-package: io.lzz.demo.mybatis.entity
+  # mapper.xml位置 
   mapper-locations: classpath:com/example/test/mapper/*Mapper.xml
   configuration:
     map-underscore-to-camel-case: true

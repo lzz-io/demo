@@ -18,6 +18,7 @@
 		<module>demo-maven</module>
 		<module>demo-mybatis</module>
 		<module>demo-rabbitmq</module>
+		<module>demo-rbac</module>
 		<module>demo-redis</module>
 		<module>demo-spring-batch</module>
 		<module>demo-test</module>
@@ -48,6 +49,7 @@
 		<mybatis-spring-boot.version>2.1.0</mybatis-spring-boot.version>
 		<cxf.version>3.2.6</cxf.version>
 		<kie-spring-boot.version>7.22.0.Final</kie-spring-boot.version>
+		<shiro.version>1.4.2</shiro.version>
 	</properties>
 
 	<dependencyManagement>
@@ -66,16 +68,27 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+
 			<dependency>
 				<groupId>org.mybatis.spring.boot</groupId>
 				<artifactId>mybatis-spring-boot-starter</artifactId>
 				<version>${mybatis-spring-boot.version}</version>
 			</dependency>
+
 			<dependency>
 				<groupId>log4j</groupId>
 				<artifactId>log4j</artifactId>
 				<version>1.2.17</version>
 			</dependency>
+
+			<dependency>
+				<groupId>org.apache.shiro</groupId>
+				<artifactId>shiro-spring-boot</artifactId>
+				<version>${shiro.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 

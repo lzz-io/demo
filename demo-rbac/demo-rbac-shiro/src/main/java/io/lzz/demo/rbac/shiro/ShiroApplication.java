@@ -1,12 +1,12 @@
 /*
  * Copyright qq:1219331697
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *     
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,24 +14,26 @@
  * limitations under the License.
  */
 
-package io.lzz.demo.mybatis;
+package io.lzz.demo.rbac.shiro;
 
 import org.mybatis.spring.annotation.MapperScan;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @author q1219331697
- *
  */
 @SpringBootApplication
-// mapper接口类的位置
-@MapperScan("io.lzz.demo.mybatis.mapper")
-public class DemoMybatisApplication {
-	
-	public static void main(String[] args) throws Exception {
-		SpringApplication.run(DemoMybatisApplication.class, args);
-	}
+@MapperScan("io.lzz.demo.rbac.shiro.mapper")
+public class ShiroApplication {
 
+	private static final Logger log = LoggerFactory.getLogger(ShiroApplication.class);
+
+	public static void main(String[] args) throws Exception {
+		SpringApplication.run(ShiroApplication.class, args);
+		log.info("application started");
+	}
 
 }
