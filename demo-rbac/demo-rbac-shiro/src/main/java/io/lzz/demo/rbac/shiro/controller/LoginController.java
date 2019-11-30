@@ -37,13 +37,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 // @RequestMapping("/")
 public class LoginController {
 
+	private static final String LOGIN_TPL = "login";
+
 	@GetMapping(value = "/login")
 	public String login() {
-		return "login";
+		return LOGIN_TPL;
 	}
 
 	@PostMapping(value = "/login")
-	public String loginHandler(Model model, String username, String password) {
+	public String login(Model model, String username, String password) {
 		Subject subject = SecurityUtils.getSubject();
 		AuthenticationToken token = new UsernamePasswordToken(username, password);
 		try {
@@ -51,14 +53,19 @@ public class LoginController {
 			return "redirect:/index";
 		} catch (UnknownAccountException e) {
 			model.addAttribute("msg", "用户不存在");
-			return "login";
+			return LOGIN_TPL;
 		} catch (IncorrectCredentialsException e) {
 			model.addAttribute("msg", "密码错误");
-			return "login";
+			return LOGIN_TPL;
 		} catch (AuthenticationException e) {
 			model.addAttribute("msg", "登录失败");
-			return "login";
+			return LOGIN_TPL;
 		}
+	}
+
+	@GetMapping(value = "/unauth")
+	public String unauth() {
+		return "unauth";
 	}
 
 }

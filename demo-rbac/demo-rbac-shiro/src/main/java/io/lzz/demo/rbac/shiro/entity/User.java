@@ -26,19 +26,20 @@ public class User implements Serializable {
 
 	private static final long serialVersionUID = 7688653372936321561L;
 
-	private Integer uid;
+	private Integer id;
 	private String username;
 	private String password;
+	private String perms;
 
 	public User() {
 	}
 
-	public Integer getUid() {
-		return uid;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setUid(Integer uid) {
-		this.uid = uid;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getUsername() {
@@ -57,9 +58,17 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
+	public String getPerms() {
+		return perms;
+	}
+
+	public void setPerms(String perms) {
+		this.perms = perms;
+	}
+
 	@Override
 	public String toString() {
-		return "User [uid=" + uid + ", username=" + username + ", password=" + password + "]";
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", perms=" + perms + "]";
 	}
 
 }

@@ -16,14 +16,19 @@
 
 package io.lzz.demo.rbac.shiro.config;
 
+import java.util.Arrays;
+
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import io.lzz.demo.rbac.shiro.entity.User;
@@ -42,8 +47,17 @@ public class CustomRealm extends AuthorizingRealm {
 
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-		System.out.println("CustomRealm.doGetAuthorizationInfo()");
-		return null;
+		System.out.println("CustomRealm.doGetAuthorizationInfo() 授权");
+		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+		// 添加授权
+		// info.addStringPermission("user:add");
+		// 从数据库去权限
+		Subject subject = SecurityUtils.getSubject();
+		User user = (User) subject.getPrincipal();
+		User dbUser = userService.findById(user.getId());
+		info.addStringPermissions(Arrays.asList(dbUser.getPerms().split(";")));
+		System.out.println(info.getStringPermissions());
+		return info;
 	}
 
 	@Override
@@ -67,7 +81,7 @@ public class CustomRealm extends AuthorizingRealm {
 		}
 
 		// 2、判断密码交个shiro完成
-		return new SimpleAuthenticationInfo("", user.getPassword(), "");
+		return new SimpleAuthenticationInfo(user, user.getPassword(), "");
 	}
 
 }

@@ -43,11 +43,15 @@ public class AppConfig {
 		// LinkedHashMap保证顺序
 		Map<String, String> map = new LinkedHashMap<>();
 		map.put("/login", "anon");
-		map.put("/user/**", "authc");
 		map.put("/logout", "logout");
+		// 授权访问
+		map.put("/user/add", "perms[user:add]");
+		map.put("/user/edit", "perms[user:edit]");
+		map.put("/user/**", "authc");
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
 
 		shiroFilterFactoryBean.setLoginUrl("/login");
+		shiroFilterFactoryBean.setUnauthorizedUrl("/unauth");
 
 		return shiroFilterFactoryBean;
 	}
