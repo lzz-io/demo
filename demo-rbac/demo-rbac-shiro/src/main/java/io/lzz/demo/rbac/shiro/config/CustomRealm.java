@@ -77,6 +77,7 @@ public class CustomRealm extends AuthorizingRealm {
 		User user = userService.findByUsername(usernamePasswordToken.getUsername());
 		if (user == null) {
 			// return null,底层会自动抛出 UnknownAccountException
+			// 也可以 throw new UnknownAccountException();
 			return null;
 		}
 

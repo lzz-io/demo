@@ -34,15 +34,16 @@ import org.slf4j.LoggerFactory;
  * @author q1219331697
  *
  */
-public class ShiroHelloworld {
+public class ShiroMyRealmApp {
 
-	private static final Logger log = LoggerFactory.getLogger(ShiroHelloworld.class);
+	private static final Logger log = LoggerFactory.getLogger(ShiroMyRealmApp.class);
 
+	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
 
-		log.info("My First Apache Shiro Application");
+		log.info("My MyRealm Apache Shiro Application");
 
-		Factory<SecurityManager> factory = new IniSecurityManagerFactory("classpath:shiro-helloworld.ini");
+		Factory<SecurityManager> factory = new IniSecurityManagerFactory("classpath:shiro-myrealm.ini");
 		SecurityManager securityManager = factory.getInstance();
 		SecurityUtils.setSecurityManager(securityManager);
 

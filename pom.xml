@@ -49,7 +49,7 @@
 		<mybatis-spring-boot.version>2.1.0</mybatis-spring-boot.version>
 		<cxf.version>3.2.6</cxf.version>
 		<kie-spring-boot.version>7.22.0.Final</kie-spring-boot.version>
-		<shiro.version>1.4.2</shiro.version>
+		<shiro.version>1.4.1</shiro.version>
 	</properties>
 
 	<dependencyManagement>
