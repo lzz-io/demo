@@ -43,7 +43,7 @@ public class ShiroMyRealmApp {
 
 		log.info("My MyRealm Apache Shiro Application");
 
-		Factory<SecurityManager> factory = new IniSecurityManagerFactory("classpath:shiro-myrealm.ini");
+		Factory<SecurityManager> factory = new IniSecurityManagerFactory("classpath:shiro-my-realm.ini");
 		SecurityManager securityManager = factory.getInstance();
 		SecurityUtils.setSecurityManager(securityManager);
 
