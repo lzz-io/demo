@@ -50,14 +50,6 @@ public class ShiroMyRealmApp {
 		// get the currently executing user:
 		Subject currentUser = SecurityUtils.getSubject();
 
-		// Do some stuff with a Session (no need for a web or EJB container!!!)
-		Session session = currentUser.getSession();
-		session.setAttribute("someKey", "aValue");
-		String value = (String) session.getAttribute("someKey");
-		if (value.equals("aValue")) {
-			log.info("Retrieved the correct value! [" + value + "]");
-		}
-
 		// let's login the current user so we can check against roles and permissions:
 		if (!currentUser.isAuthenticated()) {
 			// 封装成 UsernamePasswordToken
