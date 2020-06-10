@@ -1,63 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
-	<context id="context1">
 
-		<commentGenerator>
-			<!-- <property name="suppressDate" value="true" /> -->
-			<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
-			<property name="suppressAllComments" value="true" />
-		</commentGenerator>
+    <!-- 一个数据库一个context,context的子元素必须按照它给出的顺序
+       property*,plugin*,commentGenerator?,jdbcConnection,javaTypeResolver?,
+       javaModelGenerator,sqlMapGenerator?,javaClientGenerator?,table+
+   -->
+   <!-- targetRuntime="MyBatis3" 生成XxxMapper.xml的关键 -->
+   <!-- targetRuntime="MyBatis3" 生成XxxMapper.xml的关键 -->
+   <!-- targetRuntime="MyBatis3" 生成XxxMapper.xml的关键 -->
+    <context id="context1" targetRuntime="MyBatis3">
+        <!-- 生成的Java文件编码 -->
+        <property name="javaFileEncoding" value="UTF-8"/>
 
-		<jdbcConnection
-			connectionURL="jdbc:mysql://node1:33306/mybatis"
-			driverClass="com.mysql.jdbc.Driver" password="123456" userId="root" />
-		<!-- <javaModelGenerator targetPackage="???" targetProject="???" /> -->
-		<!-- <sqlMapGenerator targetPackage="???" targetProject="???" /> -->
-		<!-- <javaClientGenerator targetPackage="???" targetProject="???" type="XMLMAPPER" 
-			/> -->
-		<!-- <table schema="???" tableName="???"> <columnOverride column="???" 
-			property="???" /> </table> -->
+        <!--支持分页-->
+        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"/>
+        <!--生成的bean支持可序列化-->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+        <!--生成的bean有equals和hashCode实现-->
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
+        <!--生成的bean有toString实现-->
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
 
-		<!-- 生成model模型，对应的包路径，以及文件存放路径(targetProject)，targetProject可以指定具体的路径,如./src/main/java， 
-			也可以使用“MAVEN”来自动生成，这样生成的代码会在target/generatord-source目录下 -->
-		<javaModelGenerator
-			targetPackage="io.lzz.demo.mybatis.entity"
-			targetProject="demo-mybatis">
-			<!-- 是否在当前路径下新加一层schema,eg：fase路径com.oop.eksp.user.model， true:com.oop.eksp.user.model.[schemaName] -->
-			<!-- <property name="enableSubPackages" value="false" /> -->
-			<!-- 从数据库返回的值被清理前后的空格 -->
-			<!-- <property name="trimStrings" value="true" /> -->
-		</javaModelGenerator>
+        <!-- 注释 -->
+        <commentGenerator>
+            <!-- 是否不生成注释 -->
+            <property name="suppressAllComments" value="true"/>
+            <!-- 不希望生成的注释中包含时间戳 -->
+            <!--<property name="suppressDate" value="true"/>-->
+            <!-- 添加 db 表中字段的注释，只有suppressAllComments为false时才生效-->
+            <!--<property name="addRemarkComments" value="true"/>-->
+        </commentGenerator>
 
+        <jdbcConnection connectionURL="jdbc:mysql://localhost:3306/test" driverClass="com.mysql.cj.jdbc.Driver"
+                        userId="root"/>
 
-		<!--对应的mapper.xml文件 -->
-		<sqlMapGenerator
-			targetPackage="io.lzz.demo.mybatis.mapper"
-			targetProject="demo-mybatis">
-			<!-- <property name="enableSubPackages" value="false" /> -->
-		</sqlMapGenerator>
+        <!-- 生成实体类地址 -->
+        <javaModelGenerator targetPackage="io.lzz.demo.entity" targetProject="src/main/java"/>
 
-		<!-- 对应的Mapper接口类文件 -->
-		<javaClientGenerator type="XMLMAPPER"
-			targetPackage="io.lzz.demo.mybatis.mapper"
-			targetProject="demo-mybatis">
-			<!-- <property name="enableSubPackages" value="false" /> -->
-		</javaClientGenerator>
+        <!-- 生成XxxMapper.xml文件 -->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
 
-		<!-- 列出要生成代码的所有表，这里配置的是不生成Example文件 -->
-		<!-- schema即为数据库名 tableName为对应的数据库表 domainObjectName是要生成的实体类 enable*ByExample 
-			是否生成 example类 -->
-		<table tableName="user" domainObjectName="User" schema="mybatis"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false">
-			<!-- 忽略列，不生成bean 字段 <ignoreColumn column="FRED" /> -->
-			<!-- 指定列的java数据类型 <columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR" 
-				/> -->
-			<!-- 用于指定生成实体类时是否使用实际的列名作为实体类的属性名。false是 Camel Case风格 -->
-			<property name="useActualColumnNames" value="true" />
-		</table>
+        <!-- 生成 XxxMapper.java 接口-->
+        <javaClientGenerator targetPackage="io.lzz.demo.mapper" targetProject="src/main/java" type="XMLMAPPER"/>
 
-	</context>
+        <table schema="test" tableName="order"></table>
+    </context>
 </generatorConfiguration>
