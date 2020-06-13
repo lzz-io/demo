@@ -35,6 +35,7 @@
                     <verbose>true</verbose>
                     <!-- 允许覆盖生成的Java文件，overwrite选项只能让java文件被覆盖，xml永远是merge追加，不可配置为overwrite -->
                     <overwrite>true</overwrite>
+					<configurationFile>generatorConfig.xml</configurationFile>
                 </configuration>
             </plugin>
         </plugins>
