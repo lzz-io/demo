@@ -3,50 +3,127 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
 
-    <!-- 一个数据库一个context,context的子元素必须按照它给出的顺序
-       property*,plugin*,commentGenerator?,jdbcConnection,javaTypeResolver?,
-       javaModelGenerator,sqlMapGenerator?,javaClientGenerator?,table+
-   -->
-   <!-- targetRuntime="MyBatis3" 生成XxxMapper.xml的关键 -->
-   <!-- targetRuntime="MyBatis3" 生成XxxMapper.xml的关键 -->
-   <!-- targetRuntime="MyBatis3" 生成XxxMapper.xml的关键 -->
-    <context id="context1" targetRuntime="MyBatis3">
-        <!-- 生成的Java文件编码 -->
-        <property name="javaFileEncoding" value="UTF-8"/>
+	<!-- 一个数据库一个context,context的子元素必须按照它给出的顺序
+		property*,plugin*,commentGenerator?,jdbcConnection,javaTypeResolver?,
+		javaModelGenerator,sqlMapGenerator?,javaClientGenerator?,table+
+	-->
 
-        <!--支持分页-->
-        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"/>
-        <!--生成的bean支持可序列化-->
-        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
-        <!--生成的bean有equals和hashCode实现-->
-        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
-        <!--生成的bean有toString实现-->
-        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+	<!--
+		context:生成一组对象的环境
+		id:必选，上下文id，用于在生成错误时提示
+		defaultModelType:指定生成对象的样式
+		1，conditional：类似hierarchical；
+		2，flat：所有内容（主键，blob）等全部生成在一个对象中；
+		3，hierarchical：主键生成一个XXKey对象(key class)，Blob等单独生成一个对象，其他简单属性在一个对象中(record class)
+		targetRuntime:
+		1，MyBatis3：默认的值，生成基于MyBatis3.x以上版本的内容，包括XXXBySample；
+		2，MyBatis3Simple：类似MyBatis3，只是不生成XXXBySample；
+		introspectedColumnImpl：类全限定名，用于扩展MBG
+	-->
+	<!-- targetRuntime="MyBatis3" 生成XxxMapper.xml的关键 -->
+	<!-- targetRuntime="MyBatis3" 生成XxxMapper.xml的关键 -->
+	<!-- targetRuntime="MyBatis3" 生成XxxMapper.xml的关键 -->
+	<context id="context1" targetRuntime="MyBatis3">
+		<!-- 生成的Java文件编码 -->
+		<property name="javaFileEncoding" value="UTF-8" />
 
-        <!-- 注释 -->
-        <commentGenerator>
-            <!-- 是否不生成注释 -->
-            <property name="suppressAllComments" value="true"/>
-            <!-- 不希望生成的注释中包含时间戳 -->
-            <!--<property name="suppressDate" value="true"/>-->
-            <!-- 添加 db 表中字段的注释，只有suppressAllComments为false时才生效-->
-            <!--<property name="addRemarkComments" value="true"/>-->
-        </commentGenerator>
+		<!-- beginningDelimiter和endingDelimiter：指明数据库的用于标记数据库对象名的符号，比如ORACLE就是双引号，MYSQL默认是`反引号； -->
+		<property name="beginningDelimiter" value="`" />
+		<property name="endingDelimiter" value="`" />
 
-        <jdbcConnection connectionURL="jdbc:mysql://localhost:3306/test" driverClass="com.mysql.cj.jdbc.Driver"
-                        userId="root"/>
+		<!--生成的bean支持可序列化 -->
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+		<!--生成的bean有equals和hashCode实现 -->
+		<plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
+		<!--生成的bean有toString实现 -->
+		<plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
 
-        <!-- 生成实体类地址 -->
-        <javaModelGenerator targetPackage="io.lzz.demo.entity" targetProject="src/main/java"/>
+		<!-- 注释 -->
+		<commentGenerator>
+			<!-- 是否不生成注释 -->
+			<property name="suppressAllComments" value="true" />
+			<!-- 不希望生成的注释中包含时间戳 -->
+			<!--<property name="suppressDate" value="true"/> -->
+			<!-- 添加 db 表中字段的注释，只有suppressAllComments为false时才生效 -->
+			<!--<property name="addRemarkComments" value="true"/> -->
+		</commentGenerator>
 
-        <!-- 生成XxxMapper.xml文件 -->
-        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
-            <property name="enableSubPackages" value="true" />
-        </sqlMapGenerator>
+		<jdbcConnection connectionURL="jdbc:mysql://localhost:3306/test"
+			driverClass="com.mysql.cj.jdbc.Driver" userId="root" />
 
-        <!-- 生成 XxxMapper.java 接口-->
-        <javaClientGenerator targetPackage="io.lzz.demo.mapper" targetProject="src/main/java" type="XMLMAPPER"/>
+		<!-- 生成实体类地址 -->
+		<javaModelGenerator targetPackage="io.lzz.demo.entity" targetProject="src/main/java" />
 
-        <table schema="test" tableName="order"></table>
-    </context>
+		<!-- 生成XxxMapper.xml文件 -->
+		<sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<!-- 对于mybatis来说，即生成Mapper接口，注意，如果没有配置该元素，那么默认不会生成Mapper接口
+			targetPackage/targetProject:同javaModelGenerator
+			type：选择怎么生成mapper接口（在MyBatis3/MyBatis3Simple下）：
+			1，ANNOTATEDMAPPER：会生成使用Mapper接口+Annotation的方式创建（SQL生成在annotation中），不会生成对应的XML；
+			2，MIXEDMAPPER：使用混合配置，会生成Mapper接口，并适当添加合适的Annotation，但是XML会生成在XML中；
+			3，XMLMAPPER：会生成Mapper接口，接口完全依赖XML；
+			注意，如果context是MyBatis3Simple：只支持ANNOTATEDMAPPER和XMLMAPPER
+		-->
+		<!-- 生成 XxxMapper.java 接口 -->
+		<javaClientGenerator targetPackage="io.lzz.demo.mapper" targetProject="src/main/java"
+			type="XMLMAPPER" />
+
+		<!--不生成帮助类（Exmaples） -->
+		<!--
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false" -->
+		<!-- 数据库中表名有时我们都会带个前缀，而实体又不想带前缀，这个配置可以把实体的前缀去掉 -->
+		<!-- <domainObjectRenamingRule searchString="^Tb" replaceString="" /> -->
+		<!-- table标签可以有多个，至少一个，tableName指定表名，可以使用_和%通配符 -->
+		<!-- <table tableName="t_%" enableInsert="false" enableDeleteByPrimaryKey="false" -->
+		<!-- enableSelectByPrimaryKey="true" enableUpdateByPrimaryKey="false" enableCountByExample="false" -->
+		<!-- enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"> -->
+		<!-- <domainObjectRenamingRule searchString="^T" replaceString="" /> -->
+		<!-- </table> -->
+
+		<!-- 选择一个table来生成相关文件，可以有一个或多个table，必须要有table元素 -->
+		<!-- 选择的table会生成一下文件： -->
+		<!-- 1，SQL map文件 -->
+		<!-- 2，生成一个主键类； -->
+		<!-- 3，除了BLOB和主键的其他字段的类； -->
+		<!-- 4，包含BLOB的类； -->
+		<!-- 5，一个用户生成动态查询的条件类（selectByExample, deleteByExample），可选； -->
+		<!-- 6，Mapper接口（可选） -->
+
+		<!-- tableName（必要）：要生成对象的表名； -->
+		<!-- 注意：大小写敏感问题。正常情况下，MBG会自动的去识别数据库标识符的大小写敏感度，在一般情况下，MBG会 -->
+		<!-- 根据设置的schema，catalog或tablename去查询数据表，按照下面的流程： -->
+		<!-- 1，如果schema，catalog或tablename中有空格，那么设置的是什么格式，就精确的使用指定的大小写格式去查询； -->
+		<!-- 2，否则，如果数据库的标识符使用大写的，那么MBG自动把表名变成大写再查找； -->
+		<!-- 3，否则，如果数据库的标识符使用小写的，那么MBG自动把表名变成小写再查找； -->
+		<!-- 4，否则，使用指定的大小写格式查询； -->
+		<!-- 另外的，如果在创建表的时候，使用的""把数据库对象规定大小写，就算数据库标识符是使用的大写，在这种情况下也会使用给定的大小写来创建表名； -->
+		<!-- 这个时候，请设置delimitIdentifiers="true"即可保留大小写格式； -->
+
+		<!-- 可选： -->
+		<!-- 1，schema：数据库的schema； -->
+		<!-- 2，catalog：数据库的catalog； -->
+		<!-- 3，alias：为数据表设置的别名，如果设置了alias，那么生成的所有的SELECT SQL语句中，列名会变成：alias_actualColumnName -->
+		<!-- 4，domainObjectName：生成的domain类的名字，如果不设置，直接使用表名作为domain类的名字；可以设置为somepck.domainName，那么会自动把domainName类再放到somepck包里面； -->
+		<!-- 5，enableInsert（默认true）：指定是否生成insert语句； -->
+		<!-- 6，enableSelectByPrimaryKey（默认true）：指定是否生成按照主键查询对象的语句（就是getById或get）； -->
+		<!-- 7，enableSelectByExample（默认true）：MyBatis3Simple为false，指定是否生成动态查询语句； -->
+		<!-- 8，enableUpdateByPrimaryKey（默认true）：指定是否生成按照主键修改对象的语句（即update)； -->
+		<!-- 9，enableDeleteByPrimaryKey（默认true）：指定是否生成按照主键删除对象的语句（即delete）； -->
+		<!-- 10，enableDeleteByExample（默认true）：MyBatis3Simple为false，指定是否生成动态删除语句； -->
+		<!-- 11，enableCountByExample（默认true）：MyBatis3Simple为false，指定是否生成动态查询总条数语句（用于分页的总条数查询）； -->
+		<!-- 12，enableUpdateByExample（默认true）：MyBatis3Simple为false，指定是否生成动态修改语句（只修改对象中不为空的属性）； -->
+		<!-- 13，modelType：参考context元素的defaultModelType，相当于覆盖； -->
+		<!-- 14，delimitIdentifiers：参考tableName的解释，注意，默认的delimitIdentifiers是双引号，如果类似MYSQL这样的数据库，使用的是`（反引号，那么还需要设置context的beginningDelimiter和endingDelimiter属性） -->
+		<!-- 15，delimitAllColumns：设置是否所有生成的SQL中的列名都使用标识符引起来。默认为false，delimitIdentifiers参考context的属性 -->
+
+		<table tableName="order" domainObjectName="Order" enableSelectByExample="false"
+			enableDeleteByExample="false" enableCountByExample="false" enableUpdateByExample="false">
+		</table>
+
+	</context>
 </generatorConfiguration>
