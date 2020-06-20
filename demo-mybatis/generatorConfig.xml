@@ -121,7 +121,7 @@
 		<!-- 14，delimitIdentifiers：参考tableName的解释，注意，默认的delimitIdentifiers是双引号，如果类似MYSQL这样的数据库，使用的是`（反引号，那么还需要设置context的beginningDelimiter和endingDelimiter属性） -->
 		<!-- 15，delimitAllColumns：设置是否所有生成的SQL中的列名都使用标识符引起来。默认为false，delimitIdentifiers参考context的属性 -->
 
-		<table tableName="order" domainObjectName="Order" enableSelectByExample="false"
+		<table tableName="t_order" domainObjectName="Order" enableSelectByExample="false"
 			enableDeleteByExample="false" enableCountByExample="false" enableUpdateByExample="false">
 		</table>
 
