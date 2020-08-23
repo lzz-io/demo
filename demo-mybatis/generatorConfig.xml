@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2020 lzz.io,q1219331697
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
-        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+		"http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
 
 	<!-- 一个数据库一个context,context的子元素必须按照它给出的顺序
@@ -38,26 +53,30 @@
 		<!--生成的bean有toString实现 -->
 		<plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
 
+		<!--取消注释又想覆盖生成的XML文件-->
+		<!--<plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />-->
+
 		<!-- 注释 -->
 		<commentGenerator>
 			<!-- 是否不生成注释 -->
-			<property name="suppressAllComments" value="true" />
+			<!--<property name="suppressAllComments" value="true" />-->
 			<!-- 不希望生成的注释中包含时间戳 -->
-			<!--<property name="suppressDate" value="true"/> -->
+			<property name="suppressDate" value="true" />
 			<!-- 添加 db 表中字段的注释，只有suppressAllComments为false时才生效 -->
-			<!--<property name="addRemarkComments" value="true"/> -->
+			<property name="addRemarkComments" value="true" />
 		</commentGenerator>
 
-		<jdbcConnection connectionURL="jdbc:mysql://localhost:3306/test"
-			driverClass="com.mysql.cj.jdbc.Driver" userId="root" />
+		<jdbcConnection connectionURL="jdbc:mysql://localhost:3306/springbatch"
+						driverClass="com.mysql.cj.jdbc.Driver" userId="root">
+			<!-- 解决mysql8生成所有库中表的问题 -->
+			<property name="nullCatalogMeansCurrent" value="true" />
+		</jdbcConnection>
 
 		<!-- 生成实体类地址 -->
-		<javaModelGenerator targetPackage="io.lzz.demo.entity" targetProject="src/main/java" />
+		<javaModelGenerator targetPackage="io.lzz.demo.batch.entity" targetProject="src/main/java" />
 
 		<!-- 生成XxxMapper.xml文件 -->
-		<sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
-			<property name="enableSubPackages" value="true" />
-		</sqlMapGenerator>
+		<sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources" />
 
 		<!-- 对于mybatis来说，即生成Mapper接口，注意，如果没有配置该元素，那么默认不会生成Mapper接口
 			targetPackage/targetProject:同javaModelGenerator
@@ -68,8 +87,8 @@
 			注意，如果context是MyBatis3Simple：只支持ANNOTATEDMAPPER和XMLMAPPER
 		-->
 		<!-- 生成 XxxMapper.java 接口 -->
-		<javaClientGenerator targetPackage="io.lzz.demo.mapper" targetProject="src/main/java"
-			type="XMLMAPPER" />
+		<javaClientGenerator targetPackage="io.lzz.demo.batch.mapper" targetProject="src/main/java"
+							 type="XMLMAPPER" />
 
 		<!--不生成帮助类（Exmaples） -->
 		<!--
@@ -78,8 +97,9 @@
 			selectByExampleQueryId="false" -->
 		<!-- 数据库中表名有时我们都会带个前缀，而实体又不想带前缀，这个配置可以把实体的前缀去掉 -->
 		<!-- <domainObjectRenamingRule searchString="^Tb" replaceString="" /> -->
-		<!-- table标签可以有多个，至少一个，tableName指定表名，可以使用_和%通配符 -->
-		<!-- <table tableName="t_%" enableInsert="false" enableDeleteByPrimaryKey="false" -->
+		<!-- table标签可以有多个，至少一个，tableName指定表名，
+			 可以使用_和%通配符，要匹配_使用\_转义 -->
+		<!-- <table tableName="t\_%" enableInsert="false" enableDeleteByPrimaryKey="false" -->
 		<!-- enableSelectByPrimaryKey="true" enableUpdateByPrimaryKey="false" enableCountByExample="false" -->
 		<!-- enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"> -->
 		<!-- <domainObjectRenamingRule searchString="^T" replaceString="" /> -->
@@ -108,7 +128,7 @@
 		<!-- 1，schema：数据库的schema； -->
 		<!-- 2，catalog：数据库的catalog； -->
 		<!-- 3，alias：为数据表设置的别名，如果设置了alias，那么生成的所有的SELECT SQL语句中，列名会变成：alias_actualColumnName -->
-		<!-- 4，domainObjectName：生成的domain类的名字，如果不设置，直接使用表名作为domain类的名字；可以设置为somepck.domainName，那么会自动把domainName类再放到somepck包里面； -->
+		<!-- 4，domainObjectName：生成的domain类的名字，如果不设置，直接使用表名作为domain类的名字；可以设置为somepack.domainName，那么会自动把domainName类再放到somepack包里面； -->
 		<!-- 5，enableInsert（默认true）：指定是否生成insert语句； -->
 		<!-- 6，enableSelectByPrimaryKey（默认true）：指定是否生成按照主键查询对象的语句（就是getById或get）； -->
 		<!-- 7，enableSelectByExample（默认true）：MyBatis3Simple为false，指定是否生成动态查询语句； -->
@@ -121,8 +141,28 @@
 		<!-- 14，delimitIdentifiers：参考tableName的解释，注意，默认的delimitIdentifiers是双引号，如果类似MYSQL这样的数据库，使用的是`（反引号，那么还需要设置context的beginningDelimiter和endingDelimiter属性） -->
 		<!-- 15，delimitAllColumns：设置是否所有生成的SQL中的列名都使用标识符引起来。默认为false，delimitIdentifiers参考context的属性 -->
 
-		<table tableName="t_order" domainObjectName="Order" enableSelectByExample="false"
-			enableDeleteByExample="false" enableCountByExample="false" enableUpdateByExample="false">
+		<!--主键生成 table子标签generatedKey-->
+		<!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+		<!--
+			mysql: identity="true" ==> order="AFTER"
+			oracle: identity="false" ==> order="BEFORE"
+		-->
+		<table tableName="batch_%"
+			   enableSelectByExample="false"
+			   enableDeleteByExample="false"
+			   enableCountByExample="false"
+			   enableUpdateByExample="false">
+		</table>
+
+		<table tableName="t\_%"
+			   enableCountByExample="true"
+			   enableDeleteByExample="true"
+			   enableSelectByExample="true"
+			   selectByExampleQueryId="true"
+			   enableUpdateByExample="true">
+			<!--<property name="rootClass" value="io.lzz.core.BaseEntity" />-->
+			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
+			<domainObjectRenamingRule searchString="^T" replaceString="" />
 		</table>
 
 	</context>
