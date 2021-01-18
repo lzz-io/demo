@@ -9,6 +9,6 @@
 		<Root level="info">
 			<AppenderRef ref="Console" />
 		</Root>
-		<logger name="io.lzz" level="debug"></logger>
+		<logger name="io.lzz" level="debug" />
 	</Loggers>
 </Configuration>
