@@ -59,7 +59,7 @@
 		<!-- 注释 -->
 		<commentGenerator>
 			<!-- 是否不生成注释 -->
-			<!--<property name="suppressAllComments" value="true" />-->
+			<property name="suppressAllComments" value="true" />
 			<!-- 不希望生成的注释中包含时间戳 -->
 			<property name="suppressDate" value="true" />
 			<!-- 添加 db 表中字段的注释，只有suppressAllComments为false时才生效 -->
@@ -73,7 +73,7 @@
 		</jdbcConnection>
 
 		<!-- 生成实体类地址 -->
-		<javaModelGenerator targetPackage="io.lzz.demo.batch.entity" targetProject="src/main/java" />
+		<javaModelGenerator targetPackage="io.lzz.demo.mybatis.entity" targetProject="src/main/java" />
 
 		<!-- 生成XxxMapper.xml文件 -->
 		<sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources" />
@@ -87,7 +87,7 @@
 			注意，如果context是MyBatis3Simple：只支持ANNOTATEDMAPPER和XMLMAPPER
 		-->
 		<!-- 生成 XxxMapper.java 接口 -->
-		<javaClientGenerator targetPackage="io.lzz.demo.batch.mapper" targetProject="src/main/java"
+		<javaClientGenerator targetPackage="io.lzz.demo.mybatis.mapper" targetProject="src/main/java"
 							 type="XMLMAPPER" />
 
 		<!--不生成帮助类（Exmaples） -->
@@ -162,7 +162,7 @@
 			   enableUpdateByExample="true">
 			<!--<property name="rootClass" value="io.lzz.core.BaseEntity" />-->
 			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
-			<domainObjectRenamingRule searchString="^T" replaceString="" />
+			<!--<domainObjectRenamingRule searchString="^T" replaceString="" />-->
 		</table>
 
 	</context>
