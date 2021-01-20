@@ -21,10 +21,19 @@ public class FileIOStreamDemo {
 				FileOutputStream outputStream = new FileOutputStream(outFile)
 		) {
 			//	2、使用
-			int b; // 一次读一个字节
-			while ((b = inputStream.read()) != -1) {
-				outputStream.write(b); // 读到的一个字节输出
+			// 2.1 一次读一个字节
+			// int b; // 一次读一个字节
+			// while ((b = inputStream.read()) != -1) {
+			// 	outputStream.write(b); // 读到的一个字节输出
+			// }
+
+			//	2.2 定义一个缓冲数组
+			byte[] buf = new byte[1024];
+			int length; // 读到的字节数
+			while ((length = inputStream.read(buf)) != -1) {
+				outputStream.write(buf, 0, length);
 			}
+
 		}
 		//	3、关闭
 
