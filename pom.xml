@@ -1,144 +1,146 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>io.lzz.demo</groupId>
-	<artifactId>demo</artifactId>
-	<version>0.1.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>io.lzz.demo</groupId>
+    <artifactId>demo</artifactId>
+    <version>0.1.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-	<modules>
-		<module>demo-db</module>
-		<module>demo-encrypt</module>
-		<module>demo-es</module>
-		<module>demo-file</module>
-		<module>demo-java</module>
-		<module>demo-jbpm</module>
-		<module>demo-jms</module>
-		<module>demo-kafka</module>
-		<module>demo-maven</module>
-		<module>demo-mybatis</module>
-		<module>demo-rabbitmq</module>
-		<module>demo-rbac</module>
-		<module>demo-redis</module>
-		<module>demo-spring-batch</module>
-		<module>demo-test</module>
-		<module>demo-war</module>
-		<module>demo-xml</module>
-		<module>demo-zookeeper</module>
-	</modules>
+    <modules>
+        <module>demo-db</module>
+        <module>demo-encrypt</module>
+        <module>demo-es</module>
+        <module>demo-file</module>
+        <module>demo-java</module>
+        <module>demo-jbpm</module>
+        <module>demo-jms</module>
+        <module>demo-kafka</module>
+        <module>demo-maven</module>
+        <module>demo-mybatis</module>
+        <module>demo-rabbitmq</module>
+        <module>demo-rbac</module>
+        <module>demo-redis</module>
+        <module>demo-spring-batch</module>
+        <module>demo-test</module>
+        <module>demo-war</module>
+        <module>demo-xml</module>
+        <module>demo-zookeeper</module>
+    </modules>
 
-	<scm>
-		<url>https://github.com/lzz-io/demo</url>
-		<connection>scm:git:git@github.com:lzz-io/demo.git</connection>
-		<developerConnection>scm:git:git@github.com:lzz-io/demo.git</developerConnection>
-		<tag>HEAD</tag>
-	</scm>
+    <scm>
+        <url>https://github.com/lzz-io/demo</url>
+        <connection>scm:git:git@github.com:lzz-io/demo.git</connection>
+        <developerConnection>scm:git:git@github.com:lzz-io/demo.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 
-	<properties>
-		<java.version>1.8</java.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<maven.compiler.source>${java.version}</maven.compiler.source>
-		<maven.compiler.target>${java.version}</maven.compiler.target>
-		<!-- 跳过单元测试 -->
-		<maven.test.skip>true</maven.test.skip>
+    <properties>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <!-- 跳过单元测试 -->
+        <maven.test.skip>true</maven.test.skip>
 
-		<!-- web.xml is missing -->
-		<failOnMissingWebXml>false</failOnMissingWebXml>
+        <!-- web.xml is missing -->
+        <failOnMissingWebXml>false</failOnMissingWebXml>
 
-		<!-- 优先boot -->
-		<spring-boot.version>2.2.1.RELEASE</spring-boot.version>
-		<spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
+        <!-- 优先boot -->
+        <!-- <spring-boot.version>2.2.1.RELEASE</spring-boot.version> -->
+        <!-- <spring-cloud.version>Hoxton.RELEASE</spring-cloud.version> -->
+        <spring-boot.version>2.7.5</spring-boot.version>
+        <spring-cloud.version>2021.0.5</spring-cloud.version>
 
-		<mybatis-spring-boot.version>2.1.0</mybatis-spring-boot.version>
-		<cxf.version>3.2.6</cxf.version>
-		<kie-spring-boot.version>7.22.0.Final</kie-spring-boot.version>
-		<shiro.version>1.4.1</shiro.version>
-	</properties>
+        <mybatis-spring-boot.version>2.1.0</mybatis-spring-boot.version>
+        <cxf.version>3.2.6</cxf.version>
+        <kie-spring-boot.version>7.22.0.Final</kie-spring-boot.version>
+        <shiro.version>1.4.1</shiro.version>
+    </properties>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-dependencies</artifactId>
-				<version>${spring-boot.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>${spring-cloud.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
-			<dependency>
-				<groupId>org.mybatis.spring.boot</groupId>
-				<artifactId>mybatis-spring-boot-starter</artifactId>
-				<version>${mybatis-spring-boot.version}</version>
-			</dependency>
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis-spring-boot.version}</version>
+            </dependency>
 
-			<dependency>
-				<groupId>log4j</groupId>
-				<artifactId>log4j</artifactId>
-				<version>1.2.17</version>
-			</dependency>
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>1.2.17</version>
+            </dependency>
 
-			<dependency>
-				<groupId>org.apache.shiro</groupId>
-				<artifactId>shiro-spring-boot</artifactId>
-				<version>${shiro.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-spring-boot</artifactId>
+                <version>${shiro.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
-		</dependencies>
-	</dependencyManagement>
+        </dependencies>
+    </dependencyManagement>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-			<exclusions>
-				<exclusion>
-					<artifactId>spring-boot-starter-logging</artifactId>
-					<groupId>org.springframework.boot</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-log4j2</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-configuration-processor</artifactId>
-		</dependency>
-	</dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+        </dependency>
+    </dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>${spring-boot.version}</version>
-			</plugin>
-		</plugins>
-	</build>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
