@@ -47,14 +47,12 @@
         <failOnMissingWebXml>false</failOnMissingWebXml>
 
         <!-- 优先boot -->
-        <!-- <spring-boot.version>2.2.1.RELEASE</spring-boot.version> -->
-        <!-- <spring-cloud.version>Hoxton.RELEASE</spring-cloud.version> -->
         <spring-boot.version>2.7.5</spring-boot.version>
         <spring-cloud.version>2021.0.5</spring-cloud.version>
 
-        <mybatis-spring-boot.version>2.1.0</mybatis-spring-boot.version>
+        <mybatis-spring-boot.version>2.2.2</mybatis-spring-boot.version>
         <cxf.version>3.2.6</cxf.version>
-        <kie-spring-boot.version>7.22.0.Final</kie-spring-boot.version>
+        <kie-spring-boot.version>7.73.0.Final</kie-spring-boot.version>
         <shiro.version>1.4.1</shiro.version>
     </properties>
 
