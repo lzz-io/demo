@@ -16,23 +16,18 @@
 
 package io.lzz.demo.spring.batch.step2.worker;
 
-import javax.jms.ConnectionFactory;
-
+import io.lzz.demo.spring.batch.entity.User;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.integration.chunk.RemoteChunkingWorkerBuilder;
 import org.springframework.batch.integration.config.annotation.EnableBatchIntegration;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.file.FlatFileItemWriter;
-import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
-import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
+import org.springframework.batch.item.file.builder.FlatFileItemWriterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.dsl.IntegrationFlow;
@@ -40,7 +35,7 @@ import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.jms.dsl.Jms;
 import org.springframework.messaging.MessageChannel;
 
-import io.lzz.demo.spring.batch.entity.User;
+import javax.jms.ConnectionFactory;
 
 /**
  * RemoteChunking worker配置
@@ -55,8 +50,8 @@ public class Step2WorkerConfig {
 
 	@SuppressWarnings("unused")
 	@Autowired
-	@Qualifier("taskExecutor")
-	private TaskExecutor taskExecutor;
+	// @Qualifier("taskExecutor")
+	private TaskExecutor batchTaskExecutor;
 
 	/*
 	 * Configure inbound flow (requests coming from the master)
@@ -102,26 +97,18 @@ public class Step2WorkerConfig {
 
 	// ItemWriter
 	@Bean
-	public ItemWriter<User> step2WorkerItemWriter() {
-		// Step2WorkerWriter<User> writer = new Step2WorkerWriter<>();
-		FlatFileItemWriter<User> writer = new FlatFileItemWriter<>();
-		writer.setName("step2WorkerItemWriter");
-
-		Resource resource = new FileSystemResource("tmp/step2.csv");
-		writer.setResource(resource);
-		// writer.setAppendAllowed(true);
-		writer.setEncoding("UTF-8");
-
-		BeanWrapperFieldExtractor<User> fieldExtractor = new BeanWrapperFieldExtractor<>();
-		fieldExtractor.setNames(new String[] { "id", "username", "createTime" });
-		DelimitedLineAggregator<User> lineAggregator = new DelimitedLineAggregator<>();
-		lineAggregator.setFieldExtractor(fieldExtractor);
-		writer.setLineAggregator(lineAggregator);
-
-		// TODO 待验证
-		ExecutionContext executionContext = new ExecutionContext();
-		writer.open(executionContext);
-		return writer;
+	public FlatFileItemWriter<User> step2WorkerItemWriter() {
+		String[] names = {"id", "userName", "createTime"};
+		FileSystemResource resource = new FileSystemResource("tmp/step2.csv");
+		FlatFileItemWriter<User> step2WorkerItemWriter = new FlatFileItemWriterBuilder<User>()
+				.name("step2WorkerItemWriter")
+				.resource(resource)
+				.encoding("UTF-8")
+				.delimited()
+				.names(names)
+				.build();
+		step2WorkerItemWriter.open(new ExecutionContext());
+		return step2WorkerItemWriter;
 	}
 
 	@Bean

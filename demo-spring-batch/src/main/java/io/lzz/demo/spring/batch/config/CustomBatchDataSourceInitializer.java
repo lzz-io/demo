@@ -16,19 +16,18 @@
 
 package io.lzz.demo.spring.batch.config;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.batch.BatchDataSourceInitializer;
 import org.springframework.boot.autoconfigure.batch.BatchProperties;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.stereotype.Component;
+
+import javax.sql.DataSource;
 
 /**
  * @author q1219331697
  *
  */
-@Component
+// @Component
 public class CustomBatchDataSourceInitializer extends BatchDataSourceInitializer {
 
 	/**

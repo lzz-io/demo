@@ -21,7 +21,6 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.integration.config.annotation.EnableBatchIntegration;
 import org.springframework.batch.integration.partition.RemotePartitioningMasterStepBuilderFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
@@ -79,7 +78,8 @@ public class Step3MasterConfig {
 	}
 
 	@Bean
-	public Step step3MasterStep(RemotePartitioningMasterStepBuilderFactory masterStepBuilderFactory, @Qualifier("taskExecutor") TaskExecutor taskExecutor) {
+	public Step step3MasterStep(RemotePartitioningMasterStepBuilderFactory masterStepBuilderFactory,
+								TaskExecutor batchTaskExecutor) {
 		return masterStepBuilderFactory.get("step3MasterStep")//
 				// .transactionManager(transactionManager)//
 				.partitioner("step3WorkerStep", new BasicPartitioner())//
@@ -88,7 +88,7 @@ public class Step3MasterConfig {
 				// 1、不设置inputChannel则为作业存储库轮询方式
 				// 2、设置inputChannel则为回复聚合方式
 				.inputChannel(step3MasterInputChannel()).listener(step3MasterExecutionListener)//
-				// .taskExecutor(taskExecutor)//
+				// .taskExecutor(batchTaskExecutor)//
 				// .throttleLimit(8)// 最大使用线程池数目
 				// .allowStartIfComplete(true)//
 				.build();

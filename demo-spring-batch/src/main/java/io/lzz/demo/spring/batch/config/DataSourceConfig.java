@@ -16,36 +16,33 @@
 
 package io.lzz.demo.spring.batch.config;
 
-import javax.sql.DataSource;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-
-import com.zaxxer.hikari.HikariDataSource;
-
 /**
  * @author q1219331697
  *
  */
-@Configuration
+// @Configuration
 public class DataSourceConfig {
 
-	// 定义2个name
-	@Primary
-	@Bean({ "dataSource", "bizDataSource" })
-	@ConfigurationProperties(prefix = "app.datasource.biz")
-	public DataSource dataSource() {
-		return DataSourceBuilder.create().type(HikariDataSource.class).build();
-	}
-
+	// // 定义2个name
 	// @Primary
-	@Bean("batchDataSource")
-	@ConfigurationProperties(prefix = "app.datasource.batch")
-	public DataSource batchDataSource() {
-		return DataSourceBuilder.create().type(HikariDataSource.class).build();
-	}
+	// @Bean({ "dataSource", "bizDataSource" })
+	// @ConfigurationProperties(prefix = "app.datasource.biz")
+	// public DataSource dataSource() {
+	// 	return DataSourceBuilder.create().type(HikariDataSource.class).build();
+	// }
+	//
+	// // @Primary
+	// @Bean("batchDataSource")
+	// @ConfigurationProperties(prefix = "app.datasource.batch")
+	// public DataSource batchDataSource() {
+	// 	return DataSourceBuilder.create().type(HikariDataSource.class).build();
+	// }
+
+	// @Bean
+	// public JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+	// 	JpaTransactionManager txManager = new JpaTransactionManager();
+	// 	txManager.setEntityManagerFactory(entityManagerFactory);
+	// 	return txManager;
+	// }
 
 }

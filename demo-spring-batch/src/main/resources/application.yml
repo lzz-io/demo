@@ -1,23 +1,22 @@
 # 自定义配置，app.xxx...
-app:
-  datasource:
-    batch:
-      url: jdbc:h2:./tmp/batch.db;AUTO_SERVER=TRUE
-      jdbc-url: jdbc:h2:./tmp/batch.db;AUTO_SERVER=TRUE
-      username: sa
-    biz:
-      url: jdbc:h2:./tmp/biz.db;AUTO_SERVER=TRUE
-      jdbc-url: jdbc:h2:./tmp/biz.db;AUTO_SERVER=TRUE
-      username: sa
-
+#app:
+#  datasource:
+#    batch:
+#      url: jdbc:h2:./tmp/batch.db;AUTO_SERVER=TRUE
+#      jdbc-url: jdbc:h2:./tmp/batch.db;AUTO_SERVER=TRUE
+#      username: sa
+#    biz:
+#      url: jdbc:h2:./tmp/biz.db;AUTO_SERVER=TRUE
+#      jdbc-url: jdbc:h2:./tmp/biz.db;AUTO_SERVER=TRUE
+#      username: sa
 logging:
   level:
     root: info
-    sql: trace
-    org.springframework.batch: trace
+    sql: info
+    org.springframework.batch: info
     io.lzz: debug
     
-spring:      
+spring:
   activemq:
     in-memory: true
 #    broker-url: tcp://localhost:61616
@@ -25,16 +24,29 @@ spring:
       trust-all: true # 为false时bean转换会报类找不到异常
 
   batch:
-    initialize-schema: always
+    jdbc:
+      initialize-schema: always
     job:
       enabled: false
 
+  datasource:
+    url: jdbc:h2:./tmp/biz.db;AUTO_SERVER=TRUE
+    username: sa
+#Embedded (local) connection	jdbc:h2:[file:][<path>]<databaseName>
+#                               jdbc:h2:~/test
+#                               jdbc:h2:file:/data/sample
+#                               jdbc:h2:file:C:/data/sample (Windows only)
+#
+#In-memory (private)	jdbc:h2:mem:
+#In-memory (named)	    jdbc:h2:mem:<databaseName>
+#                       jdbc:h2:mem:test_mem
   h2:
     console:
       enabled: true
+#      path: /h2-console
 
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
-    
+
