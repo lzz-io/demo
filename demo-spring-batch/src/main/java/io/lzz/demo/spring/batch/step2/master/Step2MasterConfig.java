@@ -17,9 +17,12 @@
 package io.lzz.demo.spring.batch.step2.master;
 
 import io.lzz.demo.spring.batch.entity.User;
+import io.lzz.demo.spring.batch.repository.UserRepository;
 import lombok.SneakyThrows;
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.step.tasklet.TaskletStep;
 import org.springframework.batch.integration.chunk.RemoteChunkingManagerStepBuilderFactory;
 import org.springframework.batch.item.ItemReader;
@@ -42,6 +45,7 @@ import org.springframework.messaging.PollableChannel;
 
 import javax.jms.ConnectionFactory;
 import javax.sql.DataSource;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -75,11 +79,28 @@ public class Step2MasterConfig {
     private Step2MasterItemWriteListener step2MasterItemWriteListener;
     @Autowired
     private Step2MasterSkipListener step2MasterSkipListener;
+    @Autowired
+    private StepBuilderFactory stepBuilderFactory;
+    @Autowired
+    private UserRepository userRepository;
 
     @Bean
     public Job step2Job() {
         return jobBuilderFactory.get("step2Job")
-                .start(step2MasterStep())
+                .start(initStep())
+                .next(step2MasterStep())
+                .build();
+    }
+
+    private Step initStep() {
+        return stepBuilderFactory.get("initStep")
+                .tasklet((contribution, chunkContext) -> {
+                    userRepository.deleteAllInBatch();
+                    for (int i = 1; i <= 10; i++) {
+                        userRepository.save(new User("userName" + i, new Date()));
+                    }
+                    return null;
+                })
                 .build();
     }
 
@@ -87,7 +108,7 @@ public class Step2MasterConfig {
     @Bean
     public TaskletStep step2MasterStep() {
         return managerStepBuilderFactory.<User, User>get("step2MasterStep")//
-                .chunk(1)//
+                .chunk(3)//
                 .reader(step2MasterItemReader())//
                 .outputChannel(step2MasterOutputChannel())//
                 .inputChannel(step2MasterInputChannel())//
