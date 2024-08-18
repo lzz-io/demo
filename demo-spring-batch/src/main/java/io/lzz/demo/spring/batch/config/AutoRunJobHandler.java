@@ -27,8 +27,9 @@ public class AutoRunJobHandler implements CommandLineRunner {
     @Override
     public void run(String... args) {
         Arrays.asList(
-                        "step2Job"
+                        // "step2Job"
                         // "remoteChunkingJob"
+                        "step3Job"
                         // "remotePartitioningJob"
                 )
                 .forEach(jobName -> {
