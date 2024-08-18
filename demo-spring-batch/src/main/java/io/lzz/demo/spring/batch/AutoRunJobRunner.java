@@ -1,4 +1,4 @@
-package io.lzz.demo.spring.batch.config;
+package io.lzz.demo.spring.batch;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -15,7 +15,7 @@ import java.util.Date;
 
 @Slf4j
 @Component
-public class AutoRunJobHandler implements CommandLineRunner {
+public class AutoRunJobRunner implements CommandLineRunner {
 
     @Autowired
     private ApplicationContext applicationContext;
