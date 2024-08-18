@@ -16,13 +16,14 @@ import org.springframework.batch.item.database.builder.JpaCursorItemReaderBuilde
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.channel.QueueChannel;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
-import org.springframework.integration.jms.dsl.Jms;
+import org.springframework.integration.redis.inbound.RedisQueueMessageDrivenEndpoint;
+import org.springframework.integration.redis.outbound.RedisQueueOutboundChannelAdapter;
 
-import javax.jms.ConnectionFactory;
 import javax.persistence.EntityManagerFactory;
 import java.util.Date;
 
@@ -54,7 +55,7 @@ public class RemoteChunkingJobConfig {
         return stepBuilderFactory.get("initStep")
                 .tasklet((contribution, chunkContext) -> {
                     userRepository.deleteAllInBatch();
-                    for (int i = 1; i <= 100; i++) {
+                    for (int i = 1; i <= 10; i++) {
                         userRepository.save(new User("userName" + i, new Date()));
                     }
                     return null;
@@ -96,21 +97,36 @@ public class RemoteChunkingJobConfig {
         return new QueueChannel();
     }
 
+    // @Bean
+    // public IntegrationFlow remoteChunkingManagerOutboundFlow(ConnectionFactory connectionFactory) {
+    //     return IntegrationFlows.from(remoteChunkingManagerOutputChannel())//
+    //             .handle(Jms.outboundAdapter(connectionFactory)//
+    //                     .destination("master2worker"))
+    //             .get();
+    // }
     @Bean
-    public IntegrationFlow remoteChunkingManagerOutboundFlow(ConnectionFactory connectionFactory) {
+    public IntegrationFlow remoteChunkingManagerOutboundFlow(RedisConnectionFactory connectionFactory) {
+        RedisQueueOutboundChannelAdapter redisQueueOutboundChannelAdapter
+                = new RedisQueueOutboundChannelAdapter("master2worker", connectionFactory);
         return IntegrationFlows.from(remoteChunkingManagerOutputChannel())//
-                .handle(Jms.outboundAdapter(connectionFactory)//
-                        .destination("master2worker"))
+                .handle(redisQueueOutboundChannelAdapter)
                 .get();
     }
 
+    // @Bean
+    // public IntegrationFlow remoteChunkingManagerInboundFlow(ConnectionFactory connectionFactory) {
+    //     return IntegrationFlows//
+    //             .from(Jms.messageDrivenChannelAdapter(connectionFactory)//
+    //                     .destination("worker2master"))
+    //             .channel(remoteChunkingManagerInputChannel())//
+    //             .get();
+    // }
     @Bean
-    public IntegrationFlow remoteChunkingManagerInboundFlow(ConnectionFactory connectionFactory) {
-        return IntegrationFlows//
-                .from(Jms.messageDrivenChannelAdapter(connectionFactory)//
-                        .destination("worker2master"))
-                .channel(remoteChunkingManagerInputChannel())//
-                .get();
+    public RedisQueueMessageDrivenEndpoint remoteChunkingManagerInboundFlow(RedisConnectionFactory connectionFactory) {
+        RedisQueueMessageDrivenEndpoint redisQueueMessageDrivenEndpoint
+                = new RedisQueueMessageDrivenEndpoint("worker2master", connectionFactory);
+        redisQueueMessageDrivenEndpoint.setOutputChannel(remoteChunkingManagerInputChannel());
+        return redisQueueMessageDrivenEndpoint;
     }
 
     @Bean
@@ -152,20 +168,35 @@ public class RemoteChunkingJobConfig {
         return new DirectChannel();
     }
 
+    // @Bean
+    // public IntegrationFlow remoteChunkingWorkInboundFlow(ConnectionFactory connectionFactory) {
+    //     return IntegrationFlows//
+    //             .from(Jms.messageDrivenChannelAdapter(connectionFactory)//
+    //                     .destination("master2worker"))
+    //             .channel(remoteChunkingWorkInputChannel())//
+    //             .get();
+    // }
     @Bean
-    public IntegrationFlow remoteChunkingWorkInboundFlow(ConnectionFactory connectionFactory) {
-        return IntegrationFlows//
-                .from(Jms.messageDrivenChannelAdapter(connectionFactory)//
-                        .destination("master2worker"))
-                .channel(remoteChunkingWorkInputChannel())//
-                .get();
+    public RedisQueueMessageDrivenEndpoint remoteChunkingWorkInboundFlow(RedisConnectionFactory connectionFactory) {
+        RedisQueueMessageDrivenEndpoint redisQueueMessageDrivenEndpoint
+                = new RedisQueueMessageDrivenEndpoint("master2worker", connectionFactory);
+        redisQueueMessageDrivenEndpoint.setOutputChannel(remoteChunkingWorkInputChannel());
+        return redisQueueMessageDrivenEndpoint;
     }
 
+    // @Bean
+    // public IntegrationFlow remoteChunkingWorkOutboundFlow(ConnectionFactory connectionFactory) {
+    //     return IntegrationFlows.from(remoteChunkingWorkOutputChannel())//
+    //             .handle(Jms.outboundAdapter(connectionFactory)//
+    //                     .destination("worker2master"))
+    //             .get();
+    // }
     @Bean
-    public IntegrationFlow remoteChunkingWorkOutboundFlow(ConnectionFactory connectionFactory) {
+    public IntegrationFlow remoteChunkingWorkOutboundFlow(RedisConnectionFactory connectionFactory) {
+        RedisQueueOutboundChannelAdapter redisQueueOutboundChannelAdapter
+                = new RedisQueueOutboundChannelAdapter("worker2master", connectionFactory);
         return IntegrationFlows.from(remoteChunkingWorkOutputChannel())//
-                .handle(Jms.outboundAdapter(connectionFactory)//
-                        .destination("worker2master"))
+                .handle(redisQueueOutboundChannelAdapter)
                 .get();
     }
 
