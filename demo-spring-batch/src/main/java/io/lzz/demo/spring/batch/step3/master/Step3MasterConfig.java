@@ -20,10 +20,8 @@ import io.lzz.demo.spring.batch.entity.User;
 import io.lzz.demo.spring.batch.repository.UserRepository;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.integration.config.annotation.EnableBatchIntegration;
 import org.springframework.batch.integration.partition.RemotePartitioningManagerStepBuilderFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -33,8 +31,6 @@ import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.jms.dsl.Jms;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.MessageChannel;
 
 import javax.jms.ConnectionFactory;
@@ -44,8 +40,6 @@ import java.util.Date;
  * @author q1219331697
  */
 @Configuration
-@EnableBatchProcessing
-@EnableBatchIntegration
 public class Step3MasterConfig {
 
     @Autowired
@@ -113,8 +107,6 @@ public class Step3MasterConfig {
 
     @Bean
     public IntegrationFlow step3MasterOutboundFlow(ConnectionFactory connectionFactory) {
-        JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
-        jmsTemplate.setMessageConverter(new MappingJackson2MessageConverter());
         return IntegrationFlows.from(step3MasterOutputChannel())//
                 .handle(Jms.outboundAdapter(connectionFactory)//
                         .destination("batch.step3.master2worker"))//

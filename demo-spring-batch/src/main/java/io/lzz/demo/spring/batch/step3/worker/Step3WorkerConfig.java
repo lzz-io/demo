@@ -21,11 +21,8 @@ import io.lzz.demo.spring.batch.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
-import org.springframework.batch.integration.config.annotation.EnableBatchIntegration;
 import org.springframework.batch.integration.partition.RemotePartitioningWorkerStepBuilderFactory;
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JdbcPagingItemReader;
 import org.springframework.batch.item.database.Order;
@@ -51,8 +48,6 @@ import java.util.Map;
  * @author q1219331697
  */
 @Configuration
-@EnableBatchProcessing
-@EnableBatchIntegration
 public class Step3WorkerConfig {
 
     private static final Logger log = LoggerFactory.getLogger(Step3WorkerConfig.class);
@@ -105,7 +100,7 @@ public class Step3WorkerConfig {
 
     // ItemReader
     @Bean
-    public ItemReader<User> step3WorkerItemReader() {
+    public JdbcPagingItemReader<User> step3WorkerItemReader() {
         JdbcPagingItemReader<User> reader = new JdbcPagingItemReader<>();
         reader.setName("step3WorkerItemReader");
         reader.setDataSource(dataSource);

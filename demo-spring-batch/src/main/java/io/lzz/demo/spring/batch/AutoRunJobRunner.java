@@ -29,8 +29,8 @@ public class AutoRunJobRunner implements CommandLineRunner {
         Arrays.asList(
                         // "step2Job"
                         // "remoteChunkingJob"
-                        "step3Job"
-                        // "remotePartitioningJob"
+                        // "step3Job"
+                        "remotePartitioningJob"
                 )
                 .forEach(jobName -> {
                     try {

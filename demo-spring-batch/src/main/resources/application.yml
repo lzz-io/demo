@@ -15,7 +15,12 @@ logging:
     sql: info
     org.springframework.batch: info
     io.lzz: debug
-    
+    io.lzz.demo.spring.batch.repository: trace
+#    org.hibernate.SQL: debug
+#    org.hibernate.engine.QueryParameters: debug
+#    org.hibernate.engine.query.HQLQueryPlan: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+
 spring:
   activemq:
     in-memory: true
