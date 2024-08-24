@@ -27,7 +27,6 @@ import org.springframework.integration.jms.dsl.Jms;
 
 import javax.jms.ConnectionFactory;
 import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
 import java.util.Date;
 
 @Slf4j
@@ -36,9 +35,7 @@ import java.util.Date;
 @Configuration
 public class RemotePartitioningJobConfig {
 
-    public static final int MOD_SIZE = 4;
-    @Autowired
-    private DataSource dataSource;
+    public static final int MOD_SIZE = 8;
     @Autowired
     private EntityManagerFactory entityManagerFactory;
     @Autowired
