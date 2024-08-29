@@ -18,9 +18,7 @@ package io.lzz.demo.spring.batch.step2.worker;
 
 import io.lzz.demo.spring.batch.entity.User;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.integration.chunk.RemoteChunkingWorkerBuilder;
-import org.springframework.batch.integration.config.annotation.EnableBatchIntegration;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +39,6 @@ import javax.jms.ConnectionFactory;
  * @author q1219331697
  */
 @Slf4j
-@EnableBatchProcessing
-@EnableBatchIntegration
 @Configuration
 public class Step2WorkerConfig {
 

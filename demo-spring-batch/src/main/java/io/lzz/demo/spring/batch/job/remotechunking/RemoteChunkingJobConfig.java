@@ -108,7 +108,8 @@ public class RemoteChunkingJobConfig {
     public IntegrationFlow remoteChunkingManagerOutboundFlow(RedisConnectionFactory connectionFactory) {
         RedisQueueOutboundChannelAdapter redisQueueOutboundChannelAdapter
                 = new RedisQueueOutboundChannelAdapter("master2worker", connectionFactory);
-        return IntegrationFlows.from(remoteChunkingManagerOutputChannel())//
+        return IntegrationFlows
+                .from(remoteChunkingManagerOutputChannel())//
                 .handle(redisQueueOutboundChannelAdapter)
                 .get();
     }
@@ -129,6 +130,7 @@ public class RemoteChunkingJobConfig {
         return redisQueueMessageDrivenEndpoint;
     }
 
+    // worker******************************************************************
     @Bean
     public IntegrationFlow remoteChunkingWorkerFlow() {
         return this.workerBuilder
@@ -195,7 +197,8 @@ public class RemoteChunkingJobConfig {
     public IntegrationFlow remoteChunkingWorkOutboundFlow(RedisConnectionFactory connectionFactory) {
         RedisQueueOutboundChannelAdapter redisQueueOutboundChannelAdapter
                 = new RedisQueueOutboundChannelAdapter("worker2master", connectionFactory);
-        return IntegrationFlows.from(remoteChunkingWorkOutputChannel())//
+        return IntegrationFlows
+                .from(remoteChunkingWorkOutputChannel())//
                 .handle(redisQueueOutboundChannelAdapter)
                 .get();
     }
