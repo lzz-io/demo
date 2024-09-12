@@ -18,6 +18,7 @@ package io.lzz.demo.spring.batch.entity;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,6 +38,8 @@ import java.util.Date;
 public class User implements Serializable {
 
     private static final long serialVersionUID = -6983732910407310230L;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private Date createTime;
     @Id
     @GeneratedValue(generator = "increment")

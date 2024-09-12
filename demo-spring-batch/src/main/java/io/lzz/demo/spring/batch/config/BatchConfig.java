@@ -21,8 +21,8 @@ import org.springframework.batch.core.launch.support.SimpleJobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 /**
  * @author q1219331697
@@ -49,12 +49,12 @@ public class BatchConfig {
 
     @Bean
     public TaskExecutor batchTaskExecutor() {
-        // ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-        // taskExecutor.setThreadNamePrefix("spring_batch_");
-        // taskExecutor.setCorePoolSize(50);
-        // return taskExecutor;
-        return new SimpleAsyncTaskExecutor("spring_batch_");
-        // return new SyncTaskExecutor();
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+        taskExecutor.setThreadNamePrefix("spring_batch_");
+        taskExecutor.setCorePoolSize(4);
+        taskExecutor.setMaxPoolSize(8);
+        taskExecutor.setQueueCapacity(0);
+        return taskExecutor;
     }
 
 }

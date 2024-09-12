@@ -30,7 +30,8 @@ public class AutoRunJobRunner implements CommandLineRunner {
                         // "step2Job"
                         // "remoteChunkingJob"
                         // "step3Job"
-                        "remotePartitioningJob"
+                        // "remotePartitioningJob"
+                        "splitFileJob"
                 )
                 .forEach(jobName -> {
                     try {
@@ -38,7 +39,7 @@ public class AutoRunJobRunner implements CommandLineRunner {
                                 .addDate("date", new Date())
                                 .toJobParameters();
                         asyJobLauncher.run(applicationContext.getBean(jobName, Job.class), jobParameters);
-                        log.info("启动job【{}】成功", jobName);
+                        log.info("异步启动job【{}】成功", jobName);
                     } catch (Exception e) {
                         log.error("启动job异常，", e);
                     }

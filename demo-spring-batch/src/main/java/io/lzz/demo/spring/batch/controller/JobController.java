@@ -55,13 +55,13 @@ public class JobController {
                 .toJobParameters();
         JobExecution jobExecution = new JobExecution(1L);
         try {
-            log.info("job start ...");
+            log.info("job start ...开始");
             Job job = applicationContext.getBean(jobName, Job.class);
             jobExecution = jobLauncher.run(job, jobParameters);
         } catch (Exception e) {
             log.error("job已执行", e);
         }
-        log.info("job started ...");
+        log.info("job started ...结束");
         return "job start! " + jobExecution.getJobInstance() + " " + (System.currentTimeMillis() - beginTime);
     }
 
