@@ -46,7 +46,7 @@ public class SplitFileJobConfig {
 
     public static final String FILE_NAME = "split_file.txt";
     public static final String DIR = "./tmp";
-    public static final int FILE_NUM = 8;
+    public static final int FILE_NUM = 4;
     @Autowired
     private TaskExecutor batchTaskExecutor;
     @Autowired
@@ -119,7 +119,7 @@ public class SplitFileJobConfig {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         ) {
             // for (int i = 1; i <= 40_000_000; i++) {
-            for (int i = 1; i <= 100; i++) {
+            for (int i = 1; i <= 10; i++) {
                 writer.write(i + "|" + "userName" + i + "|" + LocalDateTime.now() + "|");
                 writer.write(i + "|" + "userName" + i + "|" + LocalDateTime.now() + "|");
                 writer.write(i + "|" + "userName" + i + "|" + LocalDateTime.now() + "|");

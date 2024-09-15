@@ -54,7 +54,7 @@ public class BatchConfig {
         taskExecutor.setCorePoolSize(4);
         taskExecutor.setMaxPoolSize(8);
         taskExecutor.setQueueCapacity(0);
-        // taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         return taskExecutor;
     }
 
