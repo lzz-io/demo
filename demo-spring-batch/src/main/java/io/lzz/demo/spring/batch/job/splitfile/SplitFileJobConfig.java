@@ -1,21 +1,28 @@
 package io.lzz.demo.spring.batch.job.splitfile;
 
 import io.lzz.demo.spring.batch.entity.User;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.ItemReadListener;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.core.partition.support.MultiResourcePartitioner;
+import org.springframework.batch.core.partition.support.Partitioner;
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.task.TaskExecutor;
 
 import java.io.BufferedWriter;
@@ -51,7 +58,7 @@ public class SplitFileJobConfig {
     public Job splitFileJob() {
         return jobBuilderFactory.get("splitFileJob")
                 .start(splitFileJobInitStep())
-                // .next(splitFileJobStep())
+                .next(splitFileJobStep())
                 .build();
     }
 
@@ -95,6 +102,14 @@ public class SplitFileJobConfig {
 
     }
 
+    @Bean
+    public Step splitFileJobStep() {
+        return stepBuilderFactory.get("splitFileJobStep")
+                .partitioner(splitFileJobWorkStep())
+                .partitioner(splitFileJobWorkStep().getName(), splitFileJobPartitioner())
+                .build();
+    }
+
     private void createFile(File dir, File file) throws IOException {
         dir.mkdirs();
         try (
@@ -107,7 +122,6 @@ public class SplitFileJobConfig {
                 writer.write(i + "|" + "userName" + i + "|" + LocalDateTime.now() + "|");
                 writer.newLine();
             }
-            // writer.flush();
         }
     }
 
@@ -121,10 +135,10 @@ public class SplitFileJobConfig {
         }
     }
 
-    private Step splitFileJobStep() {
-        return stepBuilderFactory.get("splitFileJobStep")
+    private Step splitFileJobWorkStep() {
+        return stepBuilderFactory.get("splitFileJobWorkStep")
                 .<User, User>chunk(3)
-                .reader(reader())
+                .reader(reader(null))
                 .processor(processor())
                 .writer(writer())
                 .faultTolerant()
@@ -133,6 +147,15 @@ public class SplitFileJobConfig {
                 .listener(readerListener())
                 .taskExecutor(batchTaskExecutor)
                 .build();
+    }
+
+    @SneakyThrows
+    private Partitioner splitFileJobPartitioner() {
+        MultiResourcePartitioner multiResourcePartitioner = new MultiResourcePartitioner();
+        PathMatchingResourcePatternResolver patternResolver = new PathMatchingResourcePatternResolver();
+        Resource[] resources = patternResolver.getResources("file:" + DIR + File.separator + FILE_NAME + ".tmp." + "*");
+        multiResourcePartitioner.setResources(resources);
+        return multiResourcePartitioner;
     }
 
     // private ItemReader<User> reader() {
@@ -146,10 +169,12 @@ public class SplitFileJobConfig {
     //             .targetType(User.class)
     //             .build();
     // }
-    private ItemReader<User> reader() {
+    @StepScope
+    @Bean
+    public FlatFileItemReader<User> reader(@Value("#{stepExecutionContext['fileName']}") String fileName) {
         return new FlatFileItemReaderBuilder<User>()
                 .name("reader")
-                .resource(new FileSystemResource(new File(DIR, FILE_NAME)))
+                .resource(new FileSystemResource(fileName.replaceFirst("file:", "")))
                 .lineMapper(new LineMapper<User>() {
                     @Override
                     public User mapLine(String line, int lineNumber) throws Exception {
