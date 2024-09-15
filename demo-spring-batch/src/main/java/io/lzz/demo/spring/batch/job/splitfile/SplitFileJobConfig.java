@@ -46,13 +46,15 @@ public class SplitFileJobConfig {
 
     public static final String FILE_NAME = "split_file.txt";
     public static final String DIR = "./tmp";
-    public static final int FILE_NUM = 4;
+    public static final int FILE_NUM = 8;
     @Autowired
     private TaskExecutor batchTaskExecutor;
     @Autowired
     private JobBuilderFactory jobBuilderFactory;
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
+    @Autowired
+    private TaskExecutor stepTaskExecutor;
 
     @Bean
     public Job splitFileJob() {
@@ -70,7 +72,7 @@ public class SplitFileJobConfig {
                     if (!file.exists()) {
                         createFile(dir, file);
                     }
-                    // createFile(dir, file);
+                    createFile(dir, file);
 
                     Arrays.stream(Objects.requireNonNull(
                                     dir.listFiles((dir2, name) -> name.matches(FILE_NAME + "\\.tmp\\." + "\\d"))))
@@ -107,6 +109,7 @@ public class SplitFileJobConfig {
         return stepBuilderFactory.get("splitFileJobStep")
                 .partitioner(splitFileJobWorkStep())
                 .partitioner(splitFileJobWorkStep().getName(), splitFileJobPartitioner())
+                .taskExecutor(stepTaskExecutor)
                 .build();
     }
 
@@ -116,7 +119,7 @@ public class SplitFileJobConfig {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         ) {
             // for (int i = 1; i <= 40_000_000; i++) {
-            for (int i = 1; i <= 100_000; i++) {
+            for (int i = 1; i <= 100; i++) {
                 writer.write(i + "|" + "userName" + i + "|" + LocalDateTime.now() + "|");
                 writer.write(i + "|" + "userName" + i + "|" + LocalDateTime.now() + "|");
                 writer.write(i + "|" + "userName" + i + "|" + LocalDateTime.now() + "|");
@@ -150,7 +153,9 @@ public class SplitFileJobConfig {
     }
 
     @SneakyThrows
-    private Partitioner splitFileJobPartitioner() {
+    @StepScope
+    @Bean
+    public Partitioner splitFileJobPartitioner() {
         MultiResourcePartitioner multiResourcePartitioner = new MultiResourcePartitioner();
         PathMatchingResourcePatternResolver patternResolver = new PathMatchingResourcePatternResolver();
         Resource[] resources = patternResolver.getResources("file:" + DIR + File.separator + FILE_NAME + ".tmp." + "*");

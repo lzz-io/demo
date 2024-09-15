@@ -24,6 +24,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import java.util.concurrent.ThreadPoolExecutor;
+
 /**
  * @author q1219331697
  */
@@ -34,7 +36,6 @@ public class BatchConfig {
     public JobLauncher synJobLauncher(JobRepository jobRepository) {
         SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
         jobLauncher.setJobRepository(jobRepository);
-        // jobLauncher.afterPropertiesSet();
         return jobLauncher;
     }
 
@@ -42,18 +43,29 @@ public class BatchConfig {
     public JobLauncher asyJobLauncher(JobRepository jobRepository) {
         SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
         jobLauncher.setJobRepository(jobRepository);
-        jobLauncher.setTaskExecutor(batchTaskExecutor()); // 异步线程
-        // jobLauncher.afterPropertiesSet();
+        jobLauncher.setTaskExecutor(stepTaskExecutor()); // 异步线程
         return jobLauncher;
+    }
+
+    @Bean
+    public TaskExecutor stepTaskExecutor() {
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+        taskExecutor.setThreadNamePrefix("step_");
+        taskExecutor.setCorePoolSize(4);
+        taskExecutor.setMaxPoolSize(8);
+        taskExecutor.setQueueCapacity(0);
+        // taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        return taskExecutor;
     }
 
     @Bean
     public TaskExecutor batchTaskExecutor() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-        taskExecutor.setThreadNamePrefix("spring_batch_");
+        taskExecutor.setThreadNamePrefix("batch_");
         taskExecutor.setCorePoolSize(4);
         taskExecutor.setMaxPoolSize(8);
         taskExecutor.setQueueCapacity(0);
+        taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         return taskExecutor;
     }
 
