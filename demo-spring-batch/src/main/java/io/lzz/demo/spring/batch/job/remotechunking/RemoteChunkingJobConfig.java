@@ -101,13 +101,13 @@ public class RemoteChunkingJobConfig {
     // public IntegrationFlow remoteChunkingManagerOutboundFlow(ConnectionFactory connectionFactory) {
     //     return IntegrationFlows.from(remoteChunkingManagerOutputChannel())//
     //             .handle(Jms.outboundAdapter(connectionFactory)//
-    //                     .destination("master2worker"))
+    //                     .destination("remoteChunking.master2worker"))
     //             .get();
     // }
     @Bean
     public IntegrationFlow remoteChunkingManagerOutboundFlow(RedisConnectionFactory connectionFactory) {
         RedisQueueOutboundChannelAdapter redisQueueOutboundChannelAdapter
-                = new RedisQueueOutboundChannelAdapter("master2worker", connectionFactory);
+                = new RedisQueueOutboundChannelAdapter("remoteChunking.master2worker", connectionFactory);
         return IntegrationFlows
                 .from(remoteChunkingManagerOutputChannel())//
                 .handle(redisQueueOutboundChannelAdapter)
@@ -118,14 +118,14 @@ public class RemoteChunkingJobConfig {
     // public IntegrationFlow remoteChunkingManagerInboundFlow(ConnectionFactory connectionFactory) {
     //     return IntegrationFlows//
     //             .from(Jms.messageDrivenChannelAdapter(connectionFactory)//
-    //                     .destination("worker2master"))
+    //                     .destination("remoteChunking.worker2master"))
     //             .channel(remoteChunkingManagerInputChannel())//
     //             .get();
     // }
     @Bean
     public RedisQueueMessageDrivenEndpoint remoteChunkingManagerInboundFlow(RedisConnectionFactory connectionFactory) {
         RedisQueueMessageDrivenEndpoint redisQueueMessageDrivenEndpoint
-                = new RedisQueueMessageDrivenEndpoint("worker2master", connectionFactory);
+                = new RedisQueueMessageDrivenEndpoint("remoteChunking.worker2master", connectionFactory);
         redisQueueMessageDrivenEndpoint.setOutputChannel(remoteChunkingManagerInputChannel());
         return redisQueueMessageDrivenEndpoint;
     }
@@ -174,14 +174,14 @@ public class RemoteChunkingJobConfig {
     // public IntegrationFlow remoteChunkingWorkInboundFlow(ConnectionFactory connectionFactory) {
     //     return IntegrationFlows//
     //             .from(Jms.messageDrivenChannelAdapter(connectionFactory)//
-    //                     .destination("master2worker"))
+    //                     .destination("remoteChunking.master2worker"))
     //             .channel(remoteChunkingWorkInputChannel())//
     //             .get();
     // }
     @Bean
     public RedisQueueMessageDrivenEndpoint remoteChunkingWorkInboundFlow(RedisConnectionFactory connectionFactory) {
         RedisQueueMessageDrivenEndpoint redisQueueMessageDrivenEndpoint
-                = new RedisQueueMessageDrivenEndpoint("master2worker", connectionFactory);
+                = new RedisQueueMessageDrivenEndpoint("remoteChunking.master2worker", connectionFactory);
         redisQueueMessageDrivenEndpoint.setOutputChannel(remoteChunkingWorkInputChannel());
         return redisQueueMessageDrivenEndpoint;
     }
@@ -190,13 +190,13 @@ public class RemoteChunkingJobConfig {
     // public IntegrationFlow remoteChunkingWorkOutboundFlow(ConnectionFactory connectionFactory) {
     //     return IntegrationFlows.from(remoteChunkingWorkOutputChannel())//
     //             .handle(Jms.outboundAdapter(connectionFactory)//
-    //                     .destination("worker2master"))
+    //                     .destination("remoteChunking.worker2master"))
     //             .get();
     // }
     @Bean
     public IntegrationFlow remoteChunkingWorkOutboundFlow(RedisConnectionFactory connectionFactory) {
         RedisQueueOutboundChannelAdapter redisQueueOutboundChannelAdapter
-                = new RedisQueueOutboundChannelAdapter("worker2master", connectionFactory);
+                = new RedisQueueOutboundChannelAdapter("remoteChunking.worker2master", connectionFactory);
         return IntegrationFlows
                 .from(remoteChunkingWorkOutputChannel())//
                 .handle(redisQueueOutboundChannelAdapter)
