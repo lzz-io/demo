@@ -1,4 +1,4 @@
-package io.lzz.demo.spring.batch.job.remotepartitioning;
+package io.lzz.demo.spring.batch.job.remotepartitioning1;
 
 import io.lzz.demo.spring.batch.entity.User;
 import io.lzz.demo.spring.batch.repository.UserRepository;
@@ -8,8 +8,10 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.core.partition.support.Partitioner;
 import org.springframework.batch.integration.partition.RemotePartitioningManagerStepBuilderFactory;
 import org.springframework.batch.integration.partition.RemotePartitioningWorkerStepBuilderFactory;
+import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JpaPagingItemReader;
@@ -27,10 +29,12 @@ import org.springframework.integration.redis.outbound.RedisQueueOutboundChannelA
 
 import javax.persistence.EntityManagerFactory;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Configuration
-public class RemotePartitioningJobConfig {
+public class RemotePartitioning1JobConfig {
 
     public static final int MOD_SIZE = 8;
     @Autowired
@@ -47,10 +51,10 @@ public class RemotePartitioningJobConfig {
     private RemotePartitioningWorkerStepBuilderFactory workerStepBuilderFactory;
 
     @Bean
-    public Job remotePartitioningJob() {
-        return jobBuilderFactory.get("remotePartitioningJob")
+    public Job remotePartitioning1Job() {
+        return jobBuilderFactory.get("remotePartitioning1Job")
                 .start(initStep())
-                .next(remotePartitioningManagerStep())
+                .next(remotePartitioning1ManagerStep())
                 .build();
     }
 
@@ -67,21 +71,36 @@ public class RemotePartitioningJobConfig {
     }
 
     @Bean
-    public Step remotePartitioningManagerStep() {
-        return this.managerStepBuilderFactory.get("remotePartitioningManagerStep")
+    public Step remotePartitioning1ManagerStep() {
+        return this.managerStepBuilderFactory.get("remotePartitioning1ManagerStep")
                 // remotePartitioningWorkerStep，worker的step名字，一定要注意！！！
-                .partitioner("remotePartitioningWorkerStep", new RemotePartitioner())
+                .partitioner("remotePartitioning1WorkerStep", partitioner())
                 .gridSize(MOD_SIZE)
-                .outputChannel(remotePartitioningManagerOutputChannel()) // requests sent to workers
-                .inputChannel(remotePartitioningManagerInputChannel())   // replies received from workers
+                .outputChannel(remotePartitioning1ManagerOutputChannel()) // requests sent to workers
+                .inputChannel(remotePartitioning1ManagerInputChannel())   // replies received from workers
                 .build();
+    }
+
+    private Partitioner partitioner() {
+        return new Partitioner() {
+            @Override
+            public Map<String, ExecutionContext> partition(int gridSize) {
+                Map<String, ExecutionContext> map = new HashMap<>(gridSize);
+                for (int i = 0; i < gridSize; i++) {
+                    ExecutionContext executionContext = new ExecutionContext();
+                    executionContext.putInt("mod", i);
+                    map.put("partition" + i, executionContext);
+                }
+                return map;
+            }
+        };
     }
 
     /*
      * Configure outbound flow (requests going to workers)
      */
     @Bean
-    public DirectChannel remotePartitioningManagerOutputChannel() {
+    public DirectChannel remotePartitioning1ManagerOutputChannel() {
         return new DirectChannel();
     }
 
@@ -89,59 +108,59 @@ public class RemotePartitioningJobConfig {
      * Configure inbound flow (replies coming from workers)
      */
     @Bean
-    public DirectChannel remotePartitioningManagerInputChannel() {
+    public DirectChannel remotePartitioning1ManagerInputChannel() {
         return new DirectChannel();
     }
 
     // @Bean
-    // public IntegrationFlow remotePartitioningManagerOutboundFlow(ConnectionFactory connectionFactory) {
+    // public IntegrationFlow remotePartitioning1ManagerOutboundFlow(ConnectionFactory connectionFactory) {
     //     return IntegrationFlows
-    //             .from(remotePartitioningManagerOutputChannel())
+    //             .from(remotePartitioning1ManagerOutputChannel())
     //             .log()
     //             .handle(Jms.outboundAdapter(connectionFactory)//
-    //                     .destination("remotePartitioning.master2worker"))
+    //                     .destination("remotePartitioning1.master2worker"))
     //             .get();
     // }
     @Bean
-    public IntegrationFlow remotePartitioningManagerOutboundFlow(RedisConnectionFactory connectionFactory) {
+    public IntegrationFlow remotePartitioning1ManagerOutboundFlow(RedisConnectionFactory connectionFactory) {
         RedisQueueOutboundChannelAdapter redisQueueOutboundChannelAdapter
-                = new RedisQueueOutboundChannelAdapter("remotePartitioning.master2worker", connectionFactory);
+                = new RedisQueueOutboundChannelAdapter("remotePartitioning1.master2worker", connectionFactory);
         redisQueueOutboundChannelAdapter.setExtractPayload(false);
         return IntegrationFlows
-                .from(remotePartitioningManagerOutputChannel())
+                .from(remotePartitioning1ManagerOutputChannel())
                 .log()
                 .handle(redisQueueOutboundChannelAdapter)
                 .get();
     }
 
     // @Bean
-    // public IntegrationFlow remotePartitioningManagerInboundFlow(ConnectionFactory connectionFactory) {
+    // public IntegrationFlow remotePartitioning1ManagerInboundFlow(ConnectionFactory connectionFactory) {
     //     return IntegrationFlows//
     //             .from(Jms.messageDrivenChannelAdapter(connectionFactory)//
-    //                     .destination("remotePartitioning.worker2master"))
-    //             .channel(remotePartitioningManagerInputChannel())//
+    //                     .destination("remotePartitioning1.worker2master"))
+    //             .channel(remotePartitioning1ManagerInputChannel())//
     //             .log()
     //             .get();
     // }
     @Bean
-    public RedisQueueMessageDrivenEndpoint remotePartitioningManagerInboundFlow(RedisConnectionFactory connectionFactory) {
+    public RedisQueueMessageDrivenEndpoint remotePartitioning1ManagerInboundFlow(RedisConnectionFactory connectionFactory) {
         RedisQueueMessageDrivenEndpoint redisQueueMessageDrivenEndpoint
-                = new RedisQueueMessageDrivenEndpoint("remotePartitioning.worker2master", connectionFactory);
-        redisQueueMessageDrivenEndpoint.setOutputChannel(remotePartitioningManagerInputChannel());
+                = new RedisQueueMessageDrivenEndpoint("remotePartitioning1.worker2master", connectionFactory);
+        redisQueueMessageDrivenEndpoint.setOutputChannel(remotePartitioning1ManagerInputChannel());
         redisQueueMessageDrivenEndpoint.setExpectMessage(true);
         return redisQueueMessageDrivenEndpoint;
     }
 
     // worker******************************************************************
     @Bean
-    public Step remotePartitioningWorkerStep() {
-        return this.workerStepBuilderFactory.get("remotePartitioningWorkerStep")
-                .inputChannel(remotePartitioningWorkInputChannel()) // requests received from the manager
-                .outputChannel(remotePartitioningWorkOutputChannel()) // replies sent to the manager
+    public Step remotePartitioning1WorkerStep() {
+        return this.workerStepBuilderFactory.get("remotePartitioning1WorkerStep")
+                .inputChannel(remotePartitioning1WorkInputChannel()) // requests received from the manager
+                .outputChannel(remotePartitioning1WorkOutputChannel()) // replies sent to the manager
                 .<User, User>chunk(4)
-                .reader(remotePartitioningWorkerStepItemReader(null))
-                .processor(remotePartitioningWorkerStepItemProcessor())
-                .writer(remotePartitioningWorkerStepItemWriter())
+                .reader(remotePartitioning1WorkerStepItemReader(null))
+                .processor(remotePartitioning1WorkerStepItemProcessor())
+                .writer(remotePartitioning1WorkerStepItemWriter())
                 .build();
     }
 
@@ -149,7 +168,7 @@ public class RemotePartitioningJobConfig {
      * Configure inbound flow (requests coming from the manager)
      */
     @Bean
-    public DirectChannel remotePartitioningWorkInputChannel() {
+    public DirectChannel remotePartitioning1WorkInputChannel() {
         return new DirectChannel();
     }
 
@@ -157,16 +176,16 @@ public class RemotePartitioningJobConfig {
      * Configure outbound flow (replies going to the manager)
      */
     @Bean
-    public DirectChannel remotePartitioningWorkOutputChannel() {
+    public DirectChannel remotePartitioning1WorkOutputChannel() {
         return new DirectChannel();
     }
 
     @StepScope
     @Bean
-    public JpaPagingItemReader<User> remotePartitioningWorkerStepItemReader(
+    public JpaPagingItemReader<User> remotePartitioning1WorkerStepItemReader(
             @Value("#{stepExecutionContext['mod']}") Integer mod) {
         return new JpaPagingItemReaderBuilder<User>()
-                .name("remotePartitioningWorkerStepItemReader")
+                .name("remotePartitioning1WorkerStepItemReader")
                 .entityManagerFactory(entityManagerFactory)
                 .queryString("select u from User u where mod(id, " + MOD_SIZE + ") = " + mod)
                 // .queryString("select u from User u")
@@ -175,7 +194,7 @@ public class RemotePartitioningJobConfig {
     }
 
     @Bean
-    public ItemProcessor<User, User> remotePartitioningWorkerStepItemProcessor() {
+    public ItemProcessor<User, User> remotePartitioning1WorkerStepItemProcessor() {
         return item -> {
             item.setUserName(item.getUserName() + "修改");
             return item;
@@ -183,47 +202,47 @@ public class RemotePartitioningJobConfig {
     }
 
     @Bean
-    public ItemWriter<User> remotePartitioningWorkerStepItemWriter() {
+    public ItemWriter<User> remotePartitioning1WorkerStepItemWriter() {
         return items -> {
             userRepository.saveAll(items);
-            log.info("remotePartitioningWorkerItemWriter: {}", items);
+            log.info("remotePartitioning1WorkerItemWriter: {}", items);
         };
     }
 
     // @Bean
-    // public IntegrationFlow remotePartitioningWorkInboundFlow(ConnectionFactory connectionFactory) {
+    // public IntegrationFlow remotePartitioning1WorkInboundFlow(ConnectionFactory connectionFactory) {
     //     return IntegrationFlows//
     //             .from(Jms.messageDrivenChannelAdapter(connectionFactory)//
-    //                     .destination("remotePartitioning.master2worker"))
-    //             .channel(remotePartitioningWorkInputChannel())//
+    //                     .destination("remotePartitioning1.master2worker"))
+    //             .channel(remotePartitioning1WorkInputChannel())//
     //             .log()
     //             .get();
     // }
     @Bean
-    public RedisQueueMessageDrivenEndpoint remotePartitioningWorkInboundFlow(RedisConnectionFactory connectionFactory) {
+    public RedisQueueMessageDrivenEndpoint remotePartitioning1WorkInboundFlow(RedisConnectionFactory connectionFactory) {
         RedisQueueMessageDrivenEndpoint redisQueueMessageDrivenEndpoint
-                = new RedisQueueMessageDrivenEndpoint("remotePartitioning.master2worker", connectionFactory);
-        redisQueueMessageDrivenEndpoint.setOutputChannel(remotePartitioningWorkInputChannel());
+                = new RedisQueueMessageDrivenEndpoint("remotePartitioning1.master2worker", connectionFactory);
+        redisQueueMessageDrivenEndpoint.setOutputChannel(remotePartitioning1WorkInputChannel());
         redisQueueMessageDrivenEndpoint.setExpectMessage(true);
         return redisQueueMessageDrivenEndpoint;
     }
 
     // @Bean
-    // public IntegrationFlow remotePartitioningWorkOutboundFlow(ConnectionFactory connectionFactory) {
+    // public IntegrationFlow remotePartitioning1WorkOutboundFlow(ConnectionFactory connectionFactory) {
     //     return IntegrationFlows
-    //             .from(remotePartitioningWorkOutputChannel())
+    //             .from(remotePartitioning1WorkOutputChannel())
     //             .log()
     //             .handle(Jms.outboundAdapter(connectionFactory)
-    //                     .destination("remotePartitioning.worker2master"))
+    //                     .destination("remotePartitioning1.worker2master"))
     //             .get();
     // }
     @Bean
-    public IntegrationFlow remotePartitioningWorkOutboundFlow(RedisConnectionFactory connectionFactory) {
+    public IntegrationFlow remotePartitioning1WorkOutboundFlow(RedisConnectionFactory connectionFactory) {
         RedisQueueOutboundChannelAdapter redisQueueOutboundChannelAdapter
-                = new RedisQueueOutboundChannelAdapter("remotePartitioning.worker2master", connectionFactory);
+                = new RedisQueueOutboundChannelAdapter("remotePartitioning1.worker2master", connectionFactory);
         redisQueueOutboundChannelAdapter.setExtractPayload(false);
         return IntegrationFlows
-                .from(remotePartitioningWorkOutputChannel())
+                .from(remotePartitioning1WorkOutputChannel())
                 .log()
                 .handle(redisQueueOutboundChannelAdapter)
                 .get();
