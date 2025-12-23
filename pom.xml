@@ -52,7 +52,8 @@
         <spring-boot.version>3.5.9</spring-boot.version>
         <spring-cloud.version>2025.0.1</spring-cloud.version>
 
-        <mybatis-spring-boot.version>2.2.2</mybatis-spring-boot.version>
+        <!-- <mybatis-spring-boot.version>2.2.2</mybatis-spring-boot.version> -->
+        <mybatis-spring-boot.version>3.0.5</mybatis-spring-boot.version>
         <redisson.version>3.52.0</redisson.version>
 
         <cxf.version>3.2.6</cxf.version>
