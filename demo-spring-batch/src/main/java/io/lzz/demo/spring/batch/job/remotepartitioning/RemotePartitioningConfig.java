@@ -18,7 +18,6 @@ import org.springframework.integration.channel.QueueChannel;
 import org.springframework.integration.config.AggregatorFactoryBean;
 import org.springframework.integration.core.MessagingTemplate;
 import org.springframework.integration.dsl.IntegrationFlow;
-import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.redis.inbound.RedisQueueMessageDrivenEndpoint;
 import org.springframework.integration.redis.outbound.RedisQueueOutboundChannelAdapter;
 
@@ -79,7 +78,7 @@ public class RemotePartitioningConfig {
         RedisQueueOutboundChannelAdapter redisQueueOutboundChannelAdapter
                 = new RedisQueueOutboundChannelAdapter("remotePartitioning.manager2worker", connectionFactory);
         redisQueueOutboundChannelAdapter.setExtractPayload(false);
-        return IntegrationFlows
+        return IntegrationFlow
                 .from(remotePartitioningManagerOutputRequestChannel())
                 .log()
                 .handle(redisQueueOutboundChannelAdapter)
@@ -169,7 +168,7 @@ public class RemotePartitioningConfig {
         RedisQueueOutboundChannelAdapter redisQueueOutboundChannelAdapter
                 = new RedisQueueOutboundChannelAdapter("remotePartitioning.worker2manager", connectionFactory);
         redisQueueOutboundChannelAdapter.setExtractPayload(false);
-        return IntegrationFlows
+        return IntegrationFlow
                 .from(remotePartitioningWorkOutputChannel())
                 .log()
                 .handle(redisQueueOutboundChannelAdapter)
