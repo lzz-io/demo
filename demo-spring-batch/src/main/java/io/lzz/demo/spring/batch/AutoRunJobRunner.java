@@ -30,8 +30,8 @@ public class AutoRunJobRunner implements CommandLineRunner {
                         // "step2Job"
                         // "remoteChunkingJob"
                         // "step3Job"
-                        // "remotePartitioningJob"
-                        "splitFileJob"
+                        "remotePartitioningJob"
+                        // "splitFileJob"
                 )
                 .forEach(jobName -> {
                     try {

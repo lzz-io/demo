@@ -1,0 +1,52 @@
+<bean id="remotePartitionHandler" scope="prototype"
+      class="org.springframework,batch,integration,partition,MessagechannelPartitionHandler">
+    <property name="gridSize" value="${multipleThreadNbr}"/>
+    <property name="replyChannel" ref="AggregatedChannel"/>
+    <property name="stepName" value="tempStepName"/>
+    <property name="jobExplorer" ref="jobExplorer"/>
+    <property name="messaging0perations">
+        <bean
+                class="org.springframework.integration.core.MessagingTemptate">
+            <property name="defaultChannel" ref="MasterRequestChannel"/>
+            <property name="receiveTimeout" value="6000000"/>
+        </bean>
+    </property>
+</bean>
+        <!-- Master redis-->
+<int:channel id="MasterRequestChannel">
+<int:dispatcher task-executor="RequestPublishExecutor"/>
+</int:channel><task:executor id="RequestPublishExecutor" pool-size+"5-10000" queue-capacity="9"/>
+<int:channel
+id="MasterReplyChannel"/>
+<int-redis:queue-outbound-channel adapterchannel: "MasterRegvestChannel"
+        conneetion factory:"connectionFactory'queues"$(partitionQueue}"/>
+        <int:channel id="Aggregatedchannel">
+<int:queue/></int:channel>
+
+<int-redis:queue-outbound-channel-adapter channel="MasterRequestChannel'
+        connection-factory=" connectionFactory"
+        queue="${partitiongyeue}"/>
+<int:channel id="AggregatedChannel">
+<int:queue/>
+</int:channel>
+<int:aggregator ref="remotePartitionHandler" input-channel="MasterReplyChannel'output-channel="
+                              AggregatedChannel"></int:aggregator>
+<!--Slave redis -->
+<int:channel
+id="SlaveRequestChannel"/>
+<int:channel id="SlaveReplyChannel">
+<int:queue/>
+</int:channel>
+<int-redis:queve-inbound-channel-adapter queue="${partitionqueue}"
+<int:service-activator
+ref="stepExecutionRequestHandler" async="true'input -channel="
+SlaveRequestChanne]output-channel="AggregatedChannel">
+        </int:service-activator><bean
+id="stepExecutionRequestHandler"<property name="jobExplorer" ref="jobExplorer"/><property name="stepLocator"
+                                                                                          ref="stepLocator"/></bean>
+        id="inboundChannelAdapter"
+        "connectionFactory'
+        connection-factory=
+        channel="SLaveReguestChannel"/>
+        class="org,springframework,batch,integration,pantition.StepExecutionRequestHandler">
+<bean id="stepLocator" class="org.springframework,batch,integration,partition.BeanFactoryStepLocator"/>

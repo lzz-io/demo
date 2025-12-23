@@ -1,5 +1,6 @@
 package io.lzz.demo.spring.batch.job.remotepartitioning1;
 
+import io.lzz.demo.spring.batch.component.BasicPartitioner;
 import io.lzz.demo.spring.batch.entity.User;
 import io.lzz.demo.spring.batch.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -8,10 +9,8 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
-import org.springframework.batch.core.partition.support.Partitioner;
 import org.springframework.batch.integration.partition.RemotePartitioningManagerStepBuilderFactory;
 import org.springframework.batch.integration.partition.RemotePartitioningWorkerStepBuilderFactory;
-import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JpaPagingItemReader;
@@ -29,8 +28,6 @@ import org.springframework.integration.redis.outbound.RedisQueueOutboundChannelA
 
 import javax.persistence.EntityManagerFactory;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @Configuration
@@ -74,26 +71,11 @@ public class RemotePartitioning1JobConfig {
     public Step remotePartitioning1ManagerStep() {
         return this.managerStepBuilderFactory.get("remotePartitioning1ManagerStep")
                 // remotePartitioningWorkerStep，worker的step名字，一定要注意！！！
-                .partitioner("remotePartitioning1WorkerStep", partitioner())
+                .partitioner("remotePartitioning1WorkerStep", new BasicPartitioner().setKeyName("mod"))
                 .gridSize(MOD_SIZE)
                 .outputChannel(remotePartitioning1ManagerOutputChannel()) // requests sent to workers
                 .inputChannel(remotePartitioning1ManagerInputChannel())   // replies received from workers
                 .build();
-    }
-
-    private Partitioner partitioner() {
-        return new Partitioner() {
-            @Override
-            public Map<String, ExecutionContext> partition(int gridSize) {
-                Map<String, ExecutionContext> map = new HashMap<>(gridSize);
-                for (int i = 0; i < gridSize; i++) {
-                    ExecutionContext executionContext = new ExecutionContext();
-                    executionContext.putInt("mod", i);
-                    map.put("partition" + i, executionContext);
-                }
-                return map;
-            }
-        };
     }
 
     /*

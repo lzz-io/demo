@@ -22,6 +22,7 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.partition.support.SimplePartitioner;
 import org.springframework.batch.integration.partition.RemotePartitioningManagerStepBuilderFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -79,7 +80,7 @@ public class Step3MasterConfig {
     public Step step3MasterStep() {
         return managerStepBuilderFactory.get("step3MasterStep")//
                 // .transactionManager(transactionManager)//
-                .partitioner("step3WorkerStep", new BasicPartitioner())//
+                .partitioner("step3WorkerStep", new SimplePartitioner())//
                 .gridSize(3)//
                 .outputChannel(step3MasterOutputChannel())//
                 // 1、不设置inputChannel则为作业存储库轮询方式
